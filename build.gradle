@@ -1,0 +1,23 @@
+buildscript {
+    ext.kotlin_version = "1.9.22"
+    ext.hilt_version = '2.46'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-saas/jaak-public-android-repo-release'
+        }
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath 'com.google.gms:google-services:4.4.2'
+    }
+}
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+}

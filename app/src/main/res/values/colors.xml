@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Color primario -->
+    <color name="colorPrimary">#202945</color> <!-- Por ejemplo, un color azul -->
+    <color name="colorPrimaryVariant">#1ECAD3</color> <!-- Por ejemplo, una versión más oscura del azul -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <!-- Color secundario -->
+    <color name="colorSecondary">#655DC6</color> <!-- Por ejemplo, un color rosa -->
+    <color name="colorSecondaryVariant">#00829B</color> <!-- Por ejemplo, un color rosa -->
+    <color name="colorOnSecondary">#000000</color> <!-- Por ejemplo, un color rosa -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#818181</color>
+    <color name="colorInput">#9E9E9E</color> <!-- Gris Claro -->
+    <color name="blueLetraButton">#1F2844</color> <!-- Gris Claro -->
+    <color name="orange">#FF9800</color>
+
+    
+
+</resources>
