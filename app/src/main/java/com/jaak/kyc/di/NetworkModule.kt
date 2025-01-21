@@ -19,7 +19,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit():Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://dev.api.jaak.ai/")
+            .baseUrl("https://sandbox.api.jaak.ai/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
