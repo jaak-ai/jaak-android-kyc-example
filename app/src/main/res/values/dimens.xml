@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="corner_small">5dp</dimen>
+    <dimen name="corner_medium">10dp</dimen>
+    <dimen name="corner_large">15dp</dimen>
+    <dimen name="xxsmall_text">8sp</dimen>
+    <dimen name="xsmall_text">10sp</dimen>
+    <dimen name="small_text">12sp</dimen>
+    <dimen name="medium_text">14sp</dimen>
+    <dimen name="large_text">16sp</dimen>
+    <dimen name="small_header_text">18sp</dimen>
+    <dimen name="medium_header_text">25sp</dimen>
+    <dimen name="large_header_text">30sp</dimen>
+    <dimen name="large_count_text">45sp</dimen>
+    <dimen name="margin_vertical">20dp</dimen>
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_horizontal">20dp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_medium">15dp</dimen>
+    <dimen name="padding_normal">20dp</dimen>
+    <dimen name="padding_grid_view">22dp</dimen>
+</resources>

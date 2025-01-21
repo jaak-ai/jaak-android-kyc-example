@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">KYC</string>
+    <string name="btn_start">Comenzar</string>
+    <string name="text_base64">Archivo Base64</string>
+    <string name="content_base_64_indication">Se obtuvo de manera exitosa el archivo en base64</string>
+    <string name="validate_service">Validando…</string>
+    <string name="sdk_faces">JAAK FACE DETECTOR SDK</string>
+    <string name="title_verification_face">Bienvenido a tu validación de cuenta</string>
+    <string name="content_thanks">Estamos aquí para brindarte la mejor experiencia en seguridad y autenticidad. Este proceso nos ayuda a verificar tu identidad.</string>
+    <string name="title_thanks">¡Gracias por elegir JAAK!</string>
+    <string name="title_how_to_process">¿Cómo se realiza este proceso?</string>
+    <string name="content_how_to_process">Utilizamos AI para saber quién eres y asegurarnos que en verdad eres tú, siempre siguiendo los más altos estándares en protección de datos. \n\nEl proceso para poder verificar tu identidad es muy sencillo:  \n\nNo guardamos ni compartimos tu información, sólo utilizamos los datos para garantizar la autenticidad de tu identidad. \nEste proceso garantiza que tu información personal esté protegida y que solo tú puedas acceder a tu cuenta. \n\n<b>¡Comencemos!</b></string>
+    <string name="content_success_document">Nos complace informarte que el proceso de validacion de documentos se ha completado con éxito. Hemos validado con precisión tu identidad y los documentos proporcionados, asegurando así una experiencia confiable. \n\nSi tienes alguna pregunta o necesitas asistencia adicional, no dudes en contactarnos.</string>
+    <string name="btn_exit_process">Salir del proceso</string>
+    <string name="congratulations">¡Enhorabuena!</string>
+    <string name="result">Resultados</string>
+    <string name="sorry_error">¡Lo sentimos!</string>
+    <string name="validate">Validando…</string>
+    <string name="error_human">El video enviado valida que no eres un humano, vuelve a intentarlo…</string>
+    <string name="title_main_menu">Menu Principal</string>
+    <string name="error_base64_empty">Viene vacio el base64</string>
+    <string name="onboarding_digital">Onboarding Digital</string>
+    <string name="descrip_init">Para ingresar a la plataforma, digita el código o shortKey proporcionada.</string>
+    <string name="xxxxx">XXXXX</string>
+    <string name="btn_enter">Ingresar</string>
+    <string name="init_session">Creando sesion</string>
+    <string name="not_create_session">No se pudo crear la sesión</string>
+    <string name="shortkey_empty">El shortkey no puede venir vacío</string>
+
+</resources>

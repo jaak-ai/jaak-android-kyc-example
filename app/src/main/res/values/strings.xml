@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">KYC</string>
+    <string name="btn_start">Start</string>
+    <string name="text_base64">Base64 File</string>
+    <string name="content_base_64_indication">The file was successfully obtained in base64</string>
+    <string name="validate_service">Validate…</string>
+    <string name="sdk_faces">JAAK FACE DETECTOR SDK</string>
+    <string name="title_verification_face">Welcome to your Digital Onboarding process</string>
+    <string name="content_thanks">We are here to provide you with the best experience in security and authenticity. This process helps us verify your identity.</string>
+    <string name="title_thanks">Thank you for choosing JAAK!</string>
+    <string name="title_how_to_process">How is this process carried out?</string>
+    <string name="content_how_to_process">We use AI to know who you are and to ensure that it is really you, always following the highest standards in data protection. \n\nThe process to verify your identity is very simple:.\n\nWe do not store or share your information, we only use the data to guarantee the authenticity of your identity. \nThis process ensures that your personal information is protected and that only you can access your account. \n\n<b>Let is get started!</b></string>
+    <string name="content_success_document">We are pleased to inform you that the document process has been successfully completed. We have accurately validated your identity and the documents provided, ensuring a reliable experience. \n\nIf you have any questions or need further assistance, please do not hesitate to contact us.</string>
+    <string name="btn_exit_process">Exit Process</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="result">Results</string>
+    <string name="sorry_error">We are sorry!</string>
+    <string name="validate">Validate…</string>
+    <string name="error_human">The submitted video indicates you are not human, please try again…</string>
+    <string name="title_main_menu">Main Menu</string>
+    <string name="error_base64_empty">The base64 string is empty</string>
+    <string name="onboarding_digital">Onboarding Digital</string>
+    <string name="descrip_init">To access the platform, enter the provided code or shortKey.</string>
+    <string name="xxxxx">XXXXX</string>
+    <string name="btn_enter">Start</string>
+    <string name="init_session">Creating session</string>
+    <string name="not_create_session">The session could not be created</string>
+    <string name="shortkey_empty">The shortkey cannot be empty.</string>
+</resources>
