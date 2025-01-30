@@ -5,9 +5,6 @@ buildscript {
         google()
         mavenCentral()
         maven {
-            url 'https://us-maven.pkg.dev/jaak-saas/jaak-public-android-repo-release'
-        }
-        maven {
             url 'https://jitpack.io'
         }
     }

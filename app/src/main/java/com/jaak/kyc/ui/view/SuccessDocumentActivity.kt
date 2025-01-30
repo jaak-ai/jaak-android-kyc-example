@@ -72,6 +72,7 @@ class SuccessDocumentActivity : AppCompatActivity() {
                 videoBase64 = it.bestFrame
                 sendOneToOne(uriImage!!)
             }else{
+                documentBase64Model.isLoading.value = false
                 binding.ivContent.setImageResource(R.drawable.warning_error)
                 binding.tvCongratulation.text = getString(R.string.sorry_error)
                 binding.tvDescription.text = getString(R.string.error_human)
@@ -94,7 +95,8 @@ class SuccessDocumentActivity : AppCompatActivity() {
         documentBase64Model.otoVerifyResponse.observe(this){
             if(it.score > 80){
                 documentBase64Model.finish()
-             }else{
+            }else{
+                documentBase64Model.isLoading.value = false
                 binding.ivContent.setImageResource(R.drawable.warning_error)
                 binding.tvCongratulation.text = getString(R.string.sorry_error)
                 binding.tvDescription.text = getString(R.string.error_human)
