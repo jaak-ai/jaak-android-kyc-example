@@ -83,9 +83,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
-    implementation("com.jaak.jaakdocumentdetectorsdk:jaakdocumentdetector-sdk:2.0.4")
-    //implementation("com.jaak.jaakfacedetectorsdk:jaakfacedetector-sdk:2.0.0")
-    implementation(name: 'face_detector_2.0.4', ext: 'aar')
+    implementation("com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:2.0.3")
+    implementation("com.jaak.facedetectorsdk:jaakfacedetector-sdk:2.0.5")
 
     // Bibliotecas de Google ML Kit y CameraX
     implementation 'com.google.android.gms:play-services-mlkit-face-detection:17.1.0'

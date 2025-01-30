@@ -16,8 +16,8 @@ import com.jaak.kyc.databinding.ActivityVerifyOcrDocumentBinding
 import com.jaak.kyc.ui.viewmodel.ValidationBase64Model
 import com.jaak.kyc.utils.Constants
 import com.jaak.kyc.utils.Utils
-import com.jaak.jaakfacedetectorsdk.ui.adapter.FaceDetectorListener
-import com.jaak.jaakfacedetectorsdk.ui.view.FaceDetectorSDK
+import com.jaak.facedetectorsdk.ui.adapter.FaceDetectorListener
+import com.jaak.facedetectorsdk.ui.view.FaceDetectorSDK
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -88,22 +88,17 @@ class VerifyOcrDocumentActivity : AppCompatActivity(), FaceDetectorListener {
     private fun initViewModel(){
         validationBase64ViewModel.verifyResponse.observe(this){
             if(it.document.evaluation.isNullOrEmpty()){
-                binding.clError.visibility = View.GONE
-                val documentExtraBothRequest = DocumentExtraBothRequest(imageBase64Front,imageBase64Back)
-                validationBase64ViewModel.ocr(documentExtraBothRequest)
-                /**
-                validationBase64ViewModel.isLoading.value = false
                 binding.clError.visibility = View.VISIBLE
+                validationBase64ViewModel.isLoading.value = false
                 binding.tvDescription.text = it.state.message
-                 */
-             }else{
+            }else{
                 if(it.document.evaluation.equals("SUCCESS")){
                     binding.clError.visibility = View.GONE
                     val documentExtraBothRequest = DocumentExtraBothRequest(imageBase64Front,imageBase64Back)
                     validationBase64ViewModel.ocr(documentExtraBothRequest)
                 }else{
-                    validationBase64ViewModel.isLoading.value = false
                     binding.clError.visibility = View.VISIBLE
+                    validationBase64ViewModel.isLoading.value = false
                 }
             }
         }

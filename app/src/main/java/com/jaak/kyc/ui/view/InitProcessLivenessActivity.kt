@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jaak.kyc.databinding.ActivityInitProcessLivenessBinding
 import com.jaak.kyc.utils.Constants
-import com.jaak.jaakdocumentdetectorsdk.sdk.DocumentDetectorSDK
-import com.jaak.jaakdocumentdetectorsdk.ui.adapter.DocumentDetectorListener
+import com.jaak.documentdetectorsdk.sdk.DocumentDetectorSDK
+import com.jaak.documentdetectorsdk.ui.adapter.DocumentDetectorListener
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -48,6 +48,7 @@ class InitProcessLivenessActivity : AppCompatActivity(), DocumentDetectorListene
         documentDetectorSDK.setEnableDiskPhoto(true)
         documentDetectorSDK.setImageFormat("image/*")
         documentDetectorSDK.setImageSize(3)
+        documentDetectorSDK.setLicence("")
     }
 
     override fun onSuccessDocumentDetector(typeProcess: Int, uri: Uri?, uri2: Uri?) {

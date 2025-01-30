@@ -36,12 +36,9 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven {
-            url 'https://us-maven.pkg.dev/jaak-saas/jaak-public-android-repo-release'
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
         }
         maven { url 'https://maven.microblink.com' }
-        flatDir {
-            dirs = ["app/libs"]
-        }
     }
 }
 
