@@ -24,7 +24,7 @@ interface JaakDBApiClient {
     @POST("api/v3/document/verify")
     suspend fun verifyApi(@Header("Authorization") auth: String, @Body request: VerifyRequest): Response<VerifyResponse>
 
-    @POST("api/v3/document/extract-both")
+    @POST("api/v4/document/extract")
     suspend fun documentExtraBothApi(@Header("Authorization") auth: String, @Body request: DocumentExtraBothRequest): Response<DocumentExtraBothResponse>
 
     @POST("api/v1/liveness/verify-and-bestframe")

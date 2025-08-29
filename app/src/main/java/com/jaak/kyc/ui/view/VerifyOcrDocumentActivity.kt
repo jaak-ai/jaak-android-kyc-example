@@ -16,13 +16,13 @@ import com.jaak.kyc.databinding.ActivityVerifyOcrDocumentBinding
 import com.jaak.kyc.ui.viewmodel.ValidationBase64Model
 import com.jaak.kyc.utils.Constants
 import com.jaak.kyc.utils.Utils
-import com.jaak.facedetectorsdk.ui.adapter.FaceDetectorListener
-import com.jaak.facedetectorsdk.ui.view.FaceDetectorSDK
+import com.jaak.visagesdk.ui.adapter.VisageListener
+import com.jaak.visagesdk.ui.view.VisageSDK
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class VerifyOcrDocumentActivity : AppCompatActivity(), FaceDetectorListener {
+class VerifyOcrDocumentActivity : AppCompatActivity(), VisageListener {
 
     private lateinit var binding: ActivityVerifyOcrDocumentBinding
     private val validationBase64ViewModel: ValidationBase64Model by viewModels()
@@ -31,7 +31,7 @@ class VerifyOcrDocumentActivity : AppCompatActivity(), FaceDetectorListener {
     private var uriDocumentFront : Uri? = null
     private var uriDocumentBack : Uri? = null
 
-    private lateinit var faceDetectorSDK: FaceDetectorSDK
+    private lateinit var visageSDK: VisageSDK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +104,7 @@ class VerifyOcrDocumentActivity : AppCompatActivity(), FaceDetectorListener {
         }
         validationBase64ViewModel.documentExtraBothResponse.observe(this){
             if(it.status){
-                faceDetectorSDK.startFaceDetector(2)
+                visageSDK.startVisage()
             }else{
                 binding.clError.visibility = View.VISIBLE
             }
@@ -123,27 +123,14 @@ class VerifyOcrDocumentActivity : AppCompatActivity(), FaceDetectorListener {
     }
 
     private fun initFacedetector(){
-        faceDetectorSDK = FaceDetectorSDK(this, this)
-        configFaceDetectorSDK()
-
+        visageSDK = VisageSDK(this, this)
     }
-    private fun configFaceDetectorSDK(){
-        faceDetectorSDK = FaceDetectorSDK(this, this)
-        faceDetectorSDK.setEnableCamera(true)
-        faceDetectorSDK.setEnableDisk(true)
-        faceDetectorSDK.setEnableCameraPhoto(true)
-        faceDetectorSDK.setEnableDiskPhoto(true)
-        faceDetectorSDK.setImageFormat("image/*")
-        faceDetectorSDK.setImageSize(3)
-
-    }
-
-    override fun onErrorFaceDetector(text: String) {
+    override fun onErrorVisage(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         binding.clError.visibility = View.VISIBLE
     }
 
-    override fun onSuccessFaceDetector(typeProcess: Int, uri: Uri?) {
+    override fun onSuccessVisage(typeProcess: Int, uri: Uri?) {
         val resultIntent = Intent(this, SuccessDocumentActivity::class.java)
         resultIntent.putExtra(Constants.URI_VIDEO_V, uri)
         resultIntent.putExtra(Constants.URI_DOCUMENT_D, uriDocumentFront)

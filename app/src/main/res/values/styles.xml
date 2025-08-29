@@ -89,4 +89,16 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="FilterButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_filter_button</item>
+        <item name="android:textColor">@color/filter_button_text</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">32dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+    </style>
 </resources>

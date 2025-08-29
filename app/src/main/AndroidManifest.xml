@@ -28,6 +28,7 @@
         android:maxSdkVersion="28"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -77,5 +78,29 @@
         <activity android:name="com.jaak.kyc.ui.view.SuccessDocumentActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.KycProcessesActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.KycSyncActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+            
+        <!-- Notification Action Receivers -->
+        <receiver android:name="com.jaak.kyc.notification.NotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false" />
+            
+        <receiver android:name="com.jaak.kyc.notification.DailySummaryReceiver"
+            android:enabled="true"
+            android:exported="false" />
+            
+        <receiver android:name="com.jaak.kyc.notification.ConnectivityReminderReceiver"
+            android:enabled="true"
+            android:exported="false" />
+            
+        <receiver android:name="com.jaak.kyc.notification.ErrorReminderReceiver"
+            android:enabled="true"
+            android:exported="false" />
+            
     </application>
 </manifest>

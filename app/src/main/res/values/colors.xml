@@ -15,6 +15,12 @@
     <color name="blueLetraButton">#1F2844</color> <!-- Gris Claro -->
     <color name="orange">#FF9800</color>
 
-    
+    <!-- Colores adicionales para sync UI -->
+    <color name="primary">#202945</color>
+    <color name="secondary">#655DC6</color>
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="background_light">#F5F5F5</color>
 
 </resources>

@@ -38,7 +38,6 @@ dependencyResolutionManagement {
         maven {
             url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
         }
-        maven { url 'https://maven.microblink.com' }
     }
 }
 

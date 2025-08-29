@@ -26,4 +26,36 @@
     <string name="init_session">Creating session</string>
     <string name="not_create_session">The session could not be created</string>
     <string name="shortkey_empty">The shortkey cannot be empty.</string>
+    
+    <!-- Offline UI Strings -->
+    <string name="network_status">Network Status</string>
+    <string name="offline_mode">Offline Mode - Data will sync when connected</string>
+    <string name="kyc_processes">KYC Processes</string>
+    <string name="total_processes">Total processes: %d</string>
+    <string name="new_process">New Process</string>
+    <string name="sync_all">Sync All</string>
+    <string name="all">All</string>
+    <string name="pending">Pending</string>
+    <string name="completed">Completed</string>
+    <string name="offline">Offline</string>
+    <string name="failed">Failed</string>
+    <string name="no_processes">No processes</string>
+    <string name="no_processes_found">No processes found</string>
+    <string name="syncing_processes">Syncing processes...</string>
+    <string name="progress">Progress</string>
+    <string name="services_status">Services Status</string>
+    <string name="session">Session</string>
+    <string name="verify">Verify</string>
+    <string name="ocr">OCR</string>
+    <string name="liveness">Liveness</string>
+    <string name="oto_verify">Face Match</string>
+    <string name="finish">Finish</string>
+    <string name="sync">Sync</string>
+    <string name="view">View</string>
+    <string name="session_status">Session Status</string>
+    <string name="verify_status">Verify Status</string>
+    <string name="ocr_status">OCR Status</string>
+    <string name="liveness_status">Liveness Status</string>
+    <string name="oto_verify_status">Face Match Status</string>
+    <string name="finish_status">Finish Status</string>
 </resources>

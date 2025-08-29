@@ -5,10 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.jaak.stampssdk.ui.adapter.StampsListener
 import com.jaak.kyc.databinding.ActivityInitProcessLivenessBinding
 import com.jaak.kyc.utils.Constants
-import com.jaak.documentdetectorsdk.sdk.DocumentDetectorSDK
-import com.jaak.documentdetectorsdk.ui.adapter.DocumentDetectorListener
+import com.jaak.stampssdk.sdk.StampsSDK
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -17,10 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
  * la interacción del usuario con los fragmentos.
  */
 @AndroidEntryPoint
-class InitProcessLivenessActivity : AppCompatActivity(), DocumentDetectorListener {
+class InitProcessLivenessActivity : AppCompatActivity(), StampsListener {
 
     private lateinit var binding: ActivityInitProcessLivenessBinding
-    private lateinit var documentDetectorSDK: DocumentDetectorSDK
+    private lateinit var stampsSDK: StampsSDK
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,38 +28,29 @@ class InitProcessLivenessActivity : AppCompatActivity(), DocumentDetectorListene
         binding = ActivityInitProcessLivenessBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initComponents()
-        configFaceDetectorSDK()
     }
 
     private fun initComponents(){
-        documentDetectorSDK = DocumentDetectorSDK(this, this)
-        configFaceDetectorSDK()
+        stampsSDK = StampsSDK(this, this)
         binding.tvBtnStart.setOnClickListener{
-            documentDetectorSDK.startDocumentDetector(1)
+            stampsSDK.startStamps(1)
         }
 
     }
-
-    private fun configFaceDetectorSDK(){
-        documentDetectorSDK = DocumentDetectorSDK(this, this)
-        documentDetectorSDK.setEnableCamera(true)
-        documentDetectorSDK.setEnableDisk(true)
-        documentDetectorSDK.setEnableCameraPhoto(true)
-        documentDetectorSDK.setEnableDiskPhoto(true)
-        documentDetectorSDK.setImageFormat("image/*")
-        documentDetectorSDK.setImageSize(3)
-        documentDetectorSDK.setLicence("")
+    /**
+     * Callback to handle success when selecting a video.
+     */
+    override fun onErrorStamps(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onSuccessDocumentDetector(typeProcess: Int, uri: Uri?, uri2: Uri?) {
+    override fun onSuccessStamps(typeProcess: Int,
+        frontOriginalUri: Uri?, frontCropUri: Uri?,
+        backOriginalUri: Uri?, backCropUri: Uri?) {
         val resultIntent = Intent(this, VerifyOcrDocumentActivity::class.java)
-        resultIntent.putExtra(Constants.URI_DOCUMENT_V, uri)
-        resultIntent.putExtra(Constants.URI_DOCUMENT_2_V, uri2)
+        resultIntent.putExtra(Constants.URI_DOCUMENT_V, frontCropUri)
+        resultIntent.putExtra(Constants.URI_DOCUMENT_2_V, backCropUri)
         resultIntent.putExtra(Constants.TYPE_PROCCESS_BASE64_V, typeProcess)
         startActivity(resultIntent)
-    }
-
-    override fun onErrorDocumentDetector(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 }
