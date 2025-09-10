@@ -60,6 +60,12 @@ class SyncHistoryAdapter(
                     KycSyncViewModel.SyncHistoryStatus.CANCELLED -> {
                         ivHistoryStatus.setImageResource(R.drawable.ic_service_failed)
                     }
+                    KycSyncViewModel.SyncHistoryStatus.IN_PROGRESS -> {
+                        ivHistoryStatus.setImageResource(R.drawable.ic_service_pending)
+                    }
+                    KycSyncViewModel.SyncHistoryStatus.PENDING -> {
+                        ivHistoryStatus.setImageResource(R.drawable.ic_service_pending)
+                    }
                 }
 
                 root.setOnClickListener {

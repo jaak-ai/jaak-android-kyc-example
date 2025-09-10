@@ -42,6 +42,62 @@ class KycOfflineRepository @Inject constructor(
                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
     
+    // MIXTO INTELIGENTE - Nueva lógica de ejecución
+    private suspend fun hasValidToken(processId: String): Boolean {
+        val process = kycProcessDao.getProcessById(processId)
+        
+        // ✅ Token válido si:
+        // 1. El proceso tiene token (del Session online exitoso) O
+        // 2. Constants.TOKEN tiene valor (fallback global)
+        return !process?.accessToken.isNullOrEmpty() || !Constants.TOKEN.isNullOrEmpty()
+    }
+    
+    private suspend fun shouldForceOfflineMode(processId: String): Boolean {
+        val process = kycProcessDao.getProcessById(processId)
+        
+        val sessionIsCompleted = process?.sessionStatus == ServiceStatus.COMPLETED
+        val noAccessToken = process?.accessToken.isNullOrEmpty()
+        val result = sessionIsCompleted && noAccessToken
+        
+        // 🔍 DEBUG: Ver el estado del proceso
+        android.util.Log.d("KycOfflineRepository", """
+            shouldForceOfflineMode Debug:
+            - processId: $processId
+            - process found: ${process != null}
+            - sessionStatus: ${process?.sessionStatus}
+            - accessToken: ${if (process?.accessToken.isNullOrEmpty()) "NULL/EMPTY" else "HAS_VALUE"}
+            - sessionIsCompleted: $sessionIsCompleted
+            - noAccessToken: $noAccessToken
+            - shouldForceOffline: $result
+        """.trimIndent())
+        
+        // 🚨 EXCEPCIÓN CRÍTICA: Si Session fue offline (sin token) → Forzar todo offline
+        // Solo forzar offline si Session está COMPLETED (offline) Y no hay token
+        return result
+    }
+    
+    private suspend fun canExecuteOnline(processId: String): Boolean {
+        val forceOffline = shouldForceOfflineMode(processId)
+        val hasInternet = isNetworkAvailable()
+        val hasToken = hasValidToken(processId)
+        
+        // 🔍 DEBUG: Agregar logs para entender qué está pasando
+        android.util.Log.d("KycOfflineRepository", """
+            canExecuteOnline Debug:
+            - processId: $processId
+            - shouldForceOfflineMode: $forceOffline
+            - isNetworkAvailable: $hasInternet
+            - hasValidToken: $hasToken
+            - Result: ${!forceOffline && hasInternet && hasToken}
+        """.trimIndent())
+        
+        // ✅ Puede ejecutar online si:
+        // 1. NO está en modo forzado offline Y
+        // 2. Hay internet Y  
+        // 3. Tiene token válido
+        return !forceOffline && hasInternet && hasToken
+    }
+    
     // PROCESS MANAGEMENT
     suspend fun createKycProcess(shortKey: String): String {
         val process = KycProcessEntity(
@@ -77,7 +133,18 @@ class KycOfflineRepository @Inject constructor(
     // SESSION SERVICE
     suspend fun executeSession(processId: String, shortKey: String): Result<Unit> {
         return try {
-            if (isNetworkAvailable()) {
+            val hasInternet = isNetworkAvailable()
+            
+            // 🔍 DEBUG: Session execution
+            android.util.Log.d("KycOfflineRepository", """
+                executeSession Debug:
+                - processId: $processId
+                - shortKey: $shortKey
+                - hasInternet: $hasInternet
+                - Will execute: ${if (hasInternet) "ONLINE" else "OFFLINE"}
+            """.trimIndent())
+            
+            if (hasInternet) {
                 // Online execution
                 executeSessionOnline(processId, shortKey)
             } else {
@@ -151,9 +218,11 @@ class KycOfflineRepository @Inject constructor(
     // VERIFY SERVICE
     suspend fun executeVerify(processId: String, verifyRequest: VerifyRequest): Result<Unit> {
         return try {
-            if (isNetworkAvailable()) {
+            if (canExecuteOnline(processId)) {
+                // ✅ Modo online: Hay internet y token válido
                 executeVerifyOnline(processId, verifyRequest)
             } else {
+                // 📱 Modo offline: Sin internet O Session fue offline
                 executeVerifyOffline(processId, verifyRequest)
             }
         } catch (e: Exception) {
@@ -166,7 +235,11 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateVerifyStatus(processId, ServiceStatus.RETRYING, null, 0)
             
-            val response = jaakDBService.verifyApi(Constants.TOKEN, verifyRequest)
+            // 🔑 Usar token del proceso o fallback a Constants.TOKEN
+            val process = kycProcessDao.getProcessById(processId)
+            val accessToken = process?.accessToken ?: Constants.TOKEN
+            
+            val response = jaakDBService.verifyApi(accessToken, verifyRequest)
             
             if (response.isSuccessful && response.body() != null) {
                 val verifyResponse = response.body()!!
@@ -217,9 +290,11 @@ class KycOfflineRepository @Inject constructor(
     // OCR SERVICE
     suspend fun executeOcr(processId: String, ocrRequest: DocumentExtraBothRequest): Result<Unit> {
         return try {
-            if (isNetworkAvailable()) {
+            if (canExecuteOnline(processId)) {
+                // ✅ Modo online: Hay internet y token válido
                 executeOcrOnline(processId, ocrRequest)
             } else {
+                // 📱 Modo offline: Sin internet O Session fue offline
                 executeOcrOffline(processId, ocrRequest)
             }
         } catch (e: Exception) {
@@ -232,7 +307,11 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateOcrStatus(processId, ServiceStatus.RETRYING, null, 0)
             
-            val response = jaakDBService.ocrApi(Constants.TOKEN, ocrRequest)
+            // 🔑 Usar token del proceso o fallback a Constants.TOKEN
+            val process = kycProcessDao.getProcessById(processId)
+            val accessToken = process?.accessToken ?: Constants.TOKEN
+            
+            val response = jaakDBService.ocrApi(accessToken, ocrRequest)
             
             if (response.isSuccessful && response.body() != null) {
                 val ocrResponse = response.body()!!
@@ -284,9 +363,11 @@ class KycOfflineRepository @Inject constructor(
     // LIVENESS SERVICE
     suspend fun executeLiveness(processId: String, livenessRequest: LivenessVerifyRequest): Result<Unit> {
         return try {
-            if (isNetworkAvailable()) {
+            if (canExecuteOnline(processId)) {
+                // ✅ Modo online: Hay internet y token válido
                 executeLivenessOnline(processId, livenessRequest)
             } else {
+                // 📱 Modo offline: Sin internet O Session fue offline
                 executeLivenessOffline(processId, livenessRequest)
             }
         } catch (e: Exception) {
@@ -299,7 +380,11 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateLivenessStatus(processId, ServiceStatus.RETRYING, null, 0)
             
-            val response = jaakDBService.livenessVerifyApi(Constants.TOKEN, livenessRequest)
+            // 🔑 Usar token del proceso o fallback a Constants.TOKEN
+            val process = kycProcessDao.getProcessById(processId)
+            val accessToken = process?.accessToken ?: Constants.TOKEN
+            
+            val response = jaakDBService.livenessVerifyApi(accessToken, livenessRequest)
             
             if (response.isSuccessful && response.body() != null) {
                 val livenessResponse = response.body()!!
@@ -344,9 +429,11 @@ class KycOfflineRepository @Inject constructor(
     // OTO VERIFY SERVICE  
     suspend fun executeOtoVerify(processId: String, otoVerifyRequest: OtoVerifyRequest): Result<Unit> {
         return try {
-            if (isNetworkAvailable()) {
+            if (canExecuteOnline(processId)) {
+                // ✅ Modo online: Hay internet y token válido
                 executeOtoVerifyOnline(processId, otoVerifyRequest)
             } else {
+                // 📱 Modo offline: Sin internet O Session fue offline
                 executeOtoVerifyOffline(processId, otoVerifyRequest)
             }
         } catch (e: Exception) {
@@ -359,7 +446,11 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateOtoVerifyStatus(processId, ServiceStatus.RETRYING, null, 0)
             
-            val response = jaakDBService.otoVerifyApi(Constants.TOKEN, otoVerifyRequest)
+            // 🔑 Usar token del proceso o fallback a Constants.TOKEN
+            val process = kycProcessDao.getProcessById(processId)
+            val accessToken = process?.accessToken ?: Constants.TOKEN
+            
+            val response = jaakDBService.otoVerifyApi(accessToken, otoVerifyRequest)
             
             if (response.isSuccessful && response.body() != null) {
                 val otoVerifyResponse = response.body()!!
@@ -406,12 +497,15 @@ class KycOfflineRepository @Inject constructor(
     // FINISH SERVICE
     suspend fun executeFinish(processId: String): Result<Unit> {
         return try {
-            val process = kycProcessDao.getProcessById(processId)
-            val accessToken = process?.accessToken ?: Constants.TOKEN
-            
-            if (isNetworkAvailable()) {
+            if (canExecuteOnline(processId)) {
+                // ✅ Modo online: Hay internet y token válido
+                val process = kycProcessDao.getProcessById(processId)
+                val accessToken = process?.accessToken ?: Constants.TOKEN
                 executeFinishOnline(processId, accessToken)
             } else {
+                // 📱 Modo offline: Sin internet O Session fue offline
+                val process = kycProcessDao.getProcessById(processId)
+                val accessToken = process?.accessToken ?: Constants.TOKEN
                 executeFinishOffline(processId, accessToken)
             }
         } catch (e: Exception) {
