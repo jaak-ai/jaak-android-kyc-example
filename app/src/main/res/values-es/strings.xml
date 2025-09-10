@@ -27,4 +27,9 @@
     <string name="not_create_session">No se pudo crear la sesión</string>
     <string name="shortkey_empty">El shortkey no puede venir vacío</string>
 
+    <string name="demo_kyc">Demo KYC</string>
+    <string name="start_kyc">Comenzar  KYC</string>
+    <string name="pending_kyc">KYC Pendientes</string>
+
+
 </resources>

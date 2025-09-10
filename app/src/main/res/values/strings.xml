@@ -58,4 +58,10 @@
     <string name="liveness_status">Liveness Status</string>
     <string name="oto_verify_status">Face Match Status</string>
     <string name="finish_status">Finish Status</string>
+
+    <string name="demo_kyc">Demo KYC</string>
+    <string name="start_kyc">Start KYC</string>
+    <string name="pending_kyc">Pending KYC</string>
+
+
 </resources>

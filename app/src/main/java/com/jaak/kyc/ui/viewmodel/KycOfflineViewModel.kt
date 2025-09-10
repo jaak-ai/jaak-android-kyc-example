@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaak.kyc.data.local.entity.KycProcessEntity
 import com.jaak.kyc.data.local.entity.KycProcessWithDetails
+import com.jaak.kyc.data.local.entity.ServiceStatus
 import com.jaak.kyc.data.model.ErrorModel
 import com.jaak.kyc.data.model.livenessverify.LivenessVerifyRequest
 import com.jaak.kyc.data.model.ocr.DocumentExtraBothRequest
@@ -121,8 +122,24 @@ class KycOfflineViewModel @Inject constructor(
             try {
                 val result = sessionUseCase(processId, shortKey)
                 if (result.isSuccess) {
-                    successMessage.postValue("Session executed successfully")
-                    loadProcessDetails(processId) // Refresh details
+                    // ✅ Verificar el estado directamente desde la BD después de ejecutar
+                    val processDetails = processManagementUseCase.getProcessWithDetails(processId)
+                    val sessionStatus = processDetails?.process?.sessionStatus
+                    val hasToken = !processDetails?.process?.accessToken.isNullOrEmpty()
+                    
+                    // Actualizar el estado local
+                    _currentProcessDetails.value = processDetails
+                    
+                    if (sessionStatus == ServiceStatus.SYNCED && hasToken) {
+                        // ✅ Sesión online exitosa con token
+                        successMessage.postValue("Session executed successfully")
+                    } else if (sessionStatus == ServiceStatus.COMPLETED) {
+                        // 📱 Sesión offline exitosa (sin token)
+                        successMessage.postValue("Session executed offline successfully")
+                    } else {
+                        // ⚠️ Estado inesperado
+                        errorModel.value = ErrorModel("Session completed but in unexpected state: $sessionStatus", false, 500)
+                    }
                 } else {
                     errorModel.value = ErrorModel("Session failed: ${result.exceptionOrNull()?.message}", false, 500)
                 }
