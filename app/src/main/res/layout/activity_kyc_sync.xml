@@ -225,32 +225,41 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSyncAll"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="56dp"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:text="Sincronizar Todo"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
                             app:icon="@drawable/ic_service_pending"
+                            app:backgroundTint="@color/primary"
                             style="@style/Widget.Material3.Button" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnBulkSync"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="56dp"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
                             android:text="Sync Masivo"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
                             app:icon="@drawable/ic_service_completed"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            app:backgroundTint="@color/primary"
+                            style="@style/Widget.Material3.Button" />
 
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnScheduleSync"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="Programar Sincronización"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
                         app:icon="@drawable/ic_schedule"
-                        style="@style/Widget.Material3.Button.TonalButton" />
+                        app:backgroundTint="@color/primary"
+                        style="@style/Widget.Material3.Button" />
 
                 </LinearLayout>
 

@@ -32,10 +32,28 @@ class KycSyncActivity : AppCompatActivity() {
         viewModel.loadSyncData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Actualizar datos cuando regrese a la pantalla
+        viewModel.refreshData()
+    }
+
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
+        
+        // TODO: Agregar botón de refresh en el menú
+        // binding.toolbar.inflateMenu(com.jaak.kyc.R.menu.menu_sync)
+        // binding.toolbar.setOnMenuItemClickListener { item ->
+        //     when (item.itemId) {
+        //         com.jaak.kyc.R.id.action_refresh -> {
+        //             viewModel.refreshData()
+        //             true
+        //         }
+        //         else -> false
+        //     }
+        // }
     }
 
     private fun setupRecyclerViews() {

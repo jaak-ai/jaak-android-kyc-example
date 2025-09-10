@@ -1,23 +1,124 @@
 package com.jaak.kyc.domain.service
 
 import com.jaak.kyc.data.local.entity.KycServiceType
+import com.jaak.kyc.data.local.entity.ServiceStatus
+import com.jaak.kyc.data.repository.KycOfflineRepository
+import com.jaak.kyc.data.model.verify.VerifyRequest
+import com.jaak.kyc.data.model.ocr.DocumentExtraBothRequest
+import com.jaak.kyc.data.model.livenessverify.LivenessVerifyRequest
+import com.jaak.kyc.data.model.otoverify.OtoVerifyRequest
 import com.jaak.kyc.notification.NotificationHelper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class KycSyncServiceSimple @Inject constructor(
+    private val repository: KycOfflineRepository,
     private val notificationHelper: NotificationHelper
 ) {
     
     suspend fun syncIndividualService(processId: String, serviceType: KycServiceType): SyncResult {
+        android.util.Log.d("KycSyncServiceSimple", "=== syncIndividualService() REAL ===")
+        android.util.Log.d("KycSyncServiceSimple", "Syncing REAL service - processId: $processId, serviceType: ${serviceType.displayName}")
+        
         return try {
-            // Simulate sync operation
-            Thread.sleep(1000) // Simulate network call
-            SyncResult.Success("${serviceType.displayName} synced successfully")
+            // Obtener el proceso actual y sus datos
+            val processWithDetails = repository.getProcessWithDetails(processId)
+            if (processWithDetails == null) {
+                android.util.Log.e("KycSyncServiceSimple", "Process not found: $processId")
+                return SyncResult.Error("Process not found: $processId")
+            }
+            
+            android.util.Log.d("KycSyncServiceSimple", "Found process ${processWithDetails.process.shortKey}")
+            
+            // Ejecutar el servicio específico usando los métodos reales del repositorio
+            val result = when (serviceType) {
+                KycServiceType.SESSION -> {
+                    android.util.Log.d("KycSyncServiceSimple", "Executing REAL Session service...")
+                    repository.executeSession(processId, processWithDetails.process.shortKey)
+                }
+                
+                KycServiceType.VERIFY -> {
+                    android.util.Log.d("KycSyncServiceSimple", "Executing REAL Verify service...")
+                    val verifyData = processWithDetails.verify
+                    if (verifyData != null) {
+                        val verifyRequest = VerifyRequest(
+                            document = verifyData.imageFront,
+                            document2 = verifyData.imageBack,
+                            documentType = verifyData.documentType
+                        )
+                        repository.executeVerify(processId, verifyRequest)
+                    } else {
+                        android.util.Log.w("KycSyncServiceSimple", "No verify data found for process $processId")
+                        Result.failure(Exception("No verify data available for sync"))
+                    }
+                }
+                
+                KycServiceType.OCR -> {
+                    android.util.Log.d("KycSyncServiceSimple", "Executing REAL OCR service...")
+                    val ocrData = processWithDetails.ocr
+                    if (ocrData != null) {
+                        val ocrRequest = DocumentExtraBothRequest(
+                            documentFront = ocrData.documentFront,
+                            documentBack = ocrData.documentBack
+                        )
+                        repository.executeOcr(processId, ocrRequest)
+                    } else {
+                        android.util.Log.w("KycSyncServiceSimple", "No OCR data found for process $processId")
+                        Result.failure(Exception("No OCR data available for sync"))
+                    }
+                }
+                
+                KycServiceType.LIVENESS -> {
+                    android.util.Log.d("KycSyncServiceSimple", "Executing REAL Liveness service...")
+                    val livenessData = processWithDetails.liveness
+                    if (livenessData != null) {
+                        val livenessRequest = LivenessVerifyRequest(
+                            video = livenessData.video
+                        )
+                        repository.executeLiveness(processId, livenessRequest)
+                    } else {
+                        android.util.Log.w("KycSyncServiceSimple", "No liveness data found for process $processId")
+                        Result.failure(Exception("No liveness data available for sync"))
+                    }
+                }
+                
+                KycServiceType.OTO_VERIFY -> {
+                    android.util.Log.d("KycSyncServiceSimple", "Executing REAL OtoVerify service...")
+                    val otoVerifyData = processWithDetails.otoVerify
+                    if (otoVerifyData != null) {
+                        val otoVerifyRequest = OtoVerifyRequest(
+                            image1 = otoVerifyData.image1,
+                            image2 = otoVerifyData.image2
+                        )
+                        repository.executeOtoVerify(processId, otoVerifyRequest)
+                    } else {
+                        android.util.Log.w("KycSyncServiceSimple", "No otoVerify data found for process $processId")
+                        Result.failure(Exception("No otoVerify data available for sync"))
+                    }
+                }
+                
+                KycServiceType.FINISH -> {
+                    android.util.Log.d("KycSyncServiceSimple", "Executing REAL Finish service...")
+                    repository.executeFinish(processId)
+                }
+            }
+            
+            // Evaluar el resultado
+            if (result.isSuccess) {
+                android.util.Log.d("KycSyncServiceSimple", "${serviceType.displayName} REAL service completed successfully!")
+                SyncResult.Success("${serviceType.displayName} synced successfully with real data")
+            } else {
+                val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                android.util.Log.e("KycSyncServiceSimple", "${serviceType.displayName} REAL service failed: $error")
+                SyncResult.Error("Failed to sync ${serviceType.displayName}: $error")
+            }
+            
         } catch (e: Exception) {
+            android.util.Log.e("KycSyncServiceSimple", "${serviceType.displayName} REAL sync failed with exception: ${e.message}")
             SyncResult.Error("Failed to sync ${serviceType.displayName}: ${e.message}")
         }
     }
@@ -66,23 +167,45 @@ class KycSyncServiceSimple @Inject constructor(
     }
     
     suspend fun getBulkSyncCandidates(): List<BulkSyncCandidate> {
-        // Return mock data for now
-        return listOf(
-            BulkSyncCandidate(
-                processId = "process1",
-                shortKey = "ABC123",
-                servicesToSync = 3,
-                createdAt = System.currentTimeMillis() - 86400000L, // 1 day ago
-                lastSyncAttempt = null
-            ),
-            BulkSyncCandidate(
-                processId = "process2",
-                shortKey = "DEF456",
-                servicesToSync = 2,
-                createdAt = System.currentTimeMillis() - 43200000L, // 12 hours ago
-                lastSyncAttempt = System.currentTimeMillis() - 3600000L // 1 hour ago
-            )
-        )
+        android.util.Log.d("KycSyncServiceSimple", "=== getBulkSyncCandidates() CALLED ===")
+        
+        return try {
+            // Obtener procesos reales que requieren sincronización
+            val allProcesses = repository.getAllProcesses().first()
+            val processesToSync = allProcesses.filter { it.requiresSync == true }
+            
+            android.util.Log.d("KycSyncServiceSimple", "Found ${processesToSync.size} processes requiring sync from ${allProcesses.size} total processes")
+            
+            val candidates = processesToSync.map { process ->
+                // Contar servicios que están COMPLETED (offline) pero no SYNCED
+                var servicesToSync = 0
+                if (process.sessionStatus == ServiceStatus.COMPLETED) servicesToSync++
+                if (process.verifyStatus == ServiceStatus.COMPLETED) servicesToSync++
+                if (process.ocrStatus == ServiceStatus.COMPLETED) servicesToSync++
+                if (process.livenessStatus == ServiceStatus.COMPLETED) servicesToSync++
+                if (process.otoVerifyStatus == ServiceStatus.COMPLETED) servicesToSync++
+                if (process.finishStatus == ServiceStatus.COMPLETED) servicesToSync++
+                
+                android.util.Log.d("KycSyncServiceSimple", 
+                    "Process ${process.shortKey}: $servicesToSync services to sync" +
+                    " (Session:${process.sessionStatus}, Verify:${process.verifyStatus}, OCR:${process.ocrStatus}, " +
+                    "Liveness:${process.livenessStatus}, OtoVerify:${process.otoVerifyStatus}, Finish:${process.finishStatus})")
+                
+                BulkSyncCandidate(
+                    processId = process.id,
+                    shortKey = process.shortKey,
+                    servicesToSync = servicesToSync,
+                    createdAt = process.createdAt,
+                    lastSyncAttempt = process.lastSyncAttempt
+                )
+            }
+            
+            android.util.Log.d("KycSyncServiceSimple", "Returning ${candidates.size} REAL candidates: ${candidates.map { "${it.shortKey}(${it.servicesToSync} services)" }}")
+            candidates
+        } catch (e: Exception) {
+            android.util.Log.e("KycSyncServiceSimple", "Error getting bulk sync candidates: ${e.message}")
+            emptyList()
+        }
     }
     
     suspend fun executeBulkSync(processIds: List<String>): Flow<BulkSyncProgress> = flow {

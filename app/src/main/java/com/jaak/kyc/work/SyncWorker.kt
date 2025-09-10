@@ -43,12 +43,20 @@ class SyncWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result {
+        android.util.Log.d("SyncWorker", "=== doWork() STARTED ===")
         return try {
             val processId = inputData.getString(KEY_PROCESS_ID)
             val serviceType = inputData.getString(KEY_SERVICE_TYPE)?.let { 
                 KycServiceType.valueOf(it) 
             }
             val syncType = inputData.getString(KEY_SYNC_TYPE) ?: SYNC_TYPE_INDIVIDUAL
+
+            android.util.Log.d("SyncWorker", """
+                Input parameters:
+                - processId: $processId
+                - serviceType: $serviceType
+                - syncType: $syncType
+            """.trimIndent())
 
             createNotificationChannel()
             setForeground(createForegroundInfo("Starting sync..."))
@@ -165,13 +173,18 @@ class SyncWorker @AssistedInject constructor(
     }
 
     private suspend fun syncBulkProcesses(): Result {
+        android.util.Log.d("SyncWorker", "=== syncBulkProcesses() STARTED ===")
         return try {
             setForeground(createForegroundInfo("Loading processes to sync..."))
             
+            android.util.Log.d("SyncWorker", "Calling syncService.getBulkSyncCandidates()")
             val candidates = syncService.getBulkSyncCandidates()
             val processIds = candidates.map { it.processId }
             
+            android.util.Log.d("SyncWorker", "Found ${candidates.size} candidates: $processIds")
+            
             if (processIds.isEmpty()) {
+                android.util.Log.d("SyncWorker", "No processes to sync - returning success")
                 showCompletionNotification("Bulk sync", "No processes need synchronization")
                 return Result.success(createSuccessData("No processes to sync"))
             }

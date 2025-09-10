@@ -46,6 +46,18 @@
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
+            
+        <!-- Deshabilitar inicialización automática de WorkManager -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
         <service
             android:name="androidx.room.MultiInstanceInvalidationService"
             tools:node="remove" />
@@ -61,7 +73,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name="com.jaak.kyc.ui.view.MenuMainActivity"
+        <activity android:name="com.jaak.kyc.ui.view.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -69,6 +81,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.jaak.kyc.ui.view.MenuMainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.jaak.kyc.ui.view.InitProcessLivenessActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>

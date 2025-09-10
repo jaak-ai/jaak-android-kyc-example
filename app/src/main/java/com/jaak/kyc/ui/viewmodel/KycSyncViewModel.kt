@@ -9,6 +9,8 @@ import com.jaak.kyc.domain.service.ProcessErrorManager
 import com.jaak.kyc.domain.service.ProcessTokenManager
 import com.jaak.kyc.domain.service.NetworkConnectivityService
 import com.jaak.kyc.data.repository.KycOfflineRepository
+import com.jaak.kyc.data.local.entity.KycProcessStatus
+import com.jaak.kyc.data.local.entity.ServiceStatus
 import com.jaak.kyc.work.WorkScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
@@ -54,6 +56,10 @@ class KycSyncViewModel @Inject constructor(
             updateSyncHistory()
             updateSyncAvailability()
         }
+    }
+    
+    fun refreshData() {
+        loadSyncData()
     }
 
     fun startFullSync() {
@@ -160,15 +166,47 @@ class KycSyncViewModel @Inject constructor(
     }
 
     private suspend fun updateSyncStatistics() {
-        val pendingProcesses = repository.getAllProcesses().first().size
-        val pendingServices = 0 // Mock count
-        val lastSyncTime = formatLastSyncTime(System.currentTimeMillis() - (2 * 60 * 60 * 1000)) // 2 hours ago mock
-        
-        _syncStats.value = SyncStatistics(
-            pendingProcesses = pendingProcesses,
-            pendingServices = pendingServices,
-            lastSyncTime = lastSyncTime
-        )
+        try {
+            // 🔄 Obtener datos reales de la base de datos
+            val allProcesses = repository.getAllProcesses().first()
+            val pendingProcesses = allProcesses.filter { it.requiresSync == true }.size
+            
+            // Contar servicios que están COMPLETED (offline) pero no SYNCED
+            val pendingServices = allProcesses.sumOf { process ->
+                var count = 0
+                if (process.sessionStatus == ServiceStatus.COMPLETED) count++
+                if (process.verifyStatus == ServiceStatus.COMPLETED) count++
+                if (process.ocrStatus == ServiceStatus.COMPLETED) count++
+                if (process.livenessStatus == ServiceStatus.COMPLETED) count++
+                if (process.otoVerifyStatus == ServiceStatus.COMPLETED) count++
+                if (process.finishStatus == ServiceStatus.COMPLETED) count++
+                count
+            }
+            
+            // Buscar el último proceso sincronizado
+            val lastSyncedProcess = allProcesses
+                .filter { it.lastSyncAttempt != null }
+                .maxByOrNull { it.lastSyncAttempt ?: 0L }
+            
+            val lastSyncTime = if (lastSyncedProcess?.lastSyncAttempt != null) {
+                formatLastSyncTime(lastSyncedProcess.lastSyncAttempt!!)
+            } else {
+                "Nunca"
+            }
+            
+            _syncStats.value = SyncStatistics(
+                pendingProcesses = pendingProcesses,
+                pendingServices = pendingServices,
+                lastSyncTime = lastSyncTime
+            )
+        } catch (e: Exception) {
+            // Fallback en caso de error
+            _syncStats.value = SyncStatistics(
+                pendingProcesses = 0,
+                pendingServices = 0,
+                lastSyncTime = "Error al cargar"
+            )
+        }
     }
 
     private suspend fun updateActiveWorks() {
@@ -190,32 +228,89 @@ class KycSyncViewModel @Inject constructor(
     }
 
     private suspend fun updateSyncHistory() {
-        // Mock history data
-        val historyItems = listOf(
-            SyncHistoryItem(
-                title = "Proceso ABC123 completado",
-                details = "6 servicios sincronizados exitosamente",
-                timestamp = System.currentTimeMillis() - (30 * 60 * 1000), // 30 minutes ago
-                status = SyncHistoryStatus.SUCCESS,
-                duration = 2300 // 2.3 seconds
-            ),
-            SyncHistoryItem(
-                title = "Sincronización masiva",
-                details = "3 procesos, 18 servicios completados",
-                timestamp = System.currentTimeMillis() - (2 * 60 * 60 * 1000), // 2 hours ago
-                status = SyncHistoryStatus.SUCCESS,
-                duration = 15600 // 15.6 seconds
-            ),
-            SyncHistoryItem(
-                title = "Error en Proceso DEF456",
-                details = "Fallo en servicio de liveness",
-                timestamp = System.currentTimeMillis() - (3 * 60 * 60 * 1000), // 3 hours ago
-                status = SyncHistoryStatus.ERROR,
-                duration = 5000 // 5 seconds
+        try {
+            // 🔄 Obtener datos reales de procesos
+            val allProcesses = repository.getAllProcesses().first()
+            val historyItems = mutableListOf<SyncHistoryItem>()
+            
+            // Crear historial basado en procesos reales
+            allProcesses
+                .sortedByDescending { it.updatedAt }
+                .take(10) // Últimos 10 procesos
+                .forEach { process ->
+                    val shortKeyDisplay = process.shortKey.take(6).uppercase()
+                    val status = when (process.overallStatus) {
+                        KycProcessStatus.COMPLETED -> SyncHistoryStatus.SUCCESS
+                        KycProcessStatus.FAILED -> SyncHistoryStatus.ERROR
+                        KycProcessStatus.SYNCING -> SyncHistoryStatus.IN_PROGRESS
+                        else -> SyncHistoryStatus.PENDING
+                    }
+                    
+                    val serviceStatuses = listOf(
+                        process.sessionStatus,
+                        process.verifyStatus,
+                        process.ocrStatus,
+                        process.livenessStatus,
+                        process.otoVerifyStatus,
+                        process.finishStatus
+                    )
+                    
+                    val syncedServices = serviceStatuses.count { it == ServiceStatus.SYNCED }
+                    val completedServices = serviceStatuses.count { it == ServiceStatus.COMPLETED }
+                    val totalCompletedServices = syncedServices + completedServices
+                    
+                    val details = when {
+                        syncedServices == 6 -> "6 servicios sincronizados"
+                        syncedServices > 0 && completedServices > 0 -> "$syncedServices sync, $completedServices pendientes de sync"
+                        syncedServices > 0 -> "$syncedServices de 6 servicios sincronizados"
+                        completedServices > 0 -> "$completedServices de 6 servicios completados (offline)"
+                        totalCompletedServices == 0 -> "Sin servicios completados"
+                        else -> "Proceso offline completado"
+                    }
+                    
+                    val duration = if (process.lastSyncAttempt != null && process.createdAt < process.lastSyncAttempt!!) {
+                        process.lastSyncAttempt!! - process.createdAt
+                    } else {
+                        0L
+                    }
+                    
+                    historyItems.add(
+                        SyncHistoryItem(
+                            title = "Proceso $shortKeyDisplay",
+                            details = details,
+                            timestamp = process.lastSyncAttempt ?: process.updatedAt,
+                            status = status,
+                            duration = duration
+                        )
+                    )
+                }
+            
+            // Si no hay procesos, mostrar mensaje informativo
+            if (historyItems.isEmpty()) {
+                historyItems.add(
+                    SyncHistoryItem(
+                        title = "Sin procesos KYC",
+                        details = "Inicia un proceso KYC para ver el historial",
+                        timestamp = System.currentTimeMillis(),
+                        status = SyncHistoryStatus.PENDING,
+                        duration = 0
+                    )
+                )
+            }
+            
+            _syncHistory.value = historyItems
+        } catch (e: Exception) {
+            // Fallback en caso de error
+            _syncHistory.value = listOf(
+                SyncHistoryItem(
+                    title = "Error al cargar historial",
+                    details = "No se pudo acceder a la base de datos",
+                    timestamp = System.currentTimeMillis(),
+                    status = SyncHistoryStatus.ERROR,
+                    duration = 0
+                )
             )
-        )
-        
-        _syncHistory.value = historyItems
+        }
     }
 
     private suspend fun updateSyncAvailability() {
@@ -226,33 +321,105 @@ class KycSyncViewModel @Inject constructor(
 
     private fun observeSyncProgress(workId: String) {
         viewModelScope.launch {
-            // Mock progress observation
-            var progress = 0
-            while (progress < 100 && currentSyncWorkId == workId) {
-                kotlinx.coroutines.delay(1000)
-                progress += 10
+            // Observar progreso real basado en servicios
+            while (currentSyncWorkId == workId) {
+                try {
+                    val allProcesses = repository.getAllProcesses().first()
+                    val processesToSync = allProcesses.filter { it.requiresSync == true }
+                    
+                    if (processesToSync.isEmpty()) {
+                        // No hay procesos que sincronizar, completar
+                        _currentSyncProgress.value = null
+                        _canStartSync.value = true
+                        currentSyncWorkId = null
+                        
+                        addToSyncHistory(SyncHistoryItem(
+                            title = "Sincronización completa",
+                            details = "No hay procesos pendientes",
+                            timestamp = System.currentTimeMillis(),
+                            status = SyncHistoryStatus.SUCCESS,
+                            duration = 0
+                        ))
+                        break
+                    }
+                    
+                    // Calcular progreso basado en servicios
+                    var totalServices = 0
+                    var syncedServices = 0
+                    var currentServiceName = ""
+                    
+                    processesToSync.forEach { process ->
+                        val services = listOf(
+                            "Session" to process.sessionStatus,
+                            "Verify" to process.verifyStatus,
+                            "OCR" to process.ocrStatus,
+                            "Liveness" to process.livenessStatus,
+                            "OtoVerify" to process.otoVerifyStatus,
+                            "Finish" to process.finishStatus
+                        )
+                        
+                        services.forEach { (serviceName, status) ->
+                            totalServices++
+                            if (status == ServiceStatus.SYNCED) {
+                                syncedServices++
+                            } else if (status == ServiceStatus.COMPLETED && currentServiceName.isEmpty()) {
+                                currentServiceName = serviceName
+                            }
+                        }
+                    }
+                    
+                    val progressPercentage = if (totalServices > 0) {
+                        (syncedServices * 100) / totalServices
+                    } else 0
+                    
+                    val statusMessage = if (currentServiceName.isNotEmpty()) {
+                        "Sincronizando servicio: $currentServiceName"
+                    } else {
+                        "Sincronizando servicios de KYC..."
+                    }
+                    
+                    _currentSyncProgress.value = SyncProgressInfo(
+                        statusMessage = statusMessage,
+                        progressText = "$syncedServices de $totalServices servicios sincronizados",
+                        percentage = progressPercentage,
+                        isIndeterminate = progressPercentage == 0
+                    )
+                    
+                    // Si todos los servicios están sincronizados, completar
+                    if (syncedServices == totalServices) {
+                        kotlinx.coroutines.delay(1000) // Pequeña pausa para mostrar 100%
+                        _currentSyncProgress.value = null
+                        _canStartSync.value = true
+                        currentSyncWorkId = null
+                        
+                        addToSyncHistory(SyncHistoryItem(
+                            title = "Sincronización completa exitosa",
+                            details = "$syncedServices servicios sincronizados",
+                            timestamp = System.currentTimeMillis(),
+                            status = SyncHistoryStatus.SUCCESS,
+                            duration = 0
+                        ))
+                        break
+                    }
+                    
+                } catch (e: Exception) {
+                    // Error en sincronización
+                    _currentSyncProgress.value = null
+                    _canStartSync.value = true
+                    currentSyncWorkId = null
+                    
+                    addToSyncHistory(SyncHistoryItem(
+                        title = "Error en sincronización",
+                        details = "No se pudo completar la sincronización",
+                        timestamp = System.currentTimeMillis(),
+                        status = SyncHistoryStatus.ERROR,
+                        duration = 0
+                    ))
+                    break
+                }
                 
-                _currentSyncProgress.value = SyncProgressInfo(
-                    statusMessage = "Sincronizando servicios de KYC...",
-                    progressText = "$progress% completado",
-                    percentage = progress,
-                    isIndeterminate = false
-                )
-            }
-            
-            if (currentSyncWorkId == workId) {
-                // Sync completed
-                _currentSyncProgress.value = null
-                _canStartSync.value = true
-                currentSyncWorkId = null
-                
-                addToSyncHistory(SyncHistoryItem(
-                    title = "Sincronización completa exitosa",
-                    details = "Todos los procesos sincronizados",
-                    timestamp = System.currentTimeMillis(),
-                    status = SyncHistoryStatus.SUCCESS,
-                    duration = 10000
-                ))
+                // Verificar cada 2 segundos
+                kotlinx.coroutines.delay(2000)
             }
         }
     }
@@ -314,6 +481,6 @@ class KycSyncViewModel @Inject constructor(
     )
 
     enum class SyncHistoryStatus {
-        SUCCESS, ERROR, WARNING, CANCELLED
+        SUCCESS, ERROR, WARNING, CANCELLED, IN_PROGRESS, PENDING
     }
 }
