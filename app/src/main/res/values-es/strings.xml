@@ -5,8 +5,6 @@
     <string name="content_base_64_indication">Se obtuvo de manera exitosa el archivo en base64</string>
     <string name="validate_service">Validando…</string>
     <string name="sdk_faces">JAAK FACE DETECTOR SDK</string>
-    <string name="title_verification_face">Bienvenido a tu validación de cuenta</string>
-    <string name="content_thanks">Estamos aquí para brindarte la mejor experiencia en seguridad y autenticidad. Este proceso nos ayuda a verificar tu identidad.</string>
     <string name="title_thanks">¡Gracias por elegir JAAK!</string>
     <string name="title_how_to_process">¿Cómo se realiza este proceso?</string>
     <string name="content_how_to_process">Utilizamos AI para saber quién eres y asegurarnos que en verdad eres tú, siempre siguiendo los más altos estándares en protección de datos. \n\nEl proceso para poder verificar tu identidad es muy sencillo:  \n\nNo guardamos ni compartimos tu información, sólo utilizamos los datos para garantizar la autenticidad de tu identidad. \nEste proceso garantiza que tu información personal esté protegida y que solo tú puedas acceder a tu cuenta. \n\n<b>¡Comencemos!</b></string>
@@ -19,17 +17,136 @@
     <string name="error_human">El video enviado valida que no eres un humano, vuelve a intentarlo…</string>
     <string name="title_main_menu">Menu Principal</string>
     <string name="error_base64_empty">Viene vacio el base64</string>
-    <string name="onboarding_digital">Onboarding Digital</string>
-    <string name="descrip_init">Para ingresar a la plataforma, digita el código o shortKey proporcionada.</string>
+    <string name="error_saving_image">Error al guardar imagen permanentemente</string>
+    <string name="onboarding_digital">JAAK KYC</string>
+    <string name="descrip_init">Verificación de Identidad</string>
+    <string name="codigo_acceso_label">CÓDIGO DE ACCESO</string>
     <string name="xxxxx">XXXXX</string>
-    <string name="btn_enter">Ingresar</string>
+    <string name="btn_enter">Continuar</string>
     <string name="init_session">Creando sesion</string>
     <string name="not_create_session">No se pudo crear la sesión</string>
     <string name="shortkey_empty">El shortkey no puede venir vacío</string>
+    
+    <!-- Offline UI Strings -->
+    <string name="network_status">Estado de Red</string>
+    <string name="offline_mode">Modo Sin Conexión - Los datos se sincronizarán cuando se conecte</string>
+    <string name="kyc_processes">Procesos KYC</string>
+    <string name="total_processes">Total de procesos: %d</string>
+    <string name="new_process">Nuevo Proceso</string>
+    <string name="sync_all">Sincronizar Todo</string>
+    <string name="all">Todos</string>
+    <string name="pending">Pendiente</string>
+    <string name="completed">Completado</string>
+    <string name="offline">Sin Conexión</string>
+    <string name="failed">Fallido</string>
+    <string name="no_processes">Sin procesos</string>
+    <string name="no_processes_found">No se encontraron procesos</string>
+    <string name="syncing_processes">Sincronizando procesos...</string>
+    <string name="progress">Progreso</string>
+    <string name="services_status">Estado de Servicios</string>
+    <string name="session">Sesión</string>
+    <string name="verify">Verificar</string>
+    <string name="ocr">OCR</string>
+    <string name="liveness">Liveness</string>
+    <string name="oto_verify">Comparación Facial</string>
+    <string name="finish">Finalizar</string>
+    <string name="sync">Sincronizar</string>
+    <string name="view">Ver</string>
+    <string name="session_status">Estado de Sesión</string>
+    <string name="verify_status">Estado de Verificación</string>
+    <string name="ocr_status">Estado de OCR</string>
+    <string name="liveness_status">Estado de Liveness</string>
+    <string name="oto_verify_status">Estado de Comparación Facial</string>
+    <string name="finish_status">Estado de Finalización</string>
 
     <string name="demo_kyc">Demo KYC</string>
     <string name="start_kyc">Comenzar  KYC</string>
     <string name="pending_kyc">KYC Pendientes</string>
+
+    <!-- InitProcessLivenessActivity Strings -->
+    <string name="title_verification_face">Bienvenido a tu proceso de validación digital</string>
+    <string name="content_thanks">Estamos aquí para brindarte la mejor experiencia en seguridad y autenticidad. Este proceso nos ayuda a verificar tu identidad.</string>
+    <string name="step_document_title">Captura de Documento</string>
+    <string name="step_document_description">Capturaremos tu documento de identificación</string>
+    <string name="step_face_title">Verificación Facial</string>
+    <string name="step_face_description">Verificaremos tus características faciales</string>
+    <string name="step_security_title">Proceso Seguro</string>
+    <string name="step_security_description">Utilizamos protocolos de seguridad avanzados</string>
+    <string name="step_validation_title">Validación Automática</string>
+    <string name="step_validation_description">Verificación automática de tu identidad</string>
+    <string name="btn_restart">Empezar de Nuevo</string>
+    <string name="btn_start_verification">Comenzar Verificación</string>
+
+    <!-- SecurityPermissionsActivity Strings -->
+    <string name="security_permissions_title">Permisos de Seguridad</string>
+    <string name="security_permissions_description">Para garantizar un proceso de verificación seguro y confiable, necesitamos acceso a las siguientes funciones de tu dispositivo</string>
+    <string name="camera_access_title">Acceso a Cámara</string>
+    <string name="camera_access_description">Necesario para capturar documentos de identidad y realizar verificación facial biométrica</string>
+    <string name="location_access_title">Acceso a Ubicación</string>
+    <string name="location_access_description">Utilizado para verificar la geolocalización donde se realiza el proceso KYC</string>
+    <string name="permission_granted">Concedido</string>
+    <string name="permission_denied">Denegado</string>
+    <string name="terms_privacy_policy">Políticas de Privacidad</string>
+    <string name="terms_data_treatment">tratamiento de los datos</string>
+    <string name="terms_agreement">He leído y acepto las %1$s y %2$s</string>
+    <string name="terms_warning_message">Debe aceptar los términos para continuar</string>
+    <string name="btn_continue">Continuar</string>
+
+    <!-- ProcessingDocumentActivity Strings -->
+    <string name="processing_document_title">Procesando Documento</string>
+    <string name="processing_document_description">Estamos extrayendo y verificando la información de tu documento de identidad...</string>
+    <string name="processing_status_verifying">Verificando información del documento...</string>
+    <string name="processing_status_validating">Validando características de seguridad...</string>
+    <string name="processing_status_completing">Completando verificación...</string>
+    <string name="btn_processing">Procesando...</string>
+
+    <!-- FacialVerificationInstructionsActivity Strings -->
+    <string name="facial_verification_title">Verificación de Identidad</string>
+    <string name="facial_verification_subtitle">Detección facial para confirmar tu autenticidad</string>
+    <string name="facial_verification_description">Realizaremos una verificación facial para confirmar que eres una persona real y que coincides con el documento capturado.</string>
+    <string name="instruction_good_lighting_title">Buena Iluminación</string>
+    <string name="instruction_good_lighting_description">Ubícate en un lugar bien iluminado</string>
+    <string name="instruction_look_directly_title">Mira Directamente</string>
+    <string name="instruction_look_directly_description">Mira directamente a la cámara frontal</string>
+    <string name="instruction_no_obstructions_title">Sin Obstrucciones</string>
+    <string name="instruction_no_obstructions_description">No uses lentes, gorra o mascarilla</string>
+    <string name="instruction_follow_instructions_title">Sigue las Instrucciones</string>
+    <string name="instruction_follow_instructions_description">Realiza los movimientos que se soliciten</string>
+    <string name="btn_start_again">Empezar de Nuevo</string>
+    <string name="btn_start_facial_verification">Iniciar Verificación Facial</string>
+
+    <!-- Final Verification Processing Strings -->
+    <string name="processing_verification_title">Procesando Verificación</string>
+    <string name="processing_verification_description">Estamos verificando tu identidad facial y comparándola con tu documento...</string>
+    <string name="processing_status_liveness">Verificando liveness facial...</string>
+    <string name="processing_status_face_comparison">Comparando características faciales...</string>
+    <string name="processing_status_blacklist">Verificando en bases de datos de seguridad...</string>
+    <string name="processing_status_finalizing">Finalizando proceso de verificación...</string>
+    <string name="btn_processing_verification">Procesando...</string>
+
+    <!-- Success Screen Strings -->
+    <string name="success_title">ejemplo QA</string>
+    <string name="success_congratulations">¡Enhorabuena!</string>
+    <string name="success_description">Nos complace informarte que el proceso de onboarding se ha completado con éxito. Hemos validado con precisión tu identidad y los documentos proporcionados, asegurando así una experiencia confiable.</string>
+    <string name="verification_document_verified">Documento Verificado</string>
+    <string name="verification_identity_confirmed">Identidad Confirmada</string>
+    <string name="verification_process_completed">Proceso Completado</string>
+    <string name="status_completed">Completado</string>
+    <string name="btn_finish">Finalizar</string>
+
+    <!-- Document Capture Instructions Strings -->
+    <string name="document_capture_title">Captura de Documento</string>
+    <string name="document_capture_subtitle">Fotografía tu documento de identidad oficial</string>
+    <string name="document_capture_description">Para una captura exitosa, sigue estas recomendaciones para obtener la mejor calidad de imagen.</string>
+    <string name="doc_instruction_lighting_title">Buena Iluminación</string>
+    <string name="doc_instruction_lighting_description">Ubícate en un lugar bien iluminado, evita sombras</string>
+    <string name="doc_instruction_stability_title">Mantén Estabilidad</string>
+    <string name="doc_instruction_stability_description">Sostén firmemente el dispositivo para evitar movimiento</string>
+    <string name="doc_instruction_complete_title">Documento Completo</string>
+    <string name="doc_instruction_complete_description">Asegúrate que todo el documento esté visible en el marco</string>
+    <string name="doc_instruction_legible_title">Texto Legible</string>
+    <string name="doc_instruction_legible_description">Verifica que toda la información se lea claramente</string>
+    <string name="btn_start_document_capture">Iniciar Captura</string>
 
 
 </resources>

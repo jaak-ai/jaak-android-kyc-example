@@ -20,7 +20,110 @@
     <color name="secondary">#655DC6</color>
     <color name="success">#4CAF50</color>
     <color name="warning">#FF9800</color>
+    <color name="warning_light">#FFF3E0</color>
     <color name="error">#F44336</color>
     <color name="background_light">#F5F5F5</color>
+
+    <!-- ========== JAAK KYC COLOR SYSTEM ========== -->
+    
+    <!-- Brand Colors -->
+    <color name="jaak_logo_blue">#4285F4</color>
+    <color name="jaak_primary">#3579F6</color> <!-- iOS Blue (R:53, G:121, B:246) -->
+    <color name="jaak_primary_dark">#2E6FE6</color> <!-- Darker blue for pressed states -->
+    
+    <!-- Text Colors -->
+    <color name="jaak_text_primary">#000000</color>
+    <color name="jaak_text_secondary">#666666</color>
+    <color name="jaak_text_tertiary">#999999</color>
+    <color name="jaak_text_blue">#4285F4</color>
+    
+    <!-- Background Colors -->
+    <color name="jaak_background">#F5F5F5</color>
+    <color name="jaak_background_light">#FAFAFA</color>
+    <color name="jaak_surface">#FFFFFF</color>
+    
+    <!-- Input Colors -->
+    <color name="jaak_input_background">#FFFFFF</color>
+    <color name="jaak_input_border">#E0E0E0</color>
+    <color name="jaak_input_border_focused">#3579F6</color>
+    
+    <!-- Button Colors -->
+    <color name="jaak_button_enabled">#3579F6</color> <!-- Primary button enabled -->
+    <color name="jaak_button_disabled">#8F8E94</color> <!-- iOS Gray (R:143, G:142, B:148) -->
+    <color name="jaak_button_disabled_text">#FFFFFF</color> <!-- White text for disabled buttons -->
+    <color name="jaak_button_pressed">#2E6FE6</color> <!-- Primary button pressed -->
+    
+    <!-- Secondary Button Colors (Restart) -->
+    <color name="jaak_button_restart_border">#F44336</color>
+    <color name="jaak_button_restart_text">#F44336</color>
+    <color name="jaak_button_restart_pressed">#FFEBEE</color>
+    
+    <!-- Success Button Colors (Start Verification) -->
+    <color name="jaak_button_start_enabled">#4CAF50</color>
+    <color name="jaak_button_start_pressed">#388E3C</color>
+    
+    <!-- Step Colors - Document -->
+    <color name="jaak_step_document_bg">#E3F2FD</color> <!-- Light blue -->
+    <color name="jaak_step_document_icon">#1976D2</color> <!-- Blue -->
+    
+    <!-- Step Colors - Face -->
+    <color name="jaak_step_face_bg">#F3E5F5</color> <!-- Light purple -->
+    <color name="jaak_step_face_icon">#7B1FA2</color> <!-- Purple -->
+    
+    <!-- Step Colors - Security -->
+    <color name="jaak_step_security_bg">#E8F5E8</color> <!-- Light green -->
+    <color name="jaak_step_security_icon">#388E3C</color> <!-- Green -->
+    
+    <!-- Step Colors - Validation -->
+    <color name="jaak_step_validation_bg">#FFF3E0</color> <!-- Light orange -->
+    <color name="jaak_step_validation_icon">#F57C00</color> <!-- Orange -->
+    
+    <!-- Status Colors -->
+    <color name="jaak_success">#4CAF50</color>
+    <color name="jaak_success_light">#E8F5E9</color>
+    <color name="jaak_warning">#FF9800</color>
+    <color name="jaak_error">#F44336</color>
+    <color name="jaak_info">#2196F3</color>
+    
+    <!-- Shadow/Elevation Colors -->
+    <color name="jaak_shadow">#1A000000</color> <!-- 10% black -->
+    <color name="jaak_shadow_light">#0D000000</color> <!-- 5% black -->
+    
+    <!-- Processing Screen Colors -->
+    <color name="jaak_processing_icon_bg">#8BC34A</color> <!-- Light green -->
+    <color name="jaak_button_processing">#9E9E9E</color> <!-- Gray for processing state -->
+    
+    <!-- Permission Colors -->
+    <color name="jaak_permission_granted">#4CAF50</color> <!-- Green -->
+    <color name="jaak_permission_denied">#F44336</color> <!-- Red -->
+    <color name="jaak_permission_container_bg">#FFFFFF</color>
+    <color name="jaak_permission_container_border">#E0E0E0</color>
+    
+    <!-- Security Logo Colors -->
+    <color name="jaak_security_logo_bg">#8BC34A</color> <!-- Light green -->
+    <color name="jaak_security_logo_bg_dark">#689F38</color> <!-- Darker green -->
+    
+    <!-- Permission Icon Colors -->
+    <color name="jaak_camera_icon_bg">#4CAF50</color> <!-- Green -->
+    <color name="jaak_location_icon_bg">#4CAF50</color> <!-- Green -->
+    
+    <!-- Terms Container Colors -->
+    <color name="jaak_terms_container_bg">#F8F9FA</color>
+    <color name="jaak_terms_container_border">#E9ECEF</color>
+
+    <color name="yellow_facial">#F6EEDF</color>
+    <color name="yellow_facial_two">#F7CE4A</color>
+    <color name="green_facial">#ECECE5</color>
+    <color name="green_facial_two">#B5BE60</color>
+    <color name="orange_facial">#F4E8DD</color>
+    <color name="orange_facial_two">#F19B38</color>
+    <color name="green_hand_facial">#E1EEE7</color>
+    <color name="green_hand_facial_two">#66C568</color>
+
+    <!-- Document Instruction Colors -->
+    <color name="yellow_instruction">#F7CE4A</color>
+    <color name="green_instruction">#B5BE60</color>
+    <color name="blue_instruction">#5B9FD8</color>
+    <color name="greenJAAKsdk">#8BC34A</color>
 
 </resources>

@@ -13,25 +13,22 @@ import com.jaak.kyc.R
 import com.jaak.kyc.data.model.ocr.DocumentExtraBothRequest
 import com.jaak.kyc.data.model.verify.VerifyRequest
 import com.jaak.kyc.databinding.ActivityVerifyOcrDocumentBinding
-import com.jaak.kyc.ui.viewmodel.ValidationBase64Model
+import com.jaak.kyc.ui.viewmodel.KycOfflineViewModel
 import com.jaak.kyc.utils.Constants
 import com.jaak.kyc.utils.Utils
-import com.jaak.visagesdk.ui.adapter.VisageListener
-import com.jaak.visagesdk.ui.view.VisageSDK
+import com.jaak.kyc.utils.FileStorageUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class VerifyOcrDocumentActivity : AppCompatActivity(), VisageListener {
+class VerifyOcrDocumentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVerifyOcrDocumentBinding
-    private val validationBase64ViewModel: ValidationBase64Model by viewModels()
-    private lateinit var imageBase64Front : String
-    private lateinit var imageBase64Back : String
+    private val kycOfflineViewModel: KycOfflineViewModel by viewModels()
+    private var frontImagePath: String? = null
+    private var backImagePath: String? = null
     private var uriDocumentFront : Uri? = null
     private var uriDocumentBack : Uri? = null
-
-    private lateinit var visageSDK: VisageSDK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +37,6 @@ class VerifyOcrDocumentActivity : AppCompatActivity(), VisageListener {
         initViewModel()
         initComponents()
         initFacedetector()
-        validationBase64ViewModel.isLoading.value = true
         binding.tvBtnFinish.setOnClickListener{
             finish()
         }
@@ -51,91 +47,140 @@ class VerifyOcrDocumentActivity : AppCompatActivity(), VisageListener {
             override fun handleOnBackPressed() {
             }
         })
-        uriDocumentFront = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(Constants.URI_DOCUMENT_V, Uri::class.java)
-        } else {
-            intent.getParcelableExtra(Constants.URI_DOCUMENT_V) as? Uri
+        
+        // Configure restart button
+        binding.btnRestart.setOnClickListener {
+            // Navigate back to InitProcessLivenessActivity to restart the flow
+            val intent = Intent(this, InitProcessLivenessActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
         }
-        uriDocumentBack = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(Constants.URI_DOCUMENT_2_V, Uri::class.java)
+        
+        // 🔧 COMPATIBILIDAD: Intentar primero String (ruta permanente), luego Uri (temporal)
+        val frontPath = intent.getStringExtra(Constants.URI_DOCUMENT_V)
+        val backPath = intent.getStringExtra(Constants.URI_DOCUMENT_2_V)
+        
+        uriDocumentFront = if (frontPath != null) {
+            // Ya es una ruta permanente, convertir a Uri para compatibilidad
+            Uri.fromFile(java.io.File(frontPath))
         } else {
-            intent.getParcelableExtra(Constants.URI_DOCUMENT_2_V) as? Uri
+            // Fallback: usar el método antiguo con URIs temporales
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra(Constants.URI_DOCUMENT_V, Uri::class.java)
+            } else {
+                intent.getParcelableExtra(Constants.URI_DOCUMENT_V) as? Uri
+            }
+        }
+        
+        uriDocumentBack = if (backPath != null) {
+            // Ya es una ruta permanente, convertir a Uri para compatibilidad
+            Uri.fromFile(java.io.File(backPath))
+        } else {
+            // Fallback: usar el método antiguo con URIs temporales
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra(Constants.URI_DOCUMENT_2_V, Uri::class.java)
+            } else {
+                intent.getParcelableExtra(Constants.URI_DOCUMENT_2_V) as? Uri
+            }
         }
         val typeProcess = intent.extras?.getInt(Constants.TYPE_PROCCESS_BASE64_V, 0)!!
 
-        if(uriDocumentBack == null){
-            imageBase64Back = ""
-        }else{
-            imageBase64Back = Utils.uriToBase64(contentResolver, uriDocumentBack!!)!!
-
-        }
         proccessBase64(typeProcess, uriDocumentFront!!)
     }
 
     private fun proccessBase64(typeProcessBase64 : Int,uri : Uri){
         when (typeProcessBase64) {
             1 -> {
-                imageBase64Front = Utils.uriToBase64(contentResolver, uri)!!
+                // 🔧 NUEVA LÓGICA: Guardar URI como archivo permanente
+                frontImagePath = FileStorageUtils.saveUriToPermanentFile(this, uri, "document_front_${System.currentTimeMillis()}.jpg")
+                if (frontImagePath == null) {
+                    Toast.makeText(this, getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
+                    return
+                }
+                
+                backImagePath = uriDocumentBack?.let { backUri ->
+                    FileStorageUtils.saveUriToPermanentFile(this, backUri, "document_back_${System.currentTimeMillis()}.jpg")
+                }
+                
+                val verifyRequest = VerifyRequest(frontImagePath!!, backImagePath, false)
+                
+                // ✅ USAR NUEVO SISTEMA OFFLINE que guarda estados en BD
+                kycOfflineViewModel.executeVerify(verifyRequest)
             }
             else -> {
                 Toast.makeText(this,getString(R.string.error_base64_empty), Toast.LENGTH_SHORT).show()
             }
         }
-        val verifyRequest = VerifyRequest(imageBase64Front,imageBase64Back,false)
-        validationBase64ViewModel.verify(verifyRequest)
     }
 
     private fun initViewModel(){
-        validationBase64ViewModel.verifyResponse.observe(this){
-            if(it.document.evaluation.isNullOrEmpty()){
-                binding.clError.visibility = View.VISIBLE
-                validationBase64ViewModel.isLoading.value = false
-                binding.tvDescription.text = it.state.message
-            }else{
-                if(it.document.evaluation.equals("SUCCESS")){
-                    binding.clError.visibility = View.GONE
-                    val documentExtraBothRequest = DocumentExtraBothRequest(imageBase64Front,imageBase64Back)
-                    validationBase64ViewModel.ocr(documentExtraBothRequest)
-                }else{
-                    binding.clError.visibility = View.VISIBLE
-                    validationBase64ViewModel.isLoading.value = false
-                }
-            }
-        }
-        validationBase64ViewModel.documentExtraBothResponse.observe(this){
-            if(it.status){
-                visageSDK.startVisage()
-            }else{
-                binding.clError.visibility = View.VISIBLE
-            }
-        }
-        validationBase64ViewModel.errorModel.observe(this){
-            binding.clError.visibility = View.VISIBLE
-            binding.tvDescription.text = it.message
-        }
-        validationBase64ViewModel.isLoading.observe(this) {
-            if(it){
+        // ✅ NUEVO SISTEMA OFFLINE - Observadores
+        kycOfflineViewModel.isLoading.observe(this) { isLoading ->
+            if(isLoading){
                 binding.clProgress.visibility = View.VISIBLE
+                binding.clError.visibility = View.GONE
             }else{
                 binding.clProgress.visibility = View.GONE
             }
         }
+        
+        kycOfflineViewModel.errorModel.observe(this) { error ->
+            error?.let {
+                binding.clError.visibility = View.VISIBLE
+                binding.clProgress.visibility = View.GONE
+                binding.tvDescription.text = it.message
+                kycOfflineViewModel.clearMessages()
+            }
+        }
+        
+        kycOfflineViewModel.successMessage.observe(this) { message ->
+            message?.let { 
+                when {
+                    it.contains("Document verification completed") -> {
+                        // ✅ Verify exitoso → ejecutar OCR
+                        binding.clError.visibility = View.GONE
+                        updateProcessingStatus(getString(R.string.processing_status_validating))
+                        
+                        // 🔧 Repository se encarga de la conversión a base64
+                        if (frontImagePath != null) {
+                            val documentExtraBothRequest = DocumentExtraBothRequest(frontImagePath!!, backImagePath ?: "")
+                            kycOfflineViewModel.executeOcr(documentExtraBothRequest)
+                        } else {
+                            Toast.makeText(this, "Failed to get image paths", Toast.LENGTH_SHORT).show()
+                            binding.clError.visibility = View.VISIBLE
+                            binding.tvDescription.text = "Failed to get image paths for OCR processing"
+                        }
+                    }
+                    it.contains("OCR processing completed") -> {
+                        // ✅ OCR exitoso → navegar a instrucciones de verificación facial
+                        updateProcessingStatus(getString(R.string.processing_status_completing))
+                        // Hide processing screen and navigate to facial instructions
+                        binding.clProgress.visibility = View.GONE
+                        navigateToFacialInstructions()
+                    }
+                }
+                kycOfflineViewModel.clearMessages()
+            }
+        }
+        
+    }
+    
+    private fun updateProcessingStatus(statusMessage: String) {
+        binding.tvProcessStatus.text = statusMessage
+    }
+    
+    private fun navigateToFacialInstructions() {
+        val intent = Intent(this, FacialVerificationInstructionsActivity::class.java)
+        // Pasar la ruta de la imagen frontal para uso posterior
+        intent.putExtra("frontImagePath", frontImagePath)
+        startActivity(intent)
+        finish()
     }
 
     private fun initFacedetector(){
-        visageSDK = VisageSDK(this, this)
-    }
-    override fun onErrorVisage(text: String) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-        binding.clError.visibility = View.VISIBLE
-    }
-
-    override fun onSuccessVisage(typeProcess: Int, uri: Uri?) {
-        val resultIntent = Intent(this, SuccessDocumentActivity::class.java)
-        resultIntent.putExtra(Constants.URI_VIDEO_V, uri)
-        resultIntent.putExtra(Constants.URI_DOCUMENT_D, uriDocumentFront)
-        startActivity(resultIntent)
-        finish()
+        // Ya no necesitamos inicializar VisageSDK aquí
+        // Se hace en FacialVerificationInstructionsActivity
     }
 
 }
