@@ -1,5 +1,5 @@
 # API Configuration
 # Copy this file to local.properties and set your API base URL
-# Example: api.base.url=REPLACE_WITH_LOCAL_PROPERTIES
+# Example: api.base.url=https://api.qa.jaak.ai/
 
 api.base.url=

@@ -11,7 +11,7 @@ This project uses `local.properties` to configure the API base URL. This file is
 
 2. Edit `local.properties` and set your API base URL:
    ```properties
-   api.base.url=REPLACE_WITH_LOCAL_PROPERTIES
+   api.base.url=https://api.qa.jaak.ai/
    ```
 
 3. The URL will be automatically loaded into `BuildConfig.API_BASE_URL` during build time.
