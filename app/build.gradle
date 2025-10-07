@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.appdistribution'
 }
 
 android {
@@ -13,9 +15,20 @@ android {
         applicationId "com.jaak.kyc"
         minSdkVersion 24
         targetSdk 33
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 110
+        versionName "1.1.0-beta.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Read API base URL from local.properties
+        Properties properties = new Properties()
+        def localPropertiesFile = rootProject.file('local.properties')
+        if (localPropertiesFile.exists()) {
+            properties.load(new FileInputStream(localPropertiesFile))
+        }
+
+        // Set default URL if not specified
+        def apiBaseUrl = properties.getProperty('api.base.url', '')
+        buildConfigField "String", "API_BASE_URL", "\"${apiBaseUrl}\""
     }
 
     compileOptions {
@@ -29,6 +42,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
     namespace 'com.jaak.kyc'
 
@@ -52,6 +66,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    
+// Guava para ListenableFuture
+    implementation("com.google.guava:guava:32.1.3-android")
 
 // Inyección de Dependencias
     implementation("com.google.dagger:hilt-android:$hilt_version")
@@ -93,13 +110,24 @@ dependencies {
 
     // Bibliotecas de Google ML Kit y CameraX
     implementation 'com.google.android.gms:play-services-mlkit-face-detection:17.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'androidx.camera:camera-camera2:1.4.1'
     implementation 'androidx.camera:camera-lifecycle:1.4.1'
     implementation 'androidx.camera:camera-core:1.4.1'
     implementation 'androidx.camera:camera-view:1.4.1'
     implementation 'androidx.camera:camera-video:1.4.1'
 
-    implementation("com.jaak.stampssdk:jaakstamps-sdk:1.0.0-beta")
-    implementation("com.jaak.visagesdk:jaakvisage-sdk:1.0.0-beta")
+    // LightCompressor - requerido por Jaak Visage SDK para compresión de video
+    implementation 'com.github.AbedElazizShe:LightCompressor:1.3.2'
 
+    implementation("com.jaak.stampssdk:jaakstamps-sdk:1.1.0-beta.2")
+    implementation("com.jaak.visagesdk:jaakvisage-sdk:1.1.0-beta.9")
+
+}
+
+// Configuración de Firebase App Distribution
+firebaseAppDistribution {
+    artifactType = "APK"
+    groups = "TestersJaak"
+    releaseNotes = "KYC Demo App v1.0.0-beta.3 - Servicio 5 offline con estado PENDING para sync correcto"
 }

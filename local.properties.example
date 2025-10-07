@@ -1,0 +1,5 @@
+# API Configuration
+# Copy this file to local.properties and set your API base URL
+# Example: api.base.url=REPLACE_WITH_LOCAL_PROPERTIES
+
+api.base.url=
