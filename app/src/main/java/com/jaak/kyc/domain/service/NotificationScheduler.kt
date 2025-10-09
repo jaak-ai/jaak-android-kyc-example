@@ -11,7 +11,9 @@ import com.jaak.kyc.notification.DailySummaryReceiver
 import com.jaak.kyc.notification.ConnectivityReminderReceiver
 import com.jaak.kyc.notification.ErrorReminderReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -138,11 +140,12 @@ class NotificationScheduler @Inject constructor(
 
     suspend fun checkAndNotifyWorkStatus() {
         try {
-            val workInfos = workManager.getWorkInfosByTag("sync_service").get()
-            
+            // Usar Flow en lugar de ListenableFuture
+            val workInfos = workManager.getWorkInfosByTagFlow("sync_service").first()
+
             val runningWork = workInfos.filter { it.state == WorkInfo.State.RUNNING }
             val failedWork = workInfos.filter { it.state == WorkInfo.State.FAILED }
-            
+
             if (failedWork.isNotEmpty()) {
                 val errors = failedWork.map { workInfo ->
                     NotificationService.SyncError(
@@ -152,7 +155,7 @@ class NotificationScheduler @Inject constructor(
                         errorMessage = workInfo.outputData.getString("error") ?: "Sync failed"
                     )
                 }
-                
+
                 notificationService.showErrorBatchNotification(errors)
             }
         } catch (e: Exception) {

@@ -5,7 +5,10 @@
     package="com.jaak.kyc"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission
         android:name="com.jaak.jaakrostrosandroid.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         tools:node="remove" />
@@ -23,10 +26,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"
-        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -46,7 +45,7 @@
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
-            
+
         <!-- Deshabilitar inicialización automática de WorkManager -->
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -73,7 +72,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <activity android:name="com.jaak.kyc.ui.view.HomeActivity"
+        <activity android:name="com.jaak.kyc.ui.view.MenuMainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -81,7 +80,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.jaak.kyc.ui.view.MenuMainActivity"
+        <activity android:name="com.jaak.kyc.ui.view.SecurityPermissionsActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity android:name="com.jaak.kyc.ui.view.InitProcessLivenessActivity"
@@ -90,7 +89,16 @@
         <activity android:name="com.jaak.kyc.ui.view.VerifyOcrDocumentActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.ErrorProcessActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.FacialVerificationInstructionsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.jaak.kyc.ui.view.SuccessDocumentActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.FinalSuccessActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity android:name="com.jaak.kyc.ui.view.KycProcessesActivity"
@@ -99,23 +107,26 @@
         <activity android:name="com.jaak.kyc.ui.view.KycSyncActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
-            
+        <activity android:name="com.jaak.kyc.ui.view.DocumentVerificationInstructionsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <!-- Notification Action Receivers -->
         <receiver android:name="com.jaak.kyc.notification.NotificationActionReceiver"
             android:enabled="true"
             android:exported="false" />
-            
+
         <receiver android:name="com.jaak.kyc.notification.DailySummaryReceiver"
             android:enabled="true"
             android:exported="false" />
-            
+
         <receiver android:name="com.jaak.kyc.notification.ConnectivityReminderReceiver"
             android:enabled="true"
             android:exported="false" />
-            
+
         <receiver android:name="com.jaak.kyc.notification.ErrorReminderReceiver"
             android:enabled="true"
             android:exported="false" />
-            
+
+
     </application>
 </manifest>

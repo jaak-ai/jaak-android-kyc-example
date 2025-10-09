@@ -5,98 +5,117 @@
     android:id="@+id/viewContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/jaak_background"
+    android:padding="24dp"
     tools:context="com.jaak.kyc.ui.view.MenuMainActivity">
 
-    <ImageView
-        android:id="@+id/ivJaak"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/jaak_logo_purple"
-        app:layout_constraintBottom_toTopOf="@+id/gl1"
+    <!-- Logo con fondo azul y icono de llave -->
+    <FrameLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_logo_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTitle"
+        app:layout_constraintVertical_chainStyle="packed">
 
+        <ImageView
+            android:id="@+id/ivJaak"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_key_white" />
 
-    <androidx.constraintlayout.widget.Guideline
+    </FrameLayout>
+
+    <!-- Título JAAK KYC -->
+    <TextView
+        android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/gl1"
-        app:layout_constraintGuide_percent=".15"
-        android:orientation="horizontal"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/TextViewCenterTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="32sp"
         android:text="@string/onboarding_digital"
-        app:layout_constraintBottom_toTopOf="@+id/gl3"
+        android:textColor="@color/jaak_text_primary"
+        android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivJaak" />
+        app:layout_constraintTop_toBottomOf="@+id/logoContainer"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle" />
 
-    <androidx.constraintlayout.widget.Guideline
+    <!-- Subtítulo Verificación de Identidad -->
+    <TextView
+        android:id="@+id/textViewSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/gl3"
-        app:layout_constraintGuide_percent=".30"
-        android:orientation="horizontal"/>
-
-    <TextView
-        android:id="@+id/textView3"
-        style="@style/TextViewCenter"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/descrip_init"
+        android:textColor="@color/jaak_text_secondary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gl3" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        app:layout_constraintBottom_toTopOf="@+id/labelCodigoAcceso" />
 
+    <!-- Label CÓDIGO DE ACCESO -->
+    <TextView
+        android:id="@+id/labelCodigoAcceso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="@string/codigo_acceso_label"
+        android:textColor="@color/jaak_text_blue"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/etShort"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubtitle" />
+
+    <!-- Campo de entrada del código -->
     <EditText
         android:id="@+id/etShort"
-        style="@style/EditText"
-        android:textSize="20sp"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_input_field"
         android:gravity="center"
-        android:maxLength="10"
-        android:hint="@string/xxxxx"
+        android:hint=""
+        android:inputType="textNoSuggestions"
+        android:maxLength="7"
+        android:textColor="@color/jaak_text_primary"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/labelCodigoAcceso"
+        app:layout_constraintBottom_toTopOf="@+id/tvBtnStart" />
 
-    <TextView
+    <!-- Botón Continuar con flecha -->
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/tvBtnStart"
-        style="@style/TextViewButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_button_continue"
+        android:backgroundTint="@null"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:drawablePadding="16dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:stateListAnimator="@null"
         android:text="@string/btn_enter"
+        android:textColor="@color/button_text_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etShort" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/glv1"
-        app:layout_constraintGuide_percent=".50"
-        android:orientation="vertical"/>
-
+    <!-- Overlay de progreso (loading) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clProgress"
         android:layout_width="0dp"

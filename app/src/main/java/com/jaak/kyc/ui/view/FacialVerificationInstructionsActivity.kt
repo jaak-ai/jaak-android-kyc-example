@@ -82,6 +82,7 @@ class FacialVerificationInstructionsActivity : AppCompatActivity(), VisageListen
             Uri.fromFile(File(normalizedPath))
         } else Uri.parse(normalizedPath)
 
+        // El SDK ya comprimió el video, solo guardarlo en almacenamiento permanente
         val savedPath = FileStorageUtils.saveUriToPermanentFile(
             context = this,
             temporalUri = normalizedUri,
@@ -97,8 +98,7 @@ class FacialVerificationInstructionsActivity : AppCompatActivity(), VisageListen
 
         // Continuar al SuccessDocumentActivity con los datos
         val resultIntent = Intent(this, SuccessDocumentActivity::class.java)
-        resultIntent.putExtra(Constants.URI_VIDEO_V, savedPath
-        ) // String path
+        resultIntent.putExtra(Constants.URI_VIDEO_V, savedPath) // String path
 
         // Si hay datos del documento desde el intent anterior, pasarlos también
         val frontImagePath = intent.getStringExtra("frontImagePath")

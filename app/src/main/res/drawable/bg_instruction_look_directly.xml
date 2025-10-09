@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/green_facial" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <!-- Icon: Face/Smile -->
+    <item
+        android:width="28dp"
+        android:height="28dp"
+        android:gravity="center">
+        <vector
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:fillColor="@color/green_facial_two"
+                android:pathData="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2ZM9,11.5C9,10.67 8.33,10 7.5,10C6.67,10 6,10.67 6,11.5C6,12.33 6.67,13 7.5,13C8.33,13 9,12.33 9,11.5ZM16.5,13C17.33,13 18,12.33 18,11.5C18,10.67 17.33,10 16.5,10C15.67,10 15,10.67 15,11.5C15,12.33 15.67,13 16.5,13ZM12,17.5C9.67,17.5 7.69,16.04 6.89,14H17.11C16.31,16.04 14.33,17.5 12,17.5Z" />
+        </vector>
+    </item>
+</layer-list>

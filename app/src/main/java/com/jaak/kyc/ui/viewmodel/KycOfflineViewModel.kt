@@ -31,7 +31,6 @@ class KycOfflineViewModel @Inject constructor(
     private val ocrUseCase: OcrOfflineUseCase,
     private val livenessUseCase: LivenessOfflineUseCase,
     private val otoVerifyUseCase: OtoVerifyOfflineUseCase,
-    private val blacklistUseCase: BlacklistOfflineUseCase,
     private val finishUseCase: FinishOfflineUseCase,
     private val processManagementUseCase: KycProcessManagementUseCase,
     private val syncUseCase: KycSyncUseCase
@@ -250,23 +249,23 @@ class KycOfflineViewModel @Inject constructor(
         }
     }
     
-    fun executeOcr(ocrRequest: DocumentExtraBothRequest) {
+    fun executeOcr(ocrRequest: com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Request) {
         viewModelScope.launch {
             // 🔧 NUEVA LÓGICA: Siempre buscar processId desde BD
             val processId = getActiveProcessFromBD()
-            
+
             if (processId == null) {
                 android.util.Log.e("KycOfflineViewModel", "No active process found in BD for OCR")
                 errorModel.value = ErrorModel("No active KYC process found. Please start KYC process first.", false, 400)
                 return@launch
             }
-            
+
             executeOcrWithProcess(processId, ocrRequest)
         }
     }
     
-    private fun executeOcrWithProcess(processId: String, ocrRequest: DocumentExtraBothRequest) {
-        
+    private fun executeOcrWithProcess(processId: String, ocrRequest: com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Request) {
+
         viewModelScope.launch {
             isLoading.postValue(true)
             try {
@@ -378,6 +377,8 @@ class KycOfflineViewModel @Inject constructor(
         }
     }
 
+    // BLACKLIST FUNCTIONALITY REMOVED - No longer needed
+    /*
     fun executeBlacklist() {
         viewModelScope.launch {
             // 🔧 NUEVA LÓGICA: Siempre buscar processId desde BD
@@ -459,6 +460,7 @@ class KycOfflineViewModel @Inject constructor(
             }
         }
     }
+    */
 
     fun executeFinish() {
         viewModelScope.launch {

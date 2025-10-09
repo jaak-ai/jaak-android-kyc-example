@@ -65,9 +65,10 @@ class SuccessDocumentActivity : AppCompatActivity() {
     }
 
     private fun proccessBase64(videoFilePath : String){
-        // 🔧 Repository se encarga de la conversión a base64
+        // 🔧 Pasar el PATH del video (no base64)
+        // El repository se encargará de convertir a base64 solo para envío HTTP
         val livenessVerifyRequest = LivenessVerifyRequest(videoFilePath)
-        
+
         // ✅ USAR NUEVO SISTEMA OFFLINE que guarda estados en BD
         kycOfflineViewModel.executeLiveness(livenessVerifyRequest)
     }
@@ -86,9 +87,30 @@ class SuccessDocumentActivity : AppCompatActivity() {
 
         kycOfflineViewModel.errorModel.observe(this) { error ->
             error?.let {
-                // En caso de error, mostrar Toast y regresar al menú
-                Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_LONG).show()
-                val intent = Intent(this, MenuMainActivity::class.java)
+                // Determinar el tipo de error para mostrar mensaje específico
+                val errorType = when {
+                    it.message?.contains("Liveness", ignoreCase = true) == true -> {
+                        if (it.message?.contains("score", ignoreCase = true) == true) {
+                            ErrorProcessActivity.ERROR_TYPE_LIVENESS_SCORE_LOW
+                        } else {
+                            ErrorProcessActivity.ERROR_TYPE_LIVENESS_FAILED
+                        }
+                    }
+                    it.message?.contains("Face comparison", ignoreCase = true) == true ||
+                    it.message?.contains("OtoVerify", ignoreCase = true) == true -> {
+                        if (it.message?.contains("score", ignoreCase = true) == true) {
+                            ErrorProcessActivity.ERROR_TYPE_FACE_COMPARISON_SCORE_LOW
+                        } else {
+                            ErrorProcessActivity.ERROR_TYPE_FACE_COMPARISON_FAILED
+                        }
+                    }
+                    else -> ErrorProcessActivity.ERROR_TYPE_GENERIC
+                }
+
+                // Navegar a ErrorProcessActivity con detalles del error
+                val intent = Intent(this, ErrorProcessActivity::class.java)
+                intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_TYPE, errorType)
+                intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_MESSAGE, it.message)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
@@ -108,11 +130,13 @@ class SuccessDocumentActivity : AppCompatActivity() {
                         getBestFrameAndContinue()
                     }
                     it.contains("Face comparison completed") -> {
-                        android.util.Log.d("SuccessDocumentActivity", "✅ OtoVerify completed - calling executeBlacklist()")
-                        // ✅ OtoVerify exitoso → actualizar estado y ejecutar Blacklist
-                        updateProcessingStatus(getString(R.string.processing_status_blacklist))
-                        kycOfflineViewModel.executeBlacklist()
+                        android.util.Log.d("SuccessDocumentActivity", "✅ OtoVerify completed - calling executeFinish()")
+                        // ✅ OtoVerify exitoso → ejecutar Finish directamente (blacklist removed)
+                        updateProcessingStatus(getString(R.string.processing_status_completing))
+                        kycOfflineViewModel.executeFinish()
                     }
+                    // Blacklist section removed - no longer needed
+                    /*
                     it.contains("Blacklist services launched") -> {
                         android.util.Log.d("SuccessDocumentActivity", "✅ Blacklist launched - navigating to FinalSuccessActivity")
                         // ✅ Servicios de blacklist lanzados → navegar directo al éxito (sin finish)
@@ -120,6 +144,7 @@ class SuccessDocumentActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
+                    */
                     it.contains("Face comparison pending") -> {
                         android.util.Log.d("SuccessDocumentActivity", "📱 OtoVerify pending (offline) - navigating to FinalSuccessActivity")
                         // 📱 OtoVerify offline sin bestFrame → navegar al éxito con mensaje offline
@@ -134,11 +159,22 @@ class SuccessDocumentActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
-                    it.contains("Liveness score too low") || it.contains("OtoVerify score too low") -> {
-                        android.util.Log.e("SuccessDocumentActivity", "❌ Score too low - returning to menu")
-                        // ❌ Score insuficiente → mostrar error y regresar
-                        Toast.makeText(this, getString(R.string.error_human), Toast.LENGTH_LONG).show()
-                        val intent = Intent(this, MenuMainActivity::class.java)
+                    it.contains("Liveness score too low") -> {
+                        android.util.Log.e("SuccessDocumentActivity", "❌ Liveness score too low - showing error screen")
+                        // ❌ Score de Liveness insuficiente → mostrar pantalla de error
+                        val intent = Intent(this, ErrorProcessActivity::class.java)
+                        intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_TYPE, ErrorProcessActivity.ERROR_TYPE_LIVENESS_SCORE_LOW)
+                        intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_MESSAGE, getString(R.string.error_liveness_score_low))
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                    it.contains("OtoVerify score too low") -> {
+                        android.util.Log.e("SuccessDocumentActivity", "❌ OtoVerify score too low - showing error screen")
+                        // ❌ Score de OtoVerify insuficiente → mostrar pantalla de error
+                        val intent = Intent(this, ErrorProcessActivity::class.java)
+                        intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_TYPE, ErrorProcessActivity.ERROR_TYPE_FACE_COMPARISON_SCORE_LOW)
+                        intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_MESSAGE, getString(R.string.error_face_comparison_score_low))
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                         finish()
@@ -157,35 +193,55 @@ class SuccessDocumentActivity : AppCompatActivity() {
         binding.tvProcessStatus.text = statusMessage
     }
 
-    private fun sendOneToOne(imageDocumentPath: String, videoData: String) {
-        // 🔧 Repository se encarga de las conversiones necesarias
-        val otoVerifyRequest = OtoVerifyRequest(imageDocumentPath, videoData)
-        
+    private fun sendOneToOne(facePath: String, bestFramePath: String) {
+        // 🔧 Pasar los PATHS directamente (no base64)
+        // El repository se encargará de convertir a base64 solo para envío HTTP
+        val otoVerifyRequest = OtoVerifyRequest(facePath, bestFramePath)
+
         // ✅ USAR NUEVO SISTEMA OFFLINE que guarda estados en BD
         kycOfflineViewModel.executeOtoVerify(otoVerifyRequest)
     }
     
     private fun getBestFrameAndContinue() {
-        // ⚠️ IMPORTANTE: No usar currentProcessDetails.value porque puede estar desactualizado
-        // El StateFlow se actualiza DESPUÉS de que el repository guarda en BD
-        // Por eso llamamos directamente al ViewModel para forzar recarga desde BD
+        // ⚠️ IMPORTANTE: Necesitamos obtener facePath del documento desde BD
+        // y bestFrame de liveness desde BD para enviar ambos a OtoVerify
 
-        if (imagePath != null) {
-            android.util.Log.d("SuccessDocumentActivity", "📱 Executing OtoVerify - bestFrame will be obtained from DB by repository")
-            android.util.Log.d("SuccessDocumentActivity", "imagePath: '$imagePath'")
+        lifecycleScope.launch {
+            try {
+                // Obtener currentProcess para tener el processId
+                val currentProcess = kycOfflineViewModel.currentProcessDetails.value
 
-            // ✅ Enviar con bestFrame vacío - el repository se encargará de obtenerlo desde BD
-            // Si liveness está en BD con bestFrame, OtoVerify será online (SYNCED)
-            // Si no hay bestFrame en BD, OtoVerify será offline (PENDING)
-            sendOneToOne(imagePath!!, "")
-        } else {
-            android.util.Log.e("SuccessDocumentActivity", "❌ imagePath is null - cannot execute OtoVerify")
-            // Mostrar error y regresar
-            Toast.makeText(this@SuccessDocumentActivity, "Error: No se pudo obtener la imagen del documento", Toast.LENGTH_LONG).show()
-            val intent = Intent(this@SuccessDocumentActivity, MenuMainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+                if (currentProcess == null) {
+                    android.util.Log.e("SuccessDocumentActivity", "❌ currentProcess is null")
+                    Toast.makeText(this@SuccessDocumentActivity, "Error: No se pudo obtener el proceso actual", Toast.LENGTH_LONG).show()
+                    return@launch
+                }
+
+                // Obtener facePath del documento desde BD
+                val facePath = currentProcess.ocr?.facePath
+
+                if (facePath.isNullOrEmpty()) {
+                    android.util.Log.e("SuccessDocumentActivity", "❌ facePath from document is null/empty")
+                    Toast.makeText(this@SuccessDocumentActivity, "Error: No se pudo obtener la imagen facial del documento", Toast.LENGTH_LONG).show()
+                    return@launch
+                }
+
+                // Obtener bestFrame de liveness desde BD
+                val bestFramePath = currentProcess.liveness?.bestFrame
+
+                android.util.Log.d("SuccessDocumentActivity", "📱 Executing OtoVerify:")
+                android.util.Log.d("SuccessDocumentActivity", "  - facePath (from document): '$facePath'")
+                android.util.Log.d("SuccessDocumentActivity", "  - bestFramePath (from liveness): '${bestFramePath ?: "null"}'")
+
+                // ✅ Enviar ambas imágenes
+                // Si bestFramePath es null, OtoVerify será offline (PENDING)
+                // Si bestFramePath tiene valor, OtoVerify será online (SYNCED)
+                sendOneToOne(facePath, bestFramePath ?: "")
+
+            } catch (e: Exception) {
+                android.util.Log.e("SuccessDocumentActivity", "❌ Error in getBestFrameAndContinue: ${e.message}")
+                Toast.makeText(this@SuccessDocumentActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

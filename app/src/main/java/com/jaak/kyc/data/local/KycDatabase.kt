@@ -21,7 +21,7 @@ import com.jaak.kyc.data.local.entity.*
         ProcessTokenEntity::class,
         ProcessErrorEntity::class
     ],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

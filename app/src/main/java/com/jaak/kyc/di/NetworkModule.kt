@@ -2,6 +2,7 @@ package com.jaak.kyc.di
 
 import android.app.Application
 import android.content.Context
+import com.jaak.kyc.BuildConfig
 import com.jaak.kyc.data.network.JaakDBApiClient
 import com.jaak.kyc.domain.service.NetworkConnectivityService
 import dagger.Module
@@ -21,7 +22,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit():Retrofit{
         return Retrofit.Builder()
-            .baseUrl("REPLACE_WITH_LOCAL_PROPERTIES")
+            .baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

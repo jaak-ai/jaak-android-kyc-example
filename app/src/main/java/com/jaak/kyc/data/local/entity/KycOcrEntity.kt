@@ -35,6 +35,7 @@ data class KycOcrEntity(
     val documentMetadata: String? = null,
     val processingTime: String? = null,
     val responseState: String? = null, // JSON string of DocumentStateExtraBoth
+    val facePath: String? = null, // Path to saved face image file (from v4 API)
     
     // Status tracking
     val serviceStatus: ServiceStatus = ServiceStatus.PENDING,

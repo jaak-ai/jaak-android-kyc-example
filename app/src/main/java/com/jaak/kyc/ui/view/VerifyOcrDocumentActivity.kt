@@ -10,7 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.jaak.kyc.R
-import com.jaak.kyc.data.model.ocr.DocumentExtraBothRequest
+import com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Request
 import com.jaak.kyc.data.model.verify.VerifyRequest
 import com.jaak.kyc.databinding.ActivityVerifyOcrDocumentBinding
 import com.jaak.kyc.ui.viewmodel.KycOfflineViewModel
@@ -98,15 +98,21 @@ class VerifyOcrDocumentActivity : AppCompatActivity() {
                     Toast.makeText(this, getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
                     return
                 }
-                
+
                 backImagePath = uriDocumentBack?.let { backUri ->
                     FileStorageUtils.saveUriToPermanentFile(this, backUri, "document_back_${System.currentTimeMillis()}.jpg")
                 }
-                
-                val verifyRequest = VerifyRequest(frontImagePath!!, backImagePath, false)
-                
+
+                // 🔧 Pasar paths al ViewModel, el repository manejará la conversión a base64
+                // ✅ CAMBIO: Primero ejecutar Document Extract, luego Verify
+                val documentExtractV4Request = DocumentExtractV4Request(
+                    imageFront = frontImagePath!!,
+                    imageBack = backImagePath ?: "",
+                    allowedCountries = listOf("MEX", "COL")
+                )
+
                 // ✅ USAR NUEVO SISTEMA OFFLINE que guarda estados en BD
-                kycOfflineViewModel.executeVerify(verifyRequest)
+                kycOfflineViewModel.executeOcr(documentExtractV4Request)
             }
             else -> {
                 Toast.makeText(this,getString(R.string.error_base64_empty), Toast.LENGTH_SHORT).show()
@@ -127,33 +133,51 @@ class VerifyOcrDocumentActivity : AppCompatActivity() {
         
         kycOfflineViewModel.errorModel.observe(this) { error ->
             error?.let {
-                binding.clError.visibility = View.VISIBLE
-                binding.clProgress.visibility = View.GONE
-                binding.tvDescription.text = it.message
+                // Determinar el tipo de error para mostrar mensaje específico
+                val errorType = when {
+                    it.message?.contains("Verify", ignoreCase = true) == true -> {
+                        ErrorProcessActivity.ERROR_TYPE_VERIFY_FAILED
+                    }
+                    it.message?.contains("OCR", ignoreCase = true) == true -> {
+                        ErrorProcessActivity.ERROR_TYPE_OCR_FAILED
+                    }
+                    it.message?.contains("document", ignoreCase = true) == true -> {
+                        ErrorProcessActivity.ERROR_TYPE_DOCUMENT_INVALID
+                    }
+                    else -> ErrorProcessActivity.ERROR_TYPE_GENERIC
+                }
+
+                // Navegar a ErrorProcessActivity con detalles del error
+                val intent = Intent(this, ErrorProcessActivity::class.java)
+                intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_TYPE, errorType)
+                intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_MESSAGE, it.message)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finish()
                 kycOfflineViewModel.clearMessages()
             }
         }
         
         kycOfflineViewModel.successMessage.observe(this) { message ->
-            message?.let { 
+            message?.let {
                 when {
-                    it.contains("Document verification completed") -> {
-                        // ✅ Verify exitoso → ejecutar OCR
+                    it.contains("OCR processing completed") -> {
+                        // ✅ CAMBIO: OCR exitoso → ejecutar Verify
                         binding.clError.visibility = View.GONE
-                        updateProcessingStatus(getString(R.string.processing_status_validating))
-                        
-                        // 🔧 Repository se encarga de la conversión a base64
+                        updateProcessingStatus(getString(R.string.processing_status_verifying))
+
+                        // 🔧 Pasar paths al ViewModel, el repository manejará la conversión a base64
                         if (frontImagePath != null) {
-                            val documentExtraBothRequest = DocumentExtraBothRequest(frontImagePath!!, backImagePath ?: "")
-                            kycOfflineViewModel.executeOcr(documentExtraBothRequest)
+                            val verifyRequest = VerifyRequest(frontImagePath!!, backImagePath, false)
+                            kycOfflineViewModel.executeVerify(verifyRequest)
                         } else {
                             Toast.makeText(this, "Failed to get image paths", Toast.LENGTH_SHORT).show()
                             binding.clError.visibility = View.VISIBLE
-                            binding.tvDescription.text = "Failed to get image paths for OCR processing"
+                            binding.tvDescription.text = "Failed to get image paths for Verify processing"
                         }
                     }
-                    it.contains("OCR processing completed") -> {
-                        // ✅ OCR exitoso → navegar a instrucciones de verificación facial
+                    it.contains("Document verification completed") -> {
+                        // ✅ CAMBIO: Verify exitoso → navegar a instrucciones de verificación facial
                         updateProcessingStatus(getString(R.string.processing_status_completing))
                         // Hide processing screen and navigate to facial instructions
                         binding.clProgress.visibility = View.GONE

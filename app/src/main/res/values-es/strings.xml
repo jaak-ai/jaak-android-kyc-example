@@ -14,6 +14,7 @@
     <string name="result">Resultados</string>
     <string name="sorry_error">¡Lo sentimos!</string>
     <string name="validate">Validando…</string>
+    <string name="processing">Procesando…</string>
     <string name="error_human">El video enviado valida que no eres un humano, vuelve a intentarlo…</string>
     <string name="title_main_menu">Menu Principal</string>
     <string name="error_base64_empty">Viene vacio el base64</string>
@@ -148,5 +149,19 @@
     <string name="doc_instruction_legible_description">Verifica que toda la información se lea claramente</string>
     <string name="btn_start_document_capture">Iniciar Captura</string>
 
+    <!-- Error Process Activity Strings -->
+    <string name="error_process_title">Proceso Fallido</string>
+    <string name="error_process_description">Lo sentimos, pero el proceso de verificación no pudo completarse. Por favor, inténtalo nuevamente.</string>
+    <string name="error_details_default">Ocurrió un error durante el proceso de verificación. Esto puede deberse a problemas de conectividad o validación de datos.</string>
+    <string name="error_liveness_failed">La verificación de vida facial falló. Por favor, asegúrate de estar en un ambiente bien iluminado y sigue las instrucciones cuidadosamente.</string>
+    <string name="error_liveness_score_low">El puntaje de verificación de vida es demasiado bajo. Por favor, intenta nuevamente asegurándote que tu rostro esté claramente visible y centrado.</string>
+    <string name="error_face_comparison_failed">La comparación facial con el documento falló. Por favor, asegúrate que la foto de tu documento sea clara y coincida con tu rostro.</string>
+    <string name="error_face_comparison_score_low">El puntaje de comparación facial es demasiado bajo. Por favor, asegúrate que tu rostro y documento estén claramente visibles.</string>
+    <string name="error_verify_failed">La verificación del documento falló. Por favor, asegúrate que tu documento esté claro, completo y correctamente alineado.</string>
+    <string name="error_ocr_failed">La extracción de datos del documento falló. Por favor, asegúrate que el texto en tu documento sea legible y toda la información esté visible.</string>
+    <string name="error_document_invalid">El documento no pudo ser validado. Por favor, asegúrate de usar un documento de identificación oficial válido.</string>
+    <string name="btn_retry_process">Reintentar Verificación</string>
+    <string name="btn_back_to_menu">Volver al Menú</string>
+    <string name="cd_error_icon">Ícono de error</string>
 
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado deshabilitado -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/jaak_button_disabled" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    
+    <!-- Estado habilitado -->
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/jaak_button_start_enabled" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+</selector>

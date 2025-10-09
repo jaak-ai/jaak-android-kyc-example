@@ -14,6 +14,7 @@
     <string name="result">Results</string>
     <string name="sorry_error">We are sorry!</string>
     <string name="validate">Validate…</string>
+    <string name="processing">Processing…</string>
     <string name="error_human">The submitted video indicates you are not human, please try again…</string>
     <string name="title_main_menu">Main Menu</string>
     <string name="error_base64_empty">The base64 string is empty</string>
@@ -148,5 +149,19 @@
     <string name="doc_instruction_legible_description">Verify that all information is clearly readable</string>
     <string name="btn_start_document_capture">Start Capture</string>
 
+    <!-- Error Process Activity Strings -->
+    <string name="error_process_title">Process Failed</string>
+    <string name="error_process_description">We apologize, but the verification process could not be completed. Please try again.</string>
+    <string name="error_details_default">An error occurred during the verification process. This may be due to connectivity issues or data validation problems.</string>
+    <string name="error_liveness_failed">Facial liveness verification failed. Please ensure you are in a well-lit environment and follow the instructions carefully.</string>
+    <string name="error_liveness_score_low">The facial liveness score is too low. Please try again ensuring your face is clearly visible and centered.</string>
+    <string name="error_face_comparison_failed">Face comparison with document failed. Please ensure your document photo is clear and matches your face.</string>
+    <string name="error_face_comparison_score_low">The face comparison score is too low. Please ensure your face and document are clearly visible.</string>
+    <string name="error_verify_failed">Document verification failed. Please ensure your document is clear, complete, and properly aligned.</string>
+    <string name="error_ocr_failed">Document data extraction failed. Please ensure the text on your document is legible and all information is visible.</string>
+    <string name="error_document_invalid">The document could not be validated. Please ensure you are using a valid official identification document.</string>
+    <string name="btn_retry_process">Retry Verification</string>
+    <string name="btn_back_to_menu">Back to Menu</string>
+    <string name="cd_error_icon">Error icon</string>
 
 </resources>

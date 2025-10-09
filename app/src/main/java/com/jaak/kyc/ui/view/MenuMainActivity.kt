@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -44,49 +46,31 @@ class MenuMainActivity : AppCompatActivity() {
     }
 
     private fun initComponents(){
+        // Inicializar botón como deshabilitado
+        binding.tvBtnStart.isEnabled = false
+
         binding.tvBtnStart.setOnClickListener{
             startKycProcess()
         }
-        val requestCameraPermission =
-            registerForActivityResult(ActivityResultContracts.RequestPermission(), ActivityResultCallback { isGranted ->
-                if (isGranted) {
-                    Log.e("CameraPermission", "Permiso de cámara concedido")
-                } else {
-                    Log.e("CameraPermission", "Permiso de cámara denegado")
-                }
-            })
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                Log.e("CameraPermission", "Permiso de cámara ya concedido")
-            } else {
-                requestCameraPermission.launch(android.Manifest.permission.CAMERA)
+
+        // Validación de código de acceso - exactamente 7 caracteres
+        binding.etShort.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                // Habilitar botón solo cuando tenga exactamente 7 caracteres
+                binding.tvBtnStart.isEnabled = text.length == 7
             }
-        }
+        })
+
+        // Los permisos ahora se manejan en SecurityPermissionsActivity
     }
 
     private fun initViewModel(){
-        // Observadores del modelo original (para compatibilidad online)
-        sessionModel.sessionResponse.observe(this){
-            Constants.API_TOKEN = it.accessToken
-            Constants.TOKEN = Constants.BEARER + Constants.API_TOKEN
-            val resultIntent = Intent(this, InitProcessLivenessActivity::class.java)
-            startActivity(resultIntent)
-        }
-        sessionModel.errorModel.observe(this){
-            Toast.makeText(this,getString(R.string.not_create_session), Toast.LENGTH_SHORT).show()
-        }
-        sessionModel.isLoading.observe(this) {
-            if(it){
-                binding.clProgress.visibility = View.VISIBLE
-            }else{
-                binding.clProgress.visibility = View.GONE
-            }
-        }
-        sessionModel.validation.observe(this) {
-            Toast.makeText(this,getString(R.string.shortkey_empty), Toast.LENGTH_SHORT).show()
-        }
-        
-        // Nuevos observadores para el sistema offline
+        // ✅ SISTEMA OFFLINE UNIFICADO - Observadores
         kycOfflineViewModel.isLoading.observe(this) { isLoading ->
             if(isLoading){
                 binding.clProgress.visibility = View.VISIBLE
@@ -94,24 +78,24 @@ class MenuMainActivity : AppCompatActivity() {
                 binding.clProgress.visibility = View.GONE
             }
         }
-        
+
         kycOfflineViewModel.errorModel.observe(this) { error ->
             error?.let {
                 Toast.makeText(this, "Error: ${it.message}", Toast.LENGTH_LONG).show()
                 kycOfflineViewModel.clearMessages()
             }
         }
-        
+
         kycOfflineViewModel.successMessage.observe(this) { message ->
             message?.let {
                 when {
                     it.contains("Session executed successfully") -> {
-                        // ✅ Session online exitosa con token - navegar
+                        // ✅ Session online exitosa con token - navegar a InitProcessLivenessActivity
                         Toast.makeText(this, "Sesión KYC creada exitosamente", Toast.LENGTH_SHORT).show()
                         navigateToNextStep()
                     }
                     it.contains("Session executed offline successfully") -> {
-                        // 📱 Session offline exitosa - navegar pero indicar modo offline
+                        // 📱 Session offline exitosa - navegar a InitProcessLivenessActivity pero indicar modo offline
                         Toast.makeText(this, "Sesión KYC guardada offline", Toast.LENGTH_SHORT).show()
                         navigateToNextStep()
                     }
@@ -126,7 +110,7 @@ class MenuMainActivity : AppCompatActivity() {
                 kycOfflineViewModel.clearMessages()
             }
         }
-        
+
         // Observar estado de red usando StateFlow
         kycOfflineViewModel.updateNetworkStatus()
         lifecycleScope.launch {
@@ -135,25 +119,30 @@ class MenuMainActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     private fun startKycProcess() {
         val shortKey = binding.etShort.text.toString()
         if (shortKey.isEmpty()) {
             Toast.makeText(this, getString(R.string.shortkey_empty), Toast.LENGTH_SHORT).show()
             return
         }
-        
-        // Crear nuevo proceso KYC y ejecutar primera sesión
-        kycOfflineViewModel.createNewProcess(shortKey)
-        kycOfflineViewModel.executeSession(shortKey)
+
+        // Verificar que tenga exactamente 7 caracteres
+        if (shortKey.length != 7) {
+            Toast.makeText(this, "El código debe tener exactamente 7 caracteres", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Crear proceso y ejecutar sesión de forma secuencial (sin race condition)
+        kycOfflineViewModel.createProcessAndExecuteSession(shortKey)
     }
-    
+
     private fun navigateToNextStep() {
-        // Navegar al siguiente paso del proceso KYC
+        // Navegar a la pantalla de bienvenida después de crear la sesión
         val resultIntent = Intent(this, InitProcessLivenessActivity::class.java)
         startActivity(resultIntent)
     }
-    
+
     private fun updateNetworkIndicator(isOnline: Boolean) {
         // TODO: Agregar indicador visual de conectividad en la UI
         // Por ejemplo, cambiar color de un indicador o mostrar un ícono

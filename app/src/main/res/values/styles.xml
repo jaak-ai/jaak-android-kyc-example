@@ -101,4 +101,142 @@
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
     </style>
+
+    <!-- ========== JAAK KYC STYLES ========== -->
+
+    <!-- Base Button Style -->
+    <style name="JaakButtonBase">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+
+    <!-- Primary Button (Continue/Start) -->
+    <style name="JaakButton.Primary" parent="JaakButtonBase">
+        <item name="android:background">@drawable/bg_button_continue</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Secondary Button (Restart) -->
+    <style name="JaakButton.Secondary" parent="JaakButtonBase">
+        <item name="android:background">@drawable/bg_button_restart</item>
+        <item name="android:textColor">@color/jaak_button_restart_text</item>
+    </style>
+
+    <!-- Success Button (Start Verification) -->
+    <style name="JaakButton.Success" parent="JaakButtonBase">
+        <item name="android:background">@drawable/bg_button_start_verification</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Step Container Style -->
+    <style name="JaakStepContainer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- Step Icon Container -->
+    <style name="JaakStepIconContainer">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+    </style>
+
+    <!-- Step Icon -->
+    <style name="JaakStepIcon">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!-- Step Text Container -->
+    <style name="JaakStepTextContainer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- Step Title -->
+    <style name="JaakStepTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/jaak_text_primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Step Description -->
+    <style name="JaakStepDescription">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/jaak_text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Main Title Style -->
+    <style name="JaakTitle">
+        <item name="android:textColor">@color/jaak_text_primary</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Description Style -->
+    <style name="JaakDescription">
+        <item name="android:textColor">@color/jaak_text_secondary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Logo Style -->
+    <style name="JaakLogo">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:src">@drawable/jaak_logo_purple</item>
+    </style>
+
+    <!-- Input Field Style -->
+    <style name="JaakInputField">
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/bg_input_field</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/jaak_text_primary</item>
+        <item name="android:maxLength">7</item>
+        <item name="android:inputType">textCapCharacters</item>
+    </style>
+
+    <!-- Label Style -->
+    <style name="JaakLabel">
+        <item name="android:textColor">@color/jaak_text_secondary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <!-- ========== JAAK BUTTON ALIASES ========== -->
+
+    <!-- Button Aliases for easier use -->
+    <style name="ButtonPrimary" parent="JaakButton.Primary" />
+    <style name="ButtonSecondary" parent="JaakButton.Secondary" />
+    <style name="ButtonSuccess" parent="JaakButton.Success" />
+
+    <!-- Disabled Button Style -->
+    <style name="ButtonPrimaryDisabled" parent="JaakButtonBase">
+        <item name="android:background">@drawable/bg_button_continue_disabled</item>
+        <item name="android:textColor">@color/jaak_button_disabled_text</item>
+        <item name="android:enabled">false</item>
+    </style>
+
 </resources>

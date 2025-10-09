@@ -61,9 +61,11 @@ class KycSyncServiceSimple @Inject constructor(
                     android.util.Log.d("KycSyncServiceSimple", "Executing REAL OCR service...")
                     val ocrData = processWithDetails.ocr
                     if (ocrData != null) {
-                        val ocrRequest = DocumentExtraBothRequest(
-                            documentFront = ocrData.documentFront,
-                            documentBack = ocrData.documentBack
+                        // Paths are already stored in BD, pass them to repository
+                        val ocrRequest = com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Request(
+                            imageFront = ocrData.documentFront, // Path del archivo
+                            imageBack = ocrData.documentBack, // Path del archivo
+                            allowedCountries = listOf("MEX", "COL")
                         )
                         repository.executeOcr(processId, ocrRequest)
                     } else {

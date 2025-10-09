@@ -7,11 +7,17 @@ import com.jaak.kyc.data.model.livenessverify.LivenessVerifyRequest
 import com.jaak.kyc.data.model.livenessverify.LivenessVerifyResponse
 import com.jaak.kyc.data.model.ocr.DocumentExtraBothRequest
 import com.jaak.kyc.data.model.ocr.DocumentExtraBothResponse
+import com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Request
+import com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Response
 import com.jaak.kyc.data.model.otoverify.OtoVerifyRequest
 import com.jaak.kyc.data.model.otoverify.OtoVerifyResponse
 import com.jaak.kyc.data.model.session.SessionResponse
 import com.jaak.kyc.data.model.verify.VerifyRequest
 import com.jaak.kyc.data.model.verify.VerifyResponse
+import com.jaak.kyc.data.model.geocoding.GeocodingRequest
+import com.jaak.kyc.data.model.geocoding.GeocodingResponse
+import com.jaak.kyc.data.model.blacklist.BlacklistRequest
+import com.jaak.kyc.data.model.blacklist.BlacklistResponse
 import com.jaak.kyc.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -59,6 +65,12 @@ class JaakDBService @Inject constructor(private val api: JaakDBApiClient) {
         }
     }
 
+    suspend fun ocrV4Api(apiKey: String, documentExtractV4Request: DocumentExtractV4Request): Response<DocumentExtractV4Response> {
+        return withContext(Dispatchers.IO) {
+            callService{ api.documentExtractV4Api(apiKey, documentExtractV4Request) }
+        }
+    }
+
     suspend fun livenessVerifyApi(apiKey: String, livenessVerifyRequest: LivenessVerifyRequest): Response<LivenessVerifyResponse> {
         return withContext(Dispatchers.IO) {
             callService{ api.livenessVerifyApi(apiKey, livenessVerifyRequest) }
@@ -80,6 +92,18 @@ class JaakDBService @Inject constructor(private val api: JaakDBApiClient) {
     suspend fun finishApi(apiKey: String): Response<FinishResponse> {
         return withContext(Dispatchers.IO) {
             callService{ api.finishApi(apiKey) }
+        }
+    }
+
+    suspend fun geocodingApi(apiKey: String, geocodingRequest: GeocodingRequest): Response<GeocodingResponse> {
+        return withContext(Dispatchers.IO) {
+            callService{ api.geocodingApi(apiKey, geocodingRequest) }
+        }
+    }
+
+    suspend fun blacklistInvestigateApi(apiKey: String, blacklistRequest: BlacklistRequest): Response<BlacklistResponse> {
+        return withContext(Dispatchers.IO) {
+            callService{ api.blacklistInvestigateApi(apiKey, blacklistRequest) }
         }
     }
 }
