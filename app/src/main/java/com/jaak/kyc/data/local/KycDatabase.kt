@@ -21,7 +21,7 @@ import com.jaak.kyc.data.local.entity.*
         ProcessTokenEntity::class,
         ProcessErrorEntity::class
     ],
-    version = 5,
+    version = 6, // Incrementada por agregado de ocrResponseJson en KycOcrEntity
     exportSchema = false
 )
 @TypeConverters(Converters::class)

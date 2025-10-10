@@ -36,7 +36,8 @@ data class KycOcrEntity(
     val processingTime: String? = null,
     val responseState: String? = null, // JSON string of DocumentStateExtraBoth
     val facePath: String? = null, // Path to saved face image file (from v4 API)
-    
+    val ocrResponseJson: String? = null, // Full OCR V4 response JSON (for blacklist services)
+
     // Status tracking
     val serviceStatus: ServiceStatus = ServiceStatus.PENDING,
     val errorMessage: String? = null,

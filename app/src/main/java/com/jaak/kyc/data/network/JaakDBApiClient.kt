@@ -51,7 +51,7 @@ interface JaakDBApiClient {
     @POST("api/v1/kyc/session/finish")
     suspend fun finishApi(@Header("Authorization") auth: String): Response<FinishResponse>
 
-    @POST("api/v1/blacklist/investigate")
+    @POST("api/v2/blacklist/investigate")
     suspend fun blacklistInvestigateApi(@Header("Authorization") auth: String,
                                         @Body request: BlacklistRequest): Response<BlacklistResponse>
 

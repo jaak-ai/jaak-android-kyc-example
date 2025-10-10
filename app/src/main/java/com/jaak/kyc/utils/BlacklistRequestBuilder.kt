@@ -1,8 +1,54 @@
 package com.jaak.kyc.utils
 
 import com.jaak.kyc.data.model.blacklist.*
+import com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Response
 
 object BlacklistRequestBuilder {
+
+    /**
+     * Crea un payload de blacklist a partir del response de Document Extract V4
+     */
+    fun createPayloadFromDocumentExtract(ocrResponse: DocumentExtractV4Response): BlacklistPayload {
+        val personal = ocrResponse.content.data.personal
+        val address = ocrResponse.content.data.address
+        val document = ocrResponse.content.data.document
+
+        return BlacklistPayload(
+            person = BlacklistPerson(
+                name = personal.firstName ?: "",
+                lastName = personal.surname ?: "",
+                secondName = personal.secondName ?: "",
+                secondLastName = personal.motherSurname ?: "",
+                birthDate = personal.dateOfBirth ?: "",
+                nationality = personal.nationality ?: ""
+            ),
+            address = BlacklistAddress(
+                address = address?.extra?.street ?: address?.fullAddress ?: "",
+                number = address?.extra?.externalNumber?.toIntOrNull() ?: 0,
+                neighborhood = address?.extra?.neighborhood ?: "",
+                municipality = "", // No disponible en Document Extract V4
+                city = address?.extra?.city ?: "",
+                state = address?.extra?.state ?: "",
+                postalCode = address?.postalCode ?: ""
+            ),
+            identifications = BlacklistIdentifications(
+                curp = document.personalIdNumber ?: "",
+                rfc = personal.extra?.rfc ?: "",
+                socialSecurityNumber = "",
+                electorKey = if (document.type == "I") document.number ?: "" else "", // Clave de elector si es INE
+                ine = if (document.type == "I" && (personal.extra?.ocr != null || document.additionalNumber != null)) {
+                    BlacklistIne(
+                        cic = document.additionalNumber ?: "",
+                        ocr = personal.extra?.ocr ?: ""
+                    )
+                } else null
+            ),
+            extras = BlacklistExtras(
+                commonId = "",
+                wantedIn = ""
+            )
+        )
+    }
     
     /**
      * Crea un request para investigación INE

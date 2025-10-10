@@ -494,6 +494,7 @@ class KycOfflineRepository @Inject constructor(
                     processingTime = ocrResponse.processingTime,
                     responseState = gson.toJson(ocrResponse.state),
                     facePath = facePath, // Path to saved face image file
+                    ocrResponseJson = gson.toJson(ocrResponse), // Full response for blacklist services
                     serviceStatus = ServiceStatus.SYNCED
                 )
                 kycOcrDao.insertOcr(ocrEntity)
@@ -791,6 +792,11 @@ class KycOfflineRepository @Inject constructor(
                 val process = kycProcessDao.getProcessById(processId)
                 val rawToken = process?.accessToken ?: Constants.API_TOKEN
                 val accessToken = if (rawToken.startsWith("Bearer ")) rawToken else "Bearer $rawToken"
+
+                // 📞 BLACKLIST: Ejecutar los 5 servicios ANTES del Finish
+                executeBlacklistServices(processId, accessToken)
+
+                // Luego ejecutar Finish
                 executeFinishOnline(processId, accessToken)
             } else {
                 // 📱 Modo offline: Sin internet O Session fue offline
@@ -869,6 +875,153 @@ class KycOfflineRepository @Inject constructor(
         kycProcessDao.updateSyncStatus(processId, requiresSync = true, syncAttempts = 0, lastAttempt = null)
 
         return Result.success(Unit)
+    }
+
+    // 📞 BLACKLIST: Ejecutar los 5 servicios de blacklist (fire-and-forget)
+    private suspend fun executeBlacklistServices(processId: String, accessToken: String) {
+        try {
+            android.util.Log.d("KycOfflineRepository", "📞 ============ STARTING BLACKLIST SERVICES ============")
+            android.util.Log.d("KycOfflineRepository", "📞 ProcessId: $processId")
+            android.util.Log.d("KycOfflineRepository", "📞 AccessToken: ${accessToken.take(20)}...")
+
+            // Obtener datos del OCR desde BD
+            val ocrEntity = kycOcrDao.getOcrByProcessId(processId) ?: run {
+                android.util.Log.w("KycOfflineRepository", "⚠️ No OCR data found for blacklist services")
+                return
+            }
+
+            android.util.Log.d("KycOfflineRepository", "📞 OCR Entity found: ${ocrEntity.id}")
+
+            // Validar que tengamos el response de OCR guardado
+            val ocrResponseJson = ocrEntity.ocrResponseJson ?: run {
+                android.util.Log.w("KycOfflineRepository", "⚠️ No OCR response JSON found for blacklist services")
+                android.util.Log.w("KycOfflineRepository", "⚠️ OCR Entity: processId=${ocrEntity.processId}, status=${ocrEntity.serviceStatus}")
+                return
+            }
+
+            android.util.Log.d("KycOfflineRepository", "📞 OCR Response JSON length: ${ocrResponseJson.length}")
+
+            // Parsear el response de OCR
+            val ocrResponse = try {
+                com.google.gson.Gson().fromJson(ocrResponseJson, com.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Response::class.java)
+            } catch (e: Exception) {
+                android.util.Log.e("KycOfflineRepository", "❌ Failed to parse OCR response: ${e.message}")
+                android.util.Log.e("KycOfflineRepository", "❌ JSON: ${ocrResponseJson.take(200)}...")
+                return
+            }
+
+            android.util.Log.d("KycOfflineRepository", "📞 OCR Response parsed successfully")
+            android.util.Log.d("KycOfflineRepository", "📞 Personal: name=${ocrResponse.content.data.personal.firstName}, curp=${ocrResponse.content.data.document.personalIdNumber}")
+
+            // ✅ Imprimir OCR completo para validar datos disponibles
+            android.util.Log.d("KycOfflineRepository", "📞 ========== OCR RESPONSE COMPLETO ==========")
+            android.util.Log.d("KycOfflineRepository", "📞 OCR JSON: ${com.google.gson.Gson().toJson(ocrResponse)}")
+            android.util.Log.d("KycOfflineRepository", "📞 ==========================================")
+
+            // Crear el payload base desde el response de OCR
+            val payload = com.jaak.kyc.utils.BlacklistRequestBuilder.createPayloadFromDocumentExtract(ocrResponse)
+
+            android.util.Log.d("KycOfflineRepository", "📞 Payload created:")
+            android.util.Log.d("KycOfflineRepository", "📞   - Name: ${payload.person.name} ${payload.person.lastName}")
+            android.util.Log.d("KycOfflineRepository", "📞   - CURP: ${payload.identifications.curp}")
+            android.util.Log.d("KycOfflineRepository", "📞   - RFC: ${payload.identifications.rfc}")
+            android.util.Log.d("KycOfflineRepository", "📞   - INE OCR: ${payload.identifications.ine?.ocr}")
+            android.util.Log.d("KycOfflineRepository", "📞   - INE CIC: ${payload.identifications.ine?.cic}")
+
+            // Lanzar los 5 servicios secuencialmente (fire-and-forget)
+            android.util.Log.d("KycOfflineRepository", "📞 ============ CALLING BLACKLIST SERVICES ============")
+
+            // 1. INE
+            try {
+                android.util.Log.d("KycOfflineRepository", "📞 [1/5] Calling INE service...")
+                val ineRequest = com.jaak.kyc.utils.BlacklistRequestBuilder.createIneRequest(payload)
+                android.util.Log.d("KycOfflineRepository", "📞 INE Request JSON: ${com.google.gson.Gson().toJson(ineRequest)}")
+                val ineResponse = jaakDBService.blacklistInvestigateApi(accessToken, ineRequest)
+                android.util.Log.d("KycOfflineRepository", "✅ Blacklist INE service called - Response code: ${ineResponse.code()}")
+                if (ineResponse.isSuccessful) {
+                    android.util.Log.d("KycOfflineRepository", "📞 INE Response: ${ineResponse.body()}")
+                } else {
+                    val errorBody = ineResponse.errorBody()?.string()
+                    android.util.Log.e("KycOfflineRepository", "❌ INE Error Response: $errorBody")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("KycOfflineRepository", "❌ Blacklist INE failed: ${e.message}")
+                e.printStackTrace()
+            }
+
+            // 2. INTERPOL
+            try {
+                android.util.Log.d("KycOfflineRepository", "📞 [2/5] Calling INTERPOL service...")
+                val interpolRequest = com.jaak.kyc.utils.BlacklistRequestBuilder.createInterpolRequest(payload)
+                android.util.Log.d("KycOfflineRepository", "📞 INTERPOL Request JSON: ${com.google.gson.Gson().toJson(interpolRequest)}")
+                val interpolResponse = jaakDBService.blacklistInvestigateApi(accessToken, interpolRequest)
+                android.util.Log.d("KycOfflineRepository", "✅ Blacklist INTERPOL service called - Response code: ${interpolResponse.code()}")
+                if (interpolResponse.isSuccessful) {
+                    android.util.Log.d("KycOfflineRepository", "📞 INTERPOL Response: ${interpolResponse.body()}")
+                } else {
+                    val errorBody = interpolResponse.errorBody()?.string()
+                    android.util.Log.e("KycOfflineRepository", "❌ INTERPOL Error Response: $errorBody")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("KycOfflineRepository", "❌ Blacklist INTERPOL failed: ${e.message}")
+                e.printStackTrace()
+            }
+
+            // 3. OFAC
+            try {
+                android.util.Log.d("KycOfflineRepository", "📞 [3/5] Calling OFAC service...")
+                val ofacRequest = com.jaak.kyc.utils.BlacklistRequestBuilder.createOfacRequest(payload)
+                android.util.Log.d("KycOfflineRepository", "📞 OFAC Request JSON: ${com.google.gson.Gson().toJson(ofacRequest)}")
+                val ofacResponse = jaakDBService.blacklistInvestigateApi(accessToken, ofacRequest)
+                android.util.Log.d("KycOfflineRepository", "✅ Blacklist OFAC service called - Response code: ${ofacResponse.code()}")
+                if (ofacResponse.isSuccessful) {
+                    android.util.Log.d("KycOfflineRepository", "📞 OFAC Response: ${ofacResponse.body()}")
+                } else {
+                    val errorBody = ofacResponse.errorBody()?.string()
+                    android.util.Log.e("KycOfflineRepository", "❌ OFAC Error Response: $errorBody")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("KycOfflineRepository", "❌ Blacklist OFAC failed: ${e.message}")
+                e.printStackTrace()
+            }
+
+            // 4. RENAPO/CURP
+            try {
+                android.util.Log.d("KycOfflineRepository", "📞 [4/5] Calling RENAPO service...")
+                val renapoRequest = com.jaak.kyc.utils.BlacklistRequestBuilder.createRenapoRequest(payload)
+                android.util.Log.d("KycOfflineRepository", "📞 RENAPO Request: services.renapo.curp=${renapoRequest.services.renapo?.curp}")
+                val renapoResponse = jaakDBService.blacklistInvestigateApi(accessToken, renapoRequest)
+                android.util.Log.d("KycOfflineRepository", "✅ Blacklist RENAPO service called - Response code: ${renapoResponse.code()}")
+                if (renapoResponse.isSuccessful) {
+                    android.util.Log.d("KycOfflineRepository", "📞 RENAPO Response: ${renapoResponse.body()}")
+                } else {
+                    val errorBody = renapoResponse.errorBody()?.string()
+                    android.util.Log.e("KycOfflineRepository", "❌ RENAPO Error Response: $errorBody")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("KycOfflineRepository", "❌ Blacklist RENAPO failed: ${e.message}")
+                e.printStackTrace()
+            }
+
+            // 5. SAT69B
+            try {
+                android.util.Log.d("KycOfflineRepository", "📞 [5/5] Calling SAT service...")
+                val satRequest = com.jaak.kyc.utils.BlacklistRequestBuilder.createSatRequest(payload)
+                android.util.Log.d("KycOfflineRepository", "📞 SAT Request: services.sat.sat69b=${satRequest.services.sat?.sat69b}")
+                val satResponse = jaakDBService.blacklistInvestigateApi(accessToken, satRequest)
+                android.util.Log.d("KycOfflineRepository", "✅ Blacklist SAT service called - Response code: ${satResponse.code()}")
+                android.util.Log.d("KycOfflineRepository", "📞 SAT Response: ${satResponse.body()}")
+            } catch (e: Exception) {
+                android.util.Log.e("KycOfflineRepository", "❌ Blacklist SAT failed: ${e.message}")
+                e.printStackTrace()
+            }
+
+            android.util.Log.d("KycOfflineRepository", "📞 ============ ALL BLACKLIST SERVICES CALLED ============")
+
+        } catch (e: Exception) {
+            android.util.Log.e("KycOfflineRepository", "❌ Failed to launch blacklist services: ${e.message}")
+            // No lanzar excepción para no afectar el resultado del Finish exitoso
+        }
     }
 
     // 🧹 CLEANUP DESPUÉS DE FINISH EXITOSO
