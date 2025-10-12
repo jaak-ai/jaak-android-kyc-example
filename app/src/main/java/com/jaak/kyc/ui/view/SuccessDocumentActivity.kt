@@ -221,8 +221,15 @@ class SuccessDocumentActivity : AppCompatActivity() {
                 val facePath = currentProcess.ocr?.facePath
 
                 if (facePath.isNullOrEmpty()) {
-                    android.util.Log.e("SuccessDocumentActivity", "❌ facePath from document is null/empty")
-                    Toast.makeText(this@SuccessDocumentActivity, "Error: No se pudo obtener la imagen facial del documento", Toast.LENGTH_LONG).show()
+                    android.util.Log.e("SuccessDocumentActivity", "❌ facePath from document is null/empty - navigating to error screen")
+
+                    // Navegar a pantalla de error
+                    val intent = Intent(this@SuccessDocumentActivity, ErrorProcessActivity::class.java)
+                    intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_TYPE, ErrorProcessActivity.ERROR_TYPE_DOCUMENT_VALIDATION_FAILED)
+                    intent.putExtra(ErrorProcessActivity.EXTRA_ERROR_MESSAGE, "No se pudo extraer la imagen facial del documento. Por favor, intente nuevamente.")
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
                     return@launch
                 }
 

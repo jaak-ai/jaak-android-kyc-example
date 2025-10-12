@@ -140,10 +140,27 @@ class KycOfflineViewModel @Inject constructor(
                     }
                 } else {
                     val exception = result.exceptionOrNull()
-                    errorModel.value = ErrorModel("Session execution failed: ${exception?.message}", false, 500)
+                    val exceptionMessage = exception?.message ?: "Unknown error"
+
+                    // 🎯 Detectar si el error es por session ID inválido
+                    val isInvalidSession = exceptionMessage.contains("invalid", ignoreCase = true) ||
+                                          exceptionMessage.contains("not valid", ignoreCase = true) ||
+                                          exceptionMessage.contains("expired", ignoreCase = true) ||
+                                          exceptionMessage.contains("401") ||
+                                          exceptionMessage.contains("403")
+
+                    if (isInvalidSession) {
+                        errorModel.value = ErrorModel(
+                            "La sesión no es válida o ha expirado. Por favor, utilice otro código de acceso.",
+                            false,
+                            401
+                        )
+                    } else {
+                        errorModel.value = ErrorModel(exceptionMessage, false, 500)
+                    }
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Failed to create process and execute session: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -205,10 +222,28 @@ class KycOfflineViewModel @Inject constructor(
                         errorModel.value = ErrorModel("Session completed but in unexpected state: $sessionStatus", false, 500)
                     }
                 } else {
-                    errorModel.value = ErrorModel("Session failed: ${result.exceptionOrNull()?.message}", false, 500)
+                    val exception = result.exceptionOrNull()
+                    val exceptionMessage = exception?.message ?: "Unknown error"
+
+                    // 🎯 Detectar si el error es por session ID inválido
+                    val isInvalidSession = exceptionMessage.contains("invalid", ignoreCase = true) ||
+                                          exceptionMessage.contains("not valid", ignoreCase = true) ||
+                                          exceptionMessage.contains("expired", ignoreCase = true) ||
+                                          exceptionMessage.contains("401") ||
+                                          exceptionMessage.contains("403")
+
+                    if (isInvalidSession) {
+                        errorModel.value = ErrorModel(
+                            "La sesión no es válida o ha expirado. Por favor, utilice otro código de acceso.",
+                            false,
+                            401
+                        )
+                    } else {
+                        errorModel.value = ErrorModel(exceptionMessage, false, 500)
+                    }
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Session error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -239,10 +274,10 @@ class KycOfflineViewModel @Inject constructor(
                     successMessage.postValue("Document verification completed")
                     loadProcessDetails(processId)
                 } else {
-                    errorModel.value = ErrorModel("Verify failed: ${result.exceptionOrNull()?.message}", false, 500)
+                    errorModel.value = ErrorModel(result.exceptionOrNull()?.message ?: "Error desconocido", false, 500)
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Verify error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -274,10 +309,10 @@ class KycOfflineViewModel @Inject constructor(
                     successMessage.postValue("OCR processing completed")
                     loadProcessDetails(processId)
                 } else {
-                    errorModel.value = ErrorModel("OCR failed: ${result.exceptionOrNull()?.message}", false, 500)
+                    errorModel.value = ErrorModel(result.exceptionOrNull()?.message ?: "Error desconocido", false, 500)
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("OCR error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -312,10 +347,10 @@ class KycOfflineViewModel @Inject constructor(
                     android.util.Log.d("KycOfflineViewModel", "Liveness completed, processDetails updated")
                     successMessage.postValue("Liveness verification completed")
                 } else {
-                    errorModel.value = ErrorModel("Liveness failed: ${result.exceptionOrNull()?.message}", false, 500)
+                    errorModel.value = ErrorModel(result.exceptionOrNull()?.message ?: "Error desconocido", false, 500)
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Liveness error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -367,10 +402,10 @@ class KycOfflineViewModel @Inject constructor(
                     }
                     loadProcessDetails(processId)
                 } else {
-                    errorModel.value = ErrorModel("Face comparison failed: ${result.exceptionOrNull()?.message}", false, 500)
+                    errorModel.value = ErrorModel(result.exceptionOrNull()?.message ?: "Error desconocido", false, 500)
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Face comparison error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -451,10 +486,10 @@ class KycOfflineViewModel @Inject constructor(
                     successMessage.postValue("Blacklist services launched")
                     loadProcessDetails(processId)
                 } else {
-                    errorModel.value = ErrorModel("Failed to launch blacklist services: ${result.exceptionOrNull()?.message}", false, 500)
+                    errorModel.value = ErrorModel(result.exceptionOrNull()?.message ?: "Error desconocido", false, 500)
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Blacklist verification error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }
@@ -489,10 +524,10 @@ class KycOfflineViewModel @Inject constructor(
                     _currentProcessDetails.value = null
                     _currentProcessId.value = null
                 } else {
-                    errorModel.value = ErrorModel("Finish failed: ${result.exceptionOrNull()?.message}", false, 500)
+                    errorModel.value = ErrorModel(result.exceptionOrNull()?.message ?: "Error desconocido", false, 500)
                 }
             } catch (e: Exception) {
-                errorModel.value = ErrorModel("Finish error: ${e.message}", false, 500)
+                errorModel.value = ErrorModel(e.message ?: "Error desconocido", false, 500)
             } finally {
                 isLoading.postValue(false)
             }

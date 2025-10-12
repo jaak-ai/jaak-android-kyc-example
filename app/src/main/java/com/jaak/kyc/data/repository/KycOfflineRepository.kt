@@ -237,13 +237,31 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateSessionStatus(processId, ServiceStatus.RETRYING, null, 0)
 
+            android.util.Log.d("SessionAPI", "========== SESSION API REQUEST ==========")
+            android.util.Log.d("SessionAPI", "Short Key: $shortKey")
+            android.util.Log.d("SessionAPI", "Origin Device: ${Constants.ORIGIN_DEVICE}")
+            android.util.Log.d("SessionAPI", "=========================================")
+
             val response = jaakDBService.sessionApi(shortKey, Constants.ORIGIN_DEVICE)
+
+            // 🔍 LOG: Imprimir información completa de la respuesta
+            android.util.Log.d("SessionAPI", "========== SESSION API RESPONSE ==========")
+            android.util.Log.d("SessionAPI", "HTTP Status Code: ${response.code()}")
+            android.util.Log.d("SessionAPI", "Is Successful: ${response.isSuccessful}")
+            android.util.Log.d("SessionAPI", "Has Body: ${response.body() != null}")
 
             if (response.isSuccessful && response.body() != null) {
                 val sessionResponse = response.body()!!
+                android.util.Log.d("SessionAPI", "✅ SUCCESS - Response Body:")
+                android.util.Log.d("SessionAPI", "  - Access Token: ${sessionResponse.accessToken.take(30)}...")
+                android.util.Log.d("SessionAPI", "  - Session ID: ${sessionResponse.sessionId}")
+                android.util.Log.d("SessionAPI", "  - Step: ${sessionResponse.step}")
+                android.util.Log.d("SessionAPI", "  - Document: ${sessionResponse.document}")
+                android.util.Log.d("SessionAPI", "=========================================")
 
                 // 🚨 Validación código 200 (como en ViewModels)
                 if (response.code() != 200) {
+                    android.util.Log.e("SessionAPI", "❌ Response code is not 200: ${response.code()}")
                     kycProcessDao.updateSessionStatus(processId, ServiceStatus.FAILED, "Session API returned code: ${response.code()}", 0)
                     return Result.failure(Exception("Session API returned code: ${response.code()}"))
                 }
@@ -271,19 +289,57 @@ class KycOfflineRepository @Inject constructor(
                 Result.success(Unit)
             } else {
                 // 🔄 LÓGICA ORIGINAL: Parsear error del response body
-                val errorModel = response.errorBody()?.let {
+                android.util.Log.e("SessionAPI", "❌ ERROR RESPONSE")
+
+                val errorBodyString = response.errorBody()?.string()
+                android.util.Log.e("SessionAPI", "Error Body (raw): $errorBodyString")
+
+                val errorModel = errorBodyString?.let {
                     try {
-                        Utils.responseBodyToResultsModel(it)
+                        // Necesitamos recrear el ResponseBody porque string() consume el stream
+                        val newErrorBody = okhttp3.ResponseBody.create(
+                            response.errorBody()?.contentType(),
+                            it
+                        )
+                        Utils.responseBodyToResultsModel(newErrorBody)
                     } catch (e: Exception) {
+                        android.util.Log.e("SessionAPI", "Failed to parse error body: ${e.message}")
                         null
                     }
                 }
+
                 val errorMessage = errorModel?.message ?: "Session API failed"
+
+                android.util.Log.e("SessionAPI", "Parsed Error Message: $errorMessage")
+                android.util.Log.e("SessionAPI", "Error Model - success: ${errorModel?.success}")
+                android.util.Log.e("SessionAPI", "Error Model - code: ${errorModel?.code}")
+
+                // 🎯 VALIDACIÓN ESPECÍFICA: Detectar si el shortKey/sessionId no es válido
+                val isInvalidSession = errorMessage.contains("invalid", ignoreCase = true) ||
+                    errorMessage.contains("not valid", ignoreCase = true) ||
+                    errorMessage.contains("expired", ignoreCase = true) ||
+                    errorMessage.contains("Expected a string but was BEGIN_OBJECT", ignoreCase = true) ||
+                    errorMessage.contains("IllegalStateException", ignoreCase = true) ||
+                    (response.code() == 500 && errorMessage.contains("assets.liveness", ignoreCase = true)) ||
+                    response.code() == 401 ||
+                    response.code() == 403
+
+                if (isInvalidSession) {
+                    android.util.Log.e("SessionAPI", "🚨 SESSION ID/SHORT KEY IS INVALID OR EXPIRED!")
+                    android.util.Log.e("SessionAPI", "⚠️ Please use a different short key")
+                    val userMessage = "La sesión no es válida o ha expirado. Por favor, utilice otro código de acceso."
+                    kycProcessDao.updateSessionStatus(processId, ServiceStatus.FAILED, userMessage, 0)
+                    return Result.failure(Exception(userMessage))
+                }
+
+                android.util.Log.e("SessionAPI", "=========================================")
 
                 kycProcessDao.updateSessionStatus(processId, ServiceStatus.FAILED, errorMessage, 0)
                 Result.failure(Exception(errorMessage))
             }
         } catch (e: Exception) {
+            android.util.Log.e("SessionAPI", "❌ EXCEPTION during session call: ${e.message}")
+            android.util.Log.e("SessionAPI", "Stack trace:", e)
             kycProcessDao.updateSessionStatus(processId, ServiceStatus.FAILED, e.message, 0)
             Result.failure(e)
         }
@@ -471,13 +527,29 @@ class KycOfflineRepository @Inject constructor(
                 }
 
                 // 🔧 Guardar face (base64) como archivo permanente (similar a bestFrame de liveness)
-                val facePath = if (!ocrResponse.content.data.personal.face.isNullOrEmpty()) {
-                    FileStorageUtils.saveBase64ToPermanentFile(
-                        context,
-                        ocrResponse.content.data.personal.face,
-                        "face_${System.currentTimeMillis()}.jpg"
-                    )
-                } else null
+                // 🚨 VALIDACIÓN CRÍTICA DE SEGURIDAD: El face es OBLIGATORIO para comparación de rostros
+                if (ocrResponse.content.data.personal.face.isNullOrEmpty()) {
+                    android.util.Log.e("OCR_SECURITY", "🚨 CRITICAL: OCR did not return face image from document")
+                    android.util.Log.e("OCR_SECURITY", "⚠️ Cannot proceed - face comparison will not be possible")
+                    android.util.Log.e("OCR_SECURITY", "OCR Response: ${gson.toJson(ocrResponse)}")
+                    kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, "No se pudo extraer la foto del rostro del documento. Intente con mejor iluminación.", 0)
+                    return Result.failure(Exception("No se pudo extraer la foto del rostro del documento"))
+                }
+
+                val facePath = FileStorageUtils.saveBase64ToPermanentFile(
+                    context,
+                    ocrResponse.content.data.personal.face,
+                    "face_${System.currentTimeMillis()}.jpg"
+                )
+
+                // 🚨 VALIDACIÓN: Verificar que se guardó correctamente
+                if (facePath == null) {
+                    android.util.Log.e("OCR_SECURITY", "🚨 CRITICAL: Failed to save face image to file")
+                    kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, "Error al guardar la imagen del rostro del documento", 0)
+                    return Result.failure(Exception("Error al guardar la imagen del rostro del documento"))
+                }
+
+                android.util.Log.d("OCR_SECURITY", "✅ Face image saved successfully: $facePath")
 
                 // 🔧 Guardar PATHS (no base64) en BD
                 val ocrEntity = KycOcrEntity(

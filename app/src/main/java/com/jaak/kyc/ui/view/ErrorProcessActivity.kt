@@ -25,6 +25,7 @@ class ErrorProcessActivity : AppCompatActivity() {
         const val ERROR_TYPE_VERIFY_FAILED = "verify_failed"
         const val ERROR_TYPE_OCR_FAILED = "ocr_failed"
         const val ERROR_TYPE_DOCUMENT_INVALID = "document_invalid"
+        const val ERROR_TYPE_DOCUMENT_VALIDATION_FAILED = "document_validation_failed"
         const val ERROR_TYPE_GENERIC = "generic_error"
     }
 
@@ -73,6 +74,7 @@ class ErrorProcessActivity : AppCompatActivity() {
                 ERROR_TYPE_VERIFY_FAILED -> getString(R.string.error_verify_failed)
                 ERROR_TYPE_OCR_FAILED -> getString(R.string.error_ocr_failed)
                 ERROR_TYPE_DOCUMENT_INVALID -> getString(R.string.error_document_invalid)
+                ERROR_TYPE_DOCUMENT_VALIDATION_FAILED -> getString(R.string.error_document_invalid)
                 else -> getString(R.string.error_details_default)
             }
         }
