@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaak_background_light">
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/profiles_list_title"
+            app:titleTextColor="@color/jaak_text_primary"
+            app:navigationIcon="@drawable/ic_arrow_back">
+
+            <!-- Botón Agregar en el toolbar -->
+            <ImageView
+                android:id="@+id/btnAddProfile"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/add_profile"
+                android:padding="12dp"
+                android:src="@drawable/ic_add"
+                app:tint="@color/jaak_primary" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProfiles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_profile" />
+
+    <!-- Empty state -->
+    <LinearLayout
+        android:id="@+id/llEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:alpha="0.4"
+            android:contentDescription="@string/no_profiles"
+            android:src="@drawable/ic_add"
+            app:tint="@color/jaak_text_tertiary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/no_profiles"
+            android:textAlignment="center"
+            android:textColor="@color/jaak_text_tertiary"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/tap_add_profile"
+            android:textAlignment="center"
+            android:textColor="@color/jaak_text_tertiary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

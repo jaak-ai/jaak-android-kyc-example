@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/jaak_surface"
+    android:padding="16dp">
+
+    <!-- Contenedor principal: Foto + Info -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Foto del usuario (Base64) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="2dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/jaak_divider">
+
+            <ImageView
+                android:id="@+id/ivUserPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/user_photo"
+                tools:src="@drawable/ic_person" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Info del usuario -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <!-- Nombre completo -->
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_text_primary"
+                tools:text="Juan Carlos Pérez" />
+
+            <!-- ShortKey -->
+            <TextView
+                android:id="@+id/tvShortKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:textColor="@color/jaak_text_secondary"
+                tools:text="ShortKey: ABC123DEF" />
+
+            <!-- Tiempo total -->
+            <TextView
+                android:id="@+id/tvTotalTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:textColor="@color/jaak_text_secondary"
+                tools:text="⏱ 3.5 min" />
+
+        </LinearLayout>
+
+        <!-- Badge de status -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvStatusBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/jaak_success_light">
+
+            <TextView
+                android:id="@+id/tvStatusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_success"
+                tools:text="✓ PASS" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <!-- Divisor -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="12dp"
+        android:background="@color/jaak_divider" />
+
+    <!-- Scores Breakdown -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <!-- Score Total -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvScoreTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_success"
+                tools:text="92%" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/score_total"
+                android:textSize="10sp"
+                android:textColor="@color/jaak_text_tertiary" />
+
+        </LinearLayout>
+
+        <!-- Score Document -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvScoreDocument"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_text_primary"
+                tools:text="88%" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/score_document"
+                android:textSize="10sp"
+                android:textColor="@color/jaak_text_tertiary" />
+
+        </LinearLayout>
+
+        <!-- Score Liveness -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvScoreLiveness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_text_primary"
+                tools:text="95%" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/score_liveness"
+                android:textSize="10sp"
+                android:textColor="@color/jaak_text_tertiary" />
+
+        </LinearLayout>
+
+        <!-- Score One-to-One -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvScoreOto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_text_primary"
+                tools:text="93%" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/score_oto"
+                android:textSize="10sp"
+                android:textColor="@color/jaak_text_tertiary" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

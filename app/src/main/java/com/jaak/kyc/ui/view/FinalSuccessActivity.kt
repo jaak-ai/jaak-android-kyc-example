@@ -43,7 +43,12 @@ class FinalSuccessActivity : AppCompatActivity() {
     }
 
     private fun navigateToMenu() {
-        val intent = Intent(this, MenuMainActivity::class.java)
+        // TODO: Verificar si hay sesión activa
+        // Por ahora, siempre regresar al Dashboard (MainActivity)
+        // Si no hay sesión, deberías redirigir a LoginActivity
+
+        // Regresar al Dashboard (MainActivity con bottom nav)
+        val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         finish()

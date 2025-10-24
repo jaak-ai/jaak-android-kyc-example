@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Icono de estado (izquierda) -->
+        <ImageView
+            android:id="@+id/ivStatusIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/session_status_icon"
+            android:src="@drawable/ic_clock"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/jaak_text_tertiary" />
+
+        <!-- Texto del estado (debajo del icono) -->
+        <TextView
+            android:id="@+id/tvStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/jaak_text_tertiary"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/ivStatusIcon"
+            app:layout_constraintStart_toStartOf="@id/ivStatusIcon"
+            app:layout_constraintTop_toBottomOf="@id/ivStatusIcon"
+            tools:text="Pendiente" />
+
+        <!-- Shortkey -->
+        <TextView
+            android:id="@+id/tvShortkey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tvPuntajeLabel"
+            app:layout_constraintStart_toEndOf="@id/ivStatusIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="FCtsxUJ" />
+
+        <!-- Label "Puntaje" -->
+        <TextView
+            android:id="@+id/tvPuntajeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/session_score_label"
+            android:textColor="@color/jaak_text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Puntaje -->
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tvPuntajeLabel"
+            app:layout_constraintStart_toStartOf="@id/tvPuntajeLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvPuntajeLabel"
+            tools:text="0" />
+
+        <!-- Nombre del usuario -->
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/ivArrow"
+            app:layout_constraintStart_toStartOf="@id/tvShortkey"
+            app:layout_constraintTop_toBottomOf="@id/tvShortkey"
+            tools:text="qa" />
+
+        <!-- Nombre del flujo -->
+        <TextView
+            android:id="@+id/tvFlowName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/jaak_text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/ivArrow"
+            app:layout_constraintStart_toStartOf="@id/tvShortkey"
+            app:layout_constraintTop_toBottomOf="@id/tvUserName"
+            tools:text="qa" />
+
+        <!-- Flecha derecha -->
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/session_arrow_icon"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/tvFlowName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvUserName"
+            app:tint="@color/jaak_text_tertiary" />
+
+        <!-- Divider horizontal -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/jaak_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvShortkey"
+            app:layout_constraintTop_toBottomOf="@id/tvFlowName" />
+
+        <!-- Ícono de reloj (para fecha y hora) -->
+        <ImageView
+            android:id="@+id/ivClockIcon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/date_label"
+            android:src="@drawable/ic_clock"
+            app:layout_constraintStart_toStartOf="@id/tvShortkey"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:tint="@color/jaak_text_secondary" />
+
+        <!-- Fecha y hora (al lado del reloj) -->
+        <TextView
+            android:id="@+id/tvDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/jaak_text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivClockIcon"
+            app:layout_constraintEnd_toStartOf="@id/tvProcessStatus"
+            app:layout_constraintStart_toEndOf="@id/ivClockIcon"
+            app:layout_constraintTop_toTopOf="@id/ivClockIcon"
+            tools:text="09/10/2025 10:05" />
+
+        <!-- Estado del proceso (abajo derecha) -->
+        <TextView
+            android:id="@+id/tvProcessStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/jaak_text_secondary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivClockIcon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivClockIcon"
+            tools:text="Finalizado" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

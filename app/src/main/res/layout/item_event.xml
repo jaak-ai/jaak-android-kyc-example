@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="@color/jaak_surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- Ícono del evento -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/jaak_primary_light">
+
+            <ImageView
+                android:id="@+id/ivEventIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_info"
+                android:contentDescription="Event Icon"
+                app:tint="@color/jaak_primary" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Info del evento -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvEventName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_text_primary"
+                tools:text="Listas oficiales" />
+
+            <TextView
+                android:id="@+id/tvEventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:textColor="@color/jaak_text_tertiary"
+                tools:text="2025-10-15T22:15:46.546Z" />
+
+        </LinearLayout>
+
+        <!-- Flecha -->
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_arrow_right"
+            android:contentDescription="Arrow"
+            app:tint="@color/jaak_text_tertiary" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

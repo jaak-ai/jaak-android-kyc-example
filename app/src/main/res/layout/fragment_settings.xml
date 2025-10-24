@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaak_background_light">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Título -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/settings_title"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Perfil del Usuario -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <!-- Foto de perfil -->
+                <ImageView
+                    android:id="@+id/ivProfilePhoto"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:background="@drawable/bg_profile_circle"
+                    android:contentDescription="@string/settings_profile_photo"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_person" />
+
+                <!-- Información del perfil -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/jaak_text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="DANIELA" />
+
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp"
+                        tools:text="daniela.robles@jaak.ai" />
+
+                    <!-- Badges en vertical -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <!-- Badge Rol -->
+                        <TextView
+                            android:id="@+id/tvRoleBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_badge_role"
+                            android:drawablePadding="4dp"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:text="@string/settings_admin"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:textSize="12sp"
+                            app:drawableStartCompat="@drawable/ic_people_small" />
+
+                        <!-- Badge Estado -->
+                        <TextView
+                            android:id="@+id/tvStatusBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_badge_active"
+                            android:drawablePadding="4dp"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:text="@string/settings_active"
+                            android:textColor="@color/jaak_success"
+                            android:textSize="12sp"
+                            app:drawableStartCompat="@drawable/ic_check_small" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sección Empresa -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/settings_company"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@string/settings_company_icon"
+                        android:src="@drawable/ic_business"
+                        app:tint="@color/jaak_text_secondary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/settings_company_name"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvCompanyName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="JAAK COMPLIANCE" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sección Aplicación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/settings_application"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@string/settings_version_icon"
+                        android:src="@drawable/ic_info"
+                        app:tint="@color/jaak_text_secondary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:text="@string/settings_version"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvAppVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="0.8.2 (1)" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sección KYC -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/settings_kyc"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:id="@+id/llSessionProfiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/settings_session_profiles_icon"
+                    android:src="@drawable/ic_sessions"
+                    app:tint="@color/jaak_text_primary" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:text="@string/settings_session_profiles"
+                    android:textColor="@color/jaak_text_primary"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/settings_arrow_icon"
+                    android:src="@drawable/ic_arrow_right"
+                    app:tint="@color/jaak_text_tertiary" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Sección Sesión -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/settings_session"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="@string/settings_logout"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/jaak_error"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_logout"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/white" />
+
+    </LinearLayout>
+</ScrollView>

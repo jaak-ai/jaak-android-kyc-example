@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="80dp"
+    android:viewportWidth="180"
+    android:viewportHeight="80">
+    <!-- Placeholder para el logo JAAK - reemplazar con el logo real -->
+    <path
+        android:fillColor="#202945"
+        android:pathData="M40,30 L50,30 L50,50 L40,50 Z"/>
+    <path
+        android:fillColor="#3579F6"
+        android:pathData="M60,20 L75,35 L60,50 Z"/>
+    <path
+        android:fillColor="#202945"
+        android:pathData="M80,20 L95,20 L95,50 L80,50 Z"/>
+    <path
+        android:fillColor="#3579F6"
+        android:pathData="M100,20 L115,50 L110,50 L95,20 Z"/>
+</vector>

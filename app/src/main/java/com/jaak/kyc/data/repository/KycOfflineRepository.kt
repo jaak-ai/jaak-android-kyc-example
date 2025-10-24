@@ -492,43 +492,107 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateOcrStatus(processId, ServiceStatus.RETRYING, null, 0)
 
-            // 🔑 Prioridad: 1) Token del proceso, 2) Token por shortkey, 3) Constants.TOKEN
+            // 🔑 Prioridad: 1) Token del proceso, 2) Token por shortkey, 3) Constants.API_TOKEN
             val process = kycProcessDao.getProcessById(processId)
             val tokenByShortKey = getTokenByShortKey(process?.shortKey ?: "")
             val rawToken = process?.accessToken ?: tokenByShortKey ?: Constants.API_TOKEN
             val accessToken = if (rawToken.startsWith("Bearer ")) rawToken else "Bearer $rawToken"
 
+            android.util.Log.d("DocumentExtractAPI", "========== DOCUMENT EXTRACT REQUEST ==========")
+            android.util.Log.d("DocumentExtractAPI", "URL: POST /api/v4/document/extract")
+            android.util.Log.d("DocumentExtractAPI", "Process ID: $processId")
+            android.util.Log.d("DocumentExtractAPI", "Headers: {")
+            android.util.Log.d("DocumentExtractAPI", "  Authorization: ${accessToken.take(40)}...")
+            android.util.Log.d("DocumentExtractAPI", "}")
+            android.util.Log.d("DocumentExtractAPI", "Token Details: {")
+            android.util.Log.d("DocumentExtractAPI", "  Process AccessToken: ${process?.accessToken?.take(30)}...")
+            android.util.Log.d("DocumentExtractAPI", "  Token by ShortKey: ${tokenByShortKey?.take(30)}...")
+            android.util.Log.d("DocumentExtractAPI", "  Constants.API_TOKEN: ${Constants.API_TOKEN.take(30)}...")
+            android.util.Log.d("DocumentExtractAPI", "  Selected Token Source: ${when {
+                process?.accessToken != null -> "Process AccessToken"
+                tokenByShortKey != null -> "Token by ShortKey"
+                else -> "Constants.API_TOKEN (Fallback)"
+            }}")
+            android.util.Log.d("DocumentExtractAPI", "}")
+            android.util.Log.d("DocumentExtractAPI", "Request Body: {")
+            android.util.Log.d("DocumentExtractAPI", "  imageFront: ${if (ocrRequest.imageFront.isNotEmpty()) "File path: ${ocrRequest.imageFront}" else "Empty"}")
+            android.util.Log.d("DocumentExtractAPI", "  imageBack: ${if (!ocrRequest.imageBack.isNullOrEmpty()) "File path: ${ocrRequest.imageBack}" else "Empty (passport)"}")
+            android.util.Log.d("DocumentExtractAPI", "  allowedCountries: ${ocrRequest.allowedCountries}")
+            android.util.Log.d("DocumentExtractAPI", "}")
+            android.util.Log.d("DocumentExtractAPI", "=============================================")
+
             // 🔧 Convertir paths a base64 para HTTP request
             val frontBase64 = FileStorageUtils.fileToBase64(ocrRequest.imageFront)
-            val backBase64 = FileStorageUtils.fileToBase64(ocrRequest.imageBack)
 
-            if (frontBase64 == null || backBase64 == null) {
-                kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, "Failed to convert images to base64", 0)
-                return Result.failure(Exception("Failed to convert images to base64"))
+            // 🔧 PASAPORTE: backImage puede estar vacío, solo convertir si existe
+            val backBase64 = if (!ocrRequest.imageBack.isNullOrEmpty()) {
+                FileStorageUtils.fileToBase64(ocrRequest.imageBack)
+            } else {
+                "" // Pasaporte solo tiene imagen frontal
             }
 
+            if (frontBase64 == null) {
+                android.util.Log.e("DocumentExtractAPI", "Failed to convert front image to base64")
+                kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, "Failed to convert front image to base64", 0)
+                return Result.failure(Exception("Failed to convert front image to base64"))
+            }
+
+            android.util.Log.d("DocumentExtractAPI", "Images converted to base64 successfully")
+            android.util.Log.d("DocumentExtractAPI", "  frontBase64 length: ${frontBase64.length} chars")
+            android.util.Log.d("DocumentExtractAPI", "  backBase64 length: ${backBase64?.length ?: 0} chars")
+
             // Crear request con base64 para envío HTTP
-            val httpRequest = DocumentExtractV4Request(frontBase64, backBase64, ocrRequest.allowedCountries)
+            val httpRequest = DocumentExtractV4Request(frontBase64, backBase64 ?: "", ocrRequest.allowedCountries)
             val response = jaakDBService.ocrV4Api(accessToken, httpRequest)
+
+            android.util.Log.d("DocumentExtractAPI", "========== DOCUMENT EXTRACT RESPONSE ==========")
+            android.util.Log.d("DocumentExtractAPI", "Status Code: ${response.code()}")
+            android.util.Log.d("DocumentExtractAPI", "Status Message: ${response.message()}")
+            android.util.Log.d("DocumentExtractAPI", "Is Successful: ${response.isSuccessful}")
 
             if (response.isSuccessful && response.body() != null) {
                 val ocrResponse = response.body()!!
 
+                android.util.Log.d("DocumentExtractAPI", "Response Body: {")
+                android.util.Log.d("DocumentExtractAPI", "  status: ${ocrResponse.status}")
+                android.util.Log.d("DocumentExtractAPI", "  eventId: ${ocrResponse.eventId}")
+                android.util.Log.d("DocumentExtractAPI", "  requestId: ${ocrResponse.requestId}")
+
+                // 🔧 content puede ser null cuando el documento es rechazado
+                if (ocrResponse.content != null) {
+                    android.util.Log.d("DocumentExtractAPI", "  content.data.document: ${gson.toJson(ocrResponse.content.data.document)}")
+                    android.util.Log.d("DocumentExtractAPI", "  content.data.personal: ${gson.toJson(ocrResponse.content.data.personal)}")
+                } else {
+                    android.util.Log.w("DocumentExtractAPI", "  content: null (documento rechazado)")
+                }
+                android.util.Log.d("DocumentExtractAPI", "}")
+                android.util.Log.d("DocumentExtractAPI", "Full response JSON: ${gson.toJson(ocrResponse)}")
+                android.util.Log.d("DocumentExtractAPI", "=============================================")
+
                 // 🚨 Validación código 200 (como en ViewModels)
                 if (response.code() != 200) {
+                    android.util.Log.e("DocumentExtractAPI", "❌ Response code is not 200: ${response.code()}")
                     kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, "OCR API returned code: ${response.code()}", 0)
                     return Result.failure(Exception("OCR API returned code: ${response.code()}"))
                 }
 
                 // ✅ Servicio 3 V4: status debe ser "SUCCESS"
                 if (ocrResponse.status != "SUCCESS") {
-                    kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, "OCR status: ${ocrResponse.status}", 0)
-                    return Result.failure(Exception("OCR status: ${ocrResponse.status}"))
+                    android.util.Log.e("DocumentExtractAPI", "❌ OCR status is not SUCCESS: ${ocrResponse.status}")
+
+                    // Mensaje más descriptivo según el motivo del rechazo
+                    val errorMessage = when {
+                        ocrResponse.content == null -> "El documento fue rechazado. Por favor, intente con mejor iluminación y asegúrese de que el documento sea válido."
+                        else -> "OCR status: ${ocrResponse.status}"
+                    }
+
+                    kycProcessDao.updateOcrStatus(processId, ServiceStatus.FAILED, errorMessage, 0)
+                    return Result.failure(Exception(errorMessage))
                 }
 
                 // 🔧 Guardar face (base64) como archivo permanente (similar a bestFrame de liveness)
                 // 🚨 VALIDACIÓN CRÍTICA DE SEGURIDAD: El face es OBLIGATORIO para comparación de rostros
-                if (ocrResponse.content.data.personal.face.isNullOrEmpty()) {
+                if (ocrResponse.content?.data?.personal?.face.isNullOrEmpty()) {
                     android.util.Log.e("OCR_SECURITY", "🚨 CRITICAL: OCR did not return face image from document")
                     android.util.Log.e("OCR_SECURITY", "⚠️ Cannot proceed - face comparison will not be possible")
                     android.util.Log.e("OCR_SECURITY", "OCR Response: ${gson.toJson(ocrResponse)}")
@@ -538,7 +602,7 @@ class KycOfflineRepository @Inject constructor(
 
                 val facePath = FileStorageUtils.saveBase64ToPermanentFile(
                     context,
-                    ocrResponse.content.data.personal.face,
+                    ocrResponse.content?.data?.personal?.face!!,
                     "face_${System.currentTimeMillis()}.jpg"
                 )
 
@@ -560,8 +624,8 @@ class KycOfflineRepository @Inject constructor(
                     requestId = ocrResponse.requestId,
                     status = ocrResponse.status == "SUCCESS",
                     message = "Document extracted successfully",
-                    documentType = gson.toJson(ocrResponse.content.data.document),
-                    documentData = gson.toJson(ocrResponse.content.data.personal),
+                    documentType = gson.toJson(ocrResponse.content?.data?.document),
+                    documentData = gson.toJson(ocrResponse.content?.data?.personal),
                     documentMetadata = null,
                     processingTime = ocrResponse.processingTime,
                     responseState = gson.toJson(ocrResponse.state),
@@ -983,7 +1047,7 @@ class KycOfflineRepository @Inject constructor(
             }
 
             android.util.Log.d("KycOfflineRepository", "📞 OCR Response parsed successfully")
-            android.util.Log.d("KycOfflineRepository", "📞 Personal: name=${ocrResponse.content.data.personal.firstName}, curp=${ocrResponse.content.data.document.personalIdNumber}")
+            android.util.Log.d("KycOfflineRepository", "📞 Personal: name=${ocrResponse.content?.data?.personal?.firstName}, curp=${ocrResponse.content?.data?.document?.personalIdNumber}")
 
             // ✅ Imprimir OCR completo para validar datos disponibles
             android.util.Log.d("KycOfflineRepository", "📞 ========== OCR RESPONSE COMPLETO ==========")

@@ -30,6 +30,7 @@
     <color name="jaak_logo_blue">#4285F4</color>
     <color name="jaak_primary">#3579F6</color> <!-- iOS Blue (R:53, G:121, B:246) -->
     <color name="jaak_primary_dark">#2E6FE6</color> <!-- Darker blue for pressed states -->
+    <color name="jaak_primary_light">#E3F2FD</color> <!-- Light blue for backgrounds -->
     
     <!-- Text Colors -->
     <color name="jaak_text_primary">#000000</color>
@@ -41,6 +42,7 @@
     <color name="jaak_background">#F5F5F5</color>
     <color name="jaak_background_light">#FAFAFA</color>
     <color name="jaak_surface">#FFFFFF</color>
+    <color name="jaak_divider">#E0E0E0</color>
     
     <!-- Input Colors -->
     <color name="jaak_input_background">#FFFFFF</color>
@@ -84,6 +86,9 @@
     <color name="jaak_warning">#FF9800</color>
     <color name="jaak_error">#F44336</color>
     <color name="jaak_info">#2196F3</color>
+    <color name="red">#F44336</color>
+    <color name="green">#4CAF50</color>
+    <color name="yellow">#FF9800</color>
     
     <!-- Shadow/Elevation Colors -->
     <color name="jaak_shadow">#1A000000</color> <!-- 10% black -->
@@ -125,5 +130,10 @@
     <color name="green_instruction">#B5BE60</color>
     <color name="blue_instruction">#5B9FD8</color>
     <color name="greenJAAKsdk">#8BC34A</color>
+
+    <!-- Login Screen Colors -->
+    <color name="jaak_login_button">#90CAF9</color> <!-- Light blue button -->
+    <color name="jaak_login_button_pressed">#64B5F6</color>
+    <color name="jaak_login_link">#42A5F5</color> <!-- Blue links -->
 
 </resources>

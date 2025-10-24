@@ -18,6 +18,10 @@ import com.jaak.kyc.data.model.geocoding.GeocodingRequest
 import com.jaak.kyc.data.model.geocoding.GeocodingResponse
 import com.jaak.kyc.data.model.blacklist.BlacklistRequest
 import com.jaak.kyc.data.model.blacklist.BlacklistResponse
+import com.jaak.kyc.data.model.api.SessionListResponse
+import com.jaak.kyc.data.model.api.SessionDetailResponse
+import com.jaak.kyc.data.model.api.LoginRequest
+import com.jaak.kyc.data.model.api.LoginResponse
 import com.jaak.kyc.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -104,6 +108,58 @@ class JaakDBService @Inject constructor(private val api: JaakDBApiClient) {
     suspend fun blacklistInvestigateApi(apiKey: String, blacklistRequest: BlacklistRequest): Response<BlacklistResponse> {
         return withContext(Dispatchers.IO) {
             callService{ api.blacklistInvestigateApi(apiKey, blacklistRequest) }
+        }
+    }
+
+    suspend fun getSessionListApi(
+        auth: String,
+        language: String = "es",
+        id: String? = null,
+        shortKey: String? = null,
+        contactName: String? = null,
+        flowName: String? = null,
+        limit: Int? = 20,
+        page: Int? = 1,
+        minCreatedAt: String? = null,
+        maxCreatedAt: String? = null
+    ): Response<SessionListResponse> {
+        return withContext(Dispatchers.IO) {
+            callService{
+                api.getSessionListApi(
+                    auth = auth,
+                    language = language,
+                    id = id,
+                    shortKey = shortKey,
+                    contactName = contactName,
+                    flowName = flowName,
+                    limit = limit,
+                    page = page,
+                    minCreatedAt = minCreatedAt,
+                    maxCreatedAt = maxCreatedAt
+                )
+            }
+        }
+    }
+
+    suspend fun getSessionDetailApi(
+        sessionId: String,
+        auth: String
+    ): Response<SessionDetailResponse> {
+        return withContext(Dispatchers.IO) {
+            callService{
+                api.getSessionDetailApi(
+                    sessionId = sessionId,
+                    auth = auth
+                )
+            }
+        }
+    }
+
+    suspend fun loginApi(loginRequest: LoginRequest): Response<LoginResponse> {
+        return withContext(Dispatchers.IO) {
+            callService{
+                api.loginApi(loginRequest)
+            }
         }
     }
 }

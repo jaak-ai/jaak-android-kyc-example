@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaak_background">
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/jaak_surface">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/jaak_surface"
+            app:title="Prueba de Vida"
+            app:titleTextColor="@color/jaak_text_primary"
+            app:navigationIcon="@drawable/ic_arrow_back" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Content - UNA SOLA COLUMNA -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ========== SECCIÓN: Video de sesión ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Video de sesión"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Video de la sesión de prueba de vida"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Video Player Container -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="#000000">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <!-- VideoView para reproducir el video -->
+                            <VideoView
+                                android:id="@+id/videoView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center" />
+
+                            <!-- Play button overlay -->
+                            <ImageView
+                                android:id="@+id/ivPlayButton"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_play_arrow"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:contentDescription="Play video"
+                                app:tint="@color/white" />
+
+                            <!-- Progress bar -->
+                            <ProgressBar
+                                android:id="@+id/pbVideo"
+                                style="@style/JaakProgressBar.Small"
+                                android:layout_gravity="center"
+                                android:visibility="gone" />
+
+                        </FrameLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Mejor fotograma ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Mejor fotograma"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Imagen -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="350dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp">
+
+                        <ImageView
+                            android:id="@+id/ivBestFrame"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="Mejor fotograma"
+                            tools:src="@drawable/ic_person" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Toca para ver en tamaño completo"
+                        android:textSize="12sp"
+                        android:textColor="@color/jaak_text_tertiary"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Prueba de vida ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Prueba de vida"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Tiempo de procesamiento -->
+                    <TextView
+                        android:id="@+id/tvProcessingTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="12dp"
+                        tools:text="Tiempo de procesamiento: 1,257.19 milisegundos" />
+
+                    <!-- Tabla con RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvLivenessData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="1" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/JaakProgressBar.Medium"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

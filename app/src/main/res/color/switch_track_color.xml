@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color cuando el switch está ON (checked) -->
+    <item android:color="@color/jaak_success" android:state_checked="true"/>
+    <!-- Color cuando el switch está OFF (unchecked) -->
+    <item android:color="@color/jaak_text_tertiary"/>
+</selector>

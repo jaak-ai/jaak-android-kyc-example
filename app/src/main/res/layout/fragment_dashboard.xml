@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header verde con fondo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_instruction"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header con logo y botón cerrar sesión -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Logo JAAK a la izquierda -->
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:contentDescription="@string/dashboard_logo"
+                    android:src="@drawable/jaak_logo_white" />
+
+                <!-- Botón cerrar sesión a la derecha en rojo -->
+                <ImageView
+                    android:id="@+id/ivLogout"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="@string/logout"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_logout"
+                    app:tint="#D32F2F" />
+            </RelativeLayout>
+
+            <!-- Card blanco con info del usuario -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dashboard_greeting"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/jaak_text_primary"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="DANIELA" />
+
+                    <!-- Rol y Email -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:contentDescription="@string/dashboard_role_icon"
+                                android:src="@drawable/ic_person"
+                                app:tint="@color/jaak_text_secondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/dashboard_role"
+                                android:textColor="@color/jaak_text_secondary"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvUserRole"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:textColor="@color/jaak_text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                tools:text="Administrador" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:contentDescription="@string/dashboard_email_icon"
+                                android:src="@drawable/ic_email"
+                                app:tint="@color/jaak_text_secondary" />
+
+                            <TextView
+                                android:id="@+id/tvUserEmail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/jaak_text_secondary"
+                                android:textSize="12sp"
+                                tools:text="daniela.robles@jaak.ai" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- Contenido principal en columna -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/jaak_background_light"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Sección 1: Inicio Rápido KYC -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_quick_start"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/dashboard_quick_start_description"
+                android:textColor="@color/jaak_text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Lista de perfiles KYC (cuando hay perfiles configurados) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvKycProfiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_dashboard_profile"
+                tools:visibility="visible" />
+
+            <!-- Tarjeta verde de inicio rápido CON PERFIL (YA NO SE USA - Reemplazado por RecyclerView) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardQuickStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/green_instruction"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                tools:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
+
+                    <!-- Ícono de rayo -->
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="@string/dashboard_quick_icon"
+                        android:src="@drawable/ic_bolt"
+                        app:tint="@color/white" />
+
+                    <!-- Información -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvProfileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="qa" />
+
+                        <!-- Barra de progreso simulada -->
+                        <ProgressBar
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:indeterminate="false"
+                            android:max="100"
+                            android:progress="75"
+                            android:progressTint="@color/yellow_instruction"
+                            style="?android:attr/progressBarStyleHorizontal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dashboard_quick_start_action"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Flecha derecha -->
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/dashboard_arrow"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="@color/white" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Estado SIN PERFIL configurado -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardNoProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:visibility="visible"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                tools:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="32dp">
+
+                    <!-- Ícono de documento con + -->
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:contentDescription="@string/dashboard_no_profile_icon"
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/jaak_text_tertiary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/dashboard_no_profiles"
+                        android:textAlignment="center"
+                        android:textColor="@color/jaak_text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/dashboard_create_profile_hint"
+                        android:textAlignment="center"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:textSize="14sp" />
+
+                    <!-- Link "Ir a Configuración" -->
+                    <TextView
+                        android:id="@+id/tvGoToSettings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:paddingStart="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="8dp"
+                        android:text="@string/dashboard_go_to_settings"
+                        android:textColor="@color/jaak_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Sección 2: Creación Manual -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_manual_creation"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/dashboard_manual_creation_description"
+                android:textColor="@color/jaak_text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Botón de creación manual en CardView -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardManualCreation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="32dp">
+
+                    <!-- Botón circular + -->
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/dashboard_add_session"
+                        android:src="@drawable/ic_add"
+                        android:clickable="false"
+                        android:focusable="false"
+                        app:backgroundTint="@color/green_instruction"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/dashboard_new_session"
+                        android:textColor="@color/jaak_text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Sección 3: Actividad Reciente -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_recent_activity"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/dashboard_coming_soon"
+                android:textColor="@color/jaak_text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Placeholder de estadísticas -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:alpha="0.4"
+                    android:contentDescription="@string/dashboard_stats_icon"
+                    android:src="@drawable/ic_bar_chart"
+                    app:tint="@color/jaak_text_tertiary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/dashboard_stats_placeholder"
+                    android:textAlignment="center"
+                    android:textColor="@color/jaak_text_tertiary"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -27,7 +27,42 @@
     <string name="init_session">Creando sesion</string>
     <string name="not_create_session">No se pudo crear la sesión</string>
     <string name="shortkey_empty">El shortkey no puede venir vacío</string>
-    
+    <string name="have_account">¿Tienes una cuenta?</string>
+    <string name="login_button_shortkey">Iniciar Sesión</string>
+
+    <!-- Edit Session Profile Strings -->
+    <string name="cancel">Cancelar</string>
+    <string name="edit_profile_title">Editar Perfil</string>
+    <string name="profile_name_label">Nombre del perfil *</string>
+    <string name="profile_name_hint">Ingrese nombre del perfil</string>
+    <string name="contact_name_label">Nombre del contacto *</string>
+    <string name="contact_name_hint">Ingrese nombre del contacto</string>
+    <string name="flow_name_label">Nombre del flujo *</string>
+    <string name="flow_name_hint">Ingrese nombre del flujo</string>
+    <string name="redirect_url_label">URL de redireccionamiento</string>
+    <string name="document_country_label">País de documentación *</string>
+    <string name="flow_type_label">Tipo de flujo</string>
+    <string name="validation_method_label">Medio de validación</string>
+    <string name="verification_value_label">Valor de verificación</string>
+    <string name="verification_value_hint">Email, teléfono o WhatsApp</string>
+    <string name="mark_as_default">Marcar como predeterminado</string>
+    <string name="update_profile">Actualizar Perfil</string>
+
+    <!-- Sessions KYC Strings -->
+    <string name="sessions_title">Sesiones KYC</string>
+    <string name="sessions_search_hint">Buscar por shortkey, nombre, flujo o ID...</string>
+    <string name="sessions_filters">Filtros</string>
+    <string name="sessions_empty_title">Selecciona una sesión</string>
+    <string name="sessions_empty_subtitle">Toca una sesión de la lista para ver sus detalles</string>
+    <string name="session_status_icon">Ícono de Estado de Sesión</string>
+    <string name="session_score_label">Puntaje</string>
+    <string name="session_arrow_icon">Ícono de Flecha</string>
+    <string name="session_document_icon">Ícono de Documento</string>
+    <string name="session_status_pending">Pendiente</string>
+    <string name="session_status_expired">Expirado</string>
+    <string name="session_status_rejected">Rechazado</string>
+    <string name="session_status_success">Exitoso</string>
+
     <!-- Offline UI Strings -->
     <string name="network_status">Estado de Red</string>
     <string name="offline_mode">Modo Sin Conexión - Los datos se sincronizarán cuando se conecte</string>
@@ -163,5 +198,229 @@
     <string name="btn_retry_process">Reintentar Verificación</string>
     <string name="btn_back_to_menu">Volver al Menú</string>
     <string name="cd_error_icon">Ícono de error</string>
+
+    <!-- Login Screen Strings -->
+    <string name="login_title">Inicia sesión en tu cuenta</string>
+    <string name="login_ssl_secure">Conexión SSL Segura</string>
+    <string name="login_email_label">CORREO ELECTRÓNICO</string>
+    <string name="login_email_hint">Ingresa tu correo electrónico</string>
+    <string name="login_password_label">CONTRASEÑA</string>
+    <string name="login_password_hint">Ingresa tu contraseña</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="login_need_help">¿Necesitas ayuda?</string>
+    <string name="login_contact_support">Contactar Soporte</string>
+    <string name="login_logo_description">Logo de JAAK</string>
+    <string name="login_ssl_icon_description">Ícono de candado SSL seguro</string>
+    <string name="login_error_empty_email">El correo electrónico no puede estar vacío</string>
+    <string name="login_error_invalid_email">Por favor ingresa un correo electrónico válido</string>
+    <string name="login_error_empty_password">La contraseña no puede estar vacía</string>
+    <string name="login_error_recaptcha">Por favor completa la verificación reCAPTCHA</string>
+    <string name="login_error_network">Error de red. Por favor verifica tu conexión</string>
+    <string name="login_error_credentials">Correo o contraseña inválidos</string>
+    <string name="login_success">Inicio de sesión exitoso</string>
+
+    <!-- Bottom Navigation Menu -->
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_sessions_kyc">Sesiones KYC</string>
+    <string name="menu_settings">Configuración</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_description">Bienvenido a JAAK KYC. Inicia el proceso de verificación de identidad.</string>
+    <string name="dashboard_start_kyc">Iniciar Proceso KYC</string>
+    <string name="dashboard_kyc_info">Haz clic para comenzar la verificación de identidad</string>
+    <string name="dashboard_new_profile">Nuevo Perfil</string>
+    <string name="loading_creating_session">Creando sesión KYC...</string>
+    <string name="dashboard_logo">Logo de JAAK</string>
+    <string name="dashboard_greeting">Buenos días</string>
+    <string name="dashboard_role">Rol:</string>
+    <string name="dashboard_role_icon">Ícono de Rol</string>
+    <string name="dashboard_email_icon">Ícono de Email</string>
+    <string name="dashboard_quick_start">Inicio Rápido KYC</string>
+    <string name="dashboard_quick_start_description">Crea y comienza sesiones KYC con un solo toque usando perfiles predefinidos</string>
+    <string name="dashboard_quick_icon">Ícono de Inicio Rápido</string>
+    <string name="dashboard_quick_start_action">Toca para crear e iniciar sesión</string>
+    <string name="dashboard_arrow">Flecha</string>
+    <string name="dashboard_manual_creation">Creación Manual</string>
+    <string name="dashboard_manual_creation_description">Configura cada detalle de tu sesión KYC</string>
+    <string name="dashboard_add_session">Agregar Nueva Sesión</string>
+    <string name="dashboard_new_session">Nueva Sesión KYC</string>
+    <string name="dashboard_recent_activity">Actividad Reciente</string>
+    <string name="dashboard_coming_soon">Próximamente</string>
+    <string name="dashboard_stats_icon">Ícono de Estadísticas</string>
+    <string name="dashboard_stats_placeholder">Estadísticas y métricas aparecerán aquí</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Configuración</string>
+    <string name="settings_profile_photo">Foto de Perfil</string>
+    <string name="settings_admin">Administrador</string>
+    <string name="settings_active">Activo</string>
+    <string name="settings_inactive">Inactivo</string>
+    <string name="settings_company">Empresa</string>
+    <string name="settings_company_name">Nombre</string>
+    <string name="settings_company_icon">Ícono de Empresa</string>
+    <string name="settings_application">Aplicación</string>
+    <string name="settings_version">Versión</string>
+    <string name="settings_version_icon">Ícono de Versión</string>
+    <string name="settings_kyc">KYC</string>
+    <string name="settings_profile">Entorno</string>
+    <string name="settings_profile_icon">Ícono de Perfil</string>
+    <string name="settings_session_profiles">Perfiles de Sesión</string>
+    <string name="settings_session_profiles_icon">Ícono de Perfiles de Sesión</string>
+    <string name="settings_arrow_icon">Ícono de Flecha</string>
+    <string name="settings_session">Sesión</string>
+    <string name="settings_logout">Cerrar Sesión</string>
+    <string name="settings_profile_change_title">Cambiar Entorno</string>
+    <string name="settings_profile_change_message">¿Deseas cambiar el entorno a %1$s?\n\nURL de API: %2$s</string>
+    <string name="settings_profile_change_confirm">Cambiar</string>
+    <string name="settings_profile_change_cancel">Cancelar</string>
+    <string name="settings_restart_required_title">Reinicio Requerido</string>
+    <string name="settings_restart_required_message">La aplicación necesita reiniciarse para aplicar la nueva configuración de entorno.</string>
+    <string name="settings_restart_now">Reiniciar Ahora</string>
+    <string name="settings_restart_later">Reiniciar Después</string>
+    <string name="settings_logout_confirmation_title">Cerrar Sesión</string>
+    <string name="settings_logout_confirmation_message">¿Estás seguro que deseas cerrar sesión?</string>
+    <string name="settings_logout_confirm">Sí</string>
+    <string name="settings_logout_cancel">Cancelar</string>
+    <string name="filters_title">Filtrar Sesiones</string>
+    <string name="filters_date_subtitle">Selecciona el rango de fechas y horas</string>
+    <string name="filter_start_date">Fecha Inicial</string>
+    <string name="filter_start_time">Hora Inicial</string>
+    <string name="filter_end_date">Fecha Final</string>
+    <string name="filter_end_time">Hora Final</string>
+    <string name="clear_filters">Limpiar</string>
+    <string name="apply_filters">Seleccionar</string>
+    <string name="error_end_date_before_start">La fecha final no puede ser anterior a la fecha inicial</string>
+    <string name="error_end_time_before_start">La hora final debe ser posterior a la hora inicial</string>
+
+    <!-- Session Detail Strings -->
+    <string name="session_detail_title">Detalle de Sesión</string>
+    <string name="user_photo">Foto del usuario</string>
+    <string name="score_total">Total</string>
+    <string name="score_document">Documento</string>
+    <string name="score_liveness">Liveness</string>
+    <string name="score_oto">1-a-1</string>
+    <string name="tab_info">Info</string>
+    <string name="tab_document">Documento</string>
+    <string name="tab_liveness">Liveness</string>
+    <string name="tab_oto">Uno-a-Uno</string>
+
+    <!-- Session Info Fragment -->
+    <string name="user_information">Información del Usuario</string>
+    <string name="name_label">Nombre</string>
+    <string name="state_label">Estado</string>
+    <string name="state_colon">Estado:</string>
+    <string name="stage_colon">Etapa:</string>
+    <string name="score_label">Puntaje</string>
+    <string name="created_label">Creada</string>
+    <string name="duration_label">Duración</string>
+    <string name="quick_scores">Puntajes Rápidos</string>
+    <string name="document_label">Documento</string>
+    <string name="one_to_one_label">1:1</string>
+    <string name="recent_events">Eventos Recientes</string>
+    <string name="view_all">Ver todos</string>
+
+    <!-- Session Liveness Fragment -->
+    <string name="session_data">Datos de sesión</string>
+    <string name="flow_id">Id del flujo</string>
+    <string name="shortkey_label">shortKey</string>
+    <string name="shortkey_title">ShortKey</string>
+    <string name="flow_name">Nombre del flujo</string>
+    <string name="started_label">Empezado</string>
+    <string name="updated_label">Actualizado</string>
+    <string name="expired_label">Expirado</string>
+    <string name="total_flow_time">Tiempo total del flujo</string>
+    <string name="origin_label">Origen</string>
+    <string name="validation_label">Validación</string>
+    <string name="flow_type">Tipo de flujo</string>
+    <string name="consent_label">Consentimiento</string>
+    <string name="contact_data">Datos de contacto</string>
+    <string name="contact_name">Nombre del contacto</string>
+    <string name="contact_label">Contacto</string>
+    <string name="captured_first_names">Nombres capturados</string>
+    <string name="captured_last_names">Apellidos capturados</string>
+    <string name="city_label">Ciudad</string>
+    <string name="country_label">País</string>
+    <string name="location_label">Ubicación</string>
+    <string name="view_link">Ver</string>
+
+    <!-- Session Document & OTO Fragments -->
+    <string name="document_title_emoji">📄 Documento</string>
+    <string name="one_to_one_title_emoji">👤 Uno-a-Uno</string>
+
+    <!-- Edit Session Profile -->
+    <string name="redirect_url_hint">https://ejemplo.com</string>
+    <string name="kyc_traditional">KYC Tradicional</string>
+
+    <!-- Session List -->
+    <string name="date_label">Fecha</string>
+    <string name="sessions_kyc_coming_soon">Pantalla de Sesiones KYC\n(Próximamente)</string>
+
+    <!-- Dashboard Profiles -->
+    <string name="dashboard_no_profiles">No hay perfiles configurados</string>
+    <string name="dashboard_create_profile_hint">Crea un perfil en Configuración para usar el inicio rápido</string>
+    <string name="dashboard_go_to_settings">Crear Perfil →</string>
+    <string name="dashboard_no_profile_icon">Ícono Sin Perfil</string>
+    <string name="logout">Cerrar Sesión</string>
+
+    <!-- Profiles List Screen -->
+    <string name="profiles_list_title">Perfiles KYC</string>
+    <string name="add_profile">Agregar Perfil</string>
+    <string name="no_profiles">No hay perfiles configurados</string>
+    <string name="tap_add_profile">Toca el botón + para crear tu primer perfil</string>
+    <string name="navigate_to_profile">Ver perfil</string>
+    <string name="default_badge">Predeterminado</string>
+    <string name="delete_profile_title">Eliminar perfil</string>
+    <string name="delete_profile_message">¿Estás seguro de que deseas eliminar el perfil \"%1$s\"?</string>
+    <string name="delete">Eliminar</string>
+
+    <!-- Dashboard Fallback Values -->
+    <string name="dashboard_fallback_name">DANIELA</string>
+    <string name="dashboard_fallback_role">Administrador</string>
+    <string name="dashboard_fallback_email">daniela.robles@jaak.ai</string>
+    <string name="dashboard_no_name">Usuario sin nombre</string>
+    <string name="dashboard_logout_button">Cerrar sesión</string>
+
+    <!-- Error Messages -->
+    <string name="error_no_default_profile">No hay perfil predeterminado configurado</string>
+    <string name="error_api_key_unavailable">Error: API Key no disponible</string>
+    <string name="error_create_flow_failed">Error al crear flujo KYC: %s</string>
+    <string name="error_empty_server_response">Error: Respuesta vacía del servidor</string>
+    <string name="error_create_session_failed">Error al crear sesión: %s</string>
+    <string name="error_empty_session_response">Error: Respuesta de sesión vacía</string>
+    <string name="error_network">Error de red: %s</string>
+    <string name="error_loading_sessions">Error al cargar sesiones: %s</string>
+    <string name="error_invalid_session_id">Session ID inválido</string>
+    <string name="error_field_required">Campo requerido</string>
+
+    <!-- Session Detail Info -->
+    <string name="user_no_name">Usuario sin nombre</string>
+    <string name="info_total_time_format">Tiempo Total\n%s</string>
+    <string name="info_total_time_na">Tiempo Total\nN/A</string>
+    <string name="info_default_subtitle">test</string>
+    <string name="info_flow_label_format">Flujo: %s</string>
+    <string name="liveness_total_time_format">Tiempo Total\n%s</string>
+    <string name="liveness_total_time_na">Tiempo Total\nN/A</string>
+
+    <!-- Session Messages -->
+    <string name="sessions_loaded_more">Cargadas %d sesiones más</string>
+    <string name="document_no_data_available">No hay datos de documento disponibles</string>
+    <string name="oto_no_data_available">No hay datos de one-to-one disponibles</string>
+
+    <!-- Location Dialog -->
+    <string name="location_dialog_title">Abrir ubicación</string>
+    <string name="location_dialog_message">¿Cómo quieres ver la ubicación?</string>
+    <string name="location_google_maps">Google Maps</string>
+
+    <!-- Settings Fallback Values -->
+    <string name="settings_fallback_name">DANIELA</string>
+    <string name="settings_fallback_email">daniela.robles@jaak.ai</string>
+    <string name="settings_fallback_company">JAAK COMPLIANCE</string>
+    <string name="settings_version_unknown">Desconocido</string>
+
+    <!-- Profile Messages -->
+    <string name="profile_created_success">Perfil creado exitosamente</string>
+    <string name="profile_updated_success">Perfil actualizado exitosamente</string>
 
 </resources>

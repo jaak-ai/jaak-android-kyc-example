@@ -39,10 +39,36 @@ class MenuMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+
+        // Verificar si el usuario ya está logueado
+        // Si está logueado, redirigir directamente al Dashboard
+        checkLoginAndRedirect()
+
         binding = ActivityMenuMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initViewModel()
         initComponents()
+    }
+
+    private fun checkLoginAndRedirect() {
+        // Verificar si viene del Dashboard (usuario ya logueado queriendo crear nuevo KYC)
+        val fromDashboard = intent.getBooleanExtra("FROM_DASHBOARD", false)
+
+        // Si viene del Dashboard, NO hacer redirect - dejar que ingrese shortkey
+        if (fromDashboard) {
+            return
+        }
+
+        // Solo hacer redirect si NO viene del Dashboard y está logueado
+        val sharedPreferences = getSharedPreferences("KYC_APP", MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+
+        if (isLoggedIn) {
+            // Usuario ya está logueado, ir directamente al Dashboard
+            val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun initComponents(){
@@ -66,7 +92,33 @@ class MenuMainActivity : AppCompatActivity() {
             }
         })
 
+        // Botón para iniciar sesión
+        binding.btnLogin.setOnClickListener {
+            navigateToLogin()
+        }
+
+        // Verificar si el usuario está logueado para mostrar/ocultar el botón de login
+        checkUserLoginStatus()
+
         // Los permisos ahora se manejan en SecurityPermissionsActivity
+    }
+
+    private fun checkUserLoginStatus() {
+        // Verificar si viene del Dashboard
+        val fromDashboard = intent.getBooleanExtra("FROM_DASHBOARD", false)
+
+        // Verificar si el usuario está logueado (usando SharedPreferences)
+        val sharedPreferences = getSharedPreferences("KYC_APP", MODE_PRIVATE)
+        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+
+        // Si está logueado O viene del Dashboard, ocultar el texto "¿Tienes una cuenta?" y el botón "Iniciar Sesión"
+        if (isLoggedIn || fromDashboard) {
+            binding.tvHaveAccount.visibility = View.GONE
+            binding.btnLogin.visibility = View.GONE
+        } else {
+            binding.tvHaveAccount.visibility = View.VISIBLE
+            binding.btnLogin.visibility = View.VISIBLE
+        }
     }
 
     private fun initViewModel(){
@@ -147,6 +199,11 @@ class MenuMainActivity : AppCompatActivity() {
         // TODO: Agregar indicador visual de conectividad en la UI
         // Por ejemplo, cambiar color de un indicador o mostrar un ícono
         Log.d("NetworkStatus", "Network status: ${if (isOnline) "Online" else "Offline"}")
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
 }

@@ -27,6 +27,8 @@
     <string name="init_session">Creating session</string>
     <string name="not_create_session">The session could not be created</string>
     <string name="shortkey_empty">The shortkey cannot be empty.</string>
+    <string name="have_account">Do you have an account?</string>
+    <string name="login_button_shortkey">Log In</string>
     
     <!-- Offline UI Strings -->
     <string name="network_status">Network Status</string>
@@ -163,5 +165,260 @@
     <string name="btn_retry_process">Retry Verification</string>
     <string name="btn_back_to_menu">Back to Menu</string>
     <string name="cd_error_icon">Error icon</string>
+
+    <!-- Login Screen Strings -->
+    <string name="login_title">Log in to your account</string>
+    <string name="login_ssl_secure">Secure SSL Connection</string>
+    <string name="login_email_label">EMAIL</string>
+    <string name="login_email_hint">Enter your email</string>
+    <string name="login_password_label">PASSWORD</string>
+    <string name="login_password_hint">Enter your password</string>
+    <string name="login_forgot_password">Forgot your password?</string>
+    <string name="login_button">Log In</string>
+    <string name="login_need_help">Need help?</string>
+    <string name="login_contact_support">Contact Support</string>
+    <string name="login_logo_description">JAAK Logo</string>
+    <string name="login_ssl_icon_description">SSL Secure Lock Icon</string>
+    <string name="login_error_empty_email">Email cannot be empty</string>
+    <string name="login_error_invalid_email">Please enter a valid email</string>
+    <string name="login_error_empty_password">Password cannot be empty</string>
+    <string name="login_error_recaptcha">Please complete the reCAPTCHA verification</string>
+    <string name="login_error_network">Network error. Please check your connection</string>
+    <string name="login_error_credentials">Invalid email or password</string>
+    <string name="login_success">Login successful</string>
+
+    <!-- Bottom Navigation Menu -->
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_sessions_kyc">Sessions KYC</string>
+    <string name="menu_settings">Settings</string>
+
+    <!-- Dashboard Screen -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_description">Welcome to JAAK KYC. Start the identity verification process.</string>
+    <string name="dashboard_start_kyc">Start KYC Process</string>
+    <string name="dashboard_kyc_info">Click to begin identity verification</string>
+    <string name="dashboard_new_profile">New Profile</string>
+    <string name="loading_creating_session">Creating KYC session...</string>
+    <string name="dashboard_logo">JAAK Logo</string>
+    <string name="dashboard_greeting">Good morning</string>
+    <string name="dashboard_role">Role:</string>
+    <string name="dashboard_role_icon">Role Icon</string>
+    <string name="dashboard_email_icon">Email Icon</string>
+    <string name="dashboard_quick_start">Quick Start KYC</string>
+    <string name="dashboard_quick_start_description">Create and start KYC sessions with one tap using predefined profiles</string>
+    <string name="dashboard_quick_icon">Quick Start Icon</string>
+    <string name="dashboard_quick_start_action">Tap to create and start session</string>
+    <string name="dashboard_arrow">Arrow</string>
+    <string name="dashboard_manual_creation">Manual Creation</string>
+    <string name="dashboard_manual_creation_description">Configure every detail of your KYC session</string>
+    <string name="dashboard_add_session">Add New Session</string>
+    <string name="dashboard_new_session">New KYC Session</string>
+    <string name="dashboard_recent_activity">Recent Activity</string>
+    <string name="dashboard_coming_soon">Coming soon</string>
+    <string name="dashboard_stats_icon">Statistics Icon</string>
+    <string name="dashboard_stats_placeholder">Statistics and metrics will appear here</string>
+    <string name="dashboard_no_profiles">No profiles configured</string>
+    <string name="dashboard_create_profile_hint">Create a profile in Settings to use quick start</string>
+    <string name="dashboard_go_to_settings">Create Profile →</string>
+    <string name="dashboard_no_profile_icon">No Profile Icon</string>
+    <string name="logout">Logout</string>
+
+    <!-- Profiles List Screen -->
+    <string name="profiles_list_title">KYC Profiles</string>
+    <string name="add_profile">Add Profile</string>
+    <string name="no_profiles">No profiles configured</string>
+    <string name="tap_add_profile">Tap the + button to create your first profile</string>
+    <string name="navigate_to_profile">View profile</string>
+    <string name="default_badge">Default</string>
+    <string name="delete_profile_title">Delete profile</string>
+    <string name="delete_profile_message">Are you sure you want to delete the profile \"%1$s\"?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Edit Profile Screen -->
+    <string name="edit_profile_title">New Profile</string>
+    <string name="profile_name_label">Profile name *</string>
+    <string name="profile_name_hint">E.g: Mexico Quick KYC</string>
+    <string name="contact_name_label">Contact name *</string>
+    <string name="contact_name_hint">Contact name</string>
+    <string name="flow_name_label">Flow name *</string>
+    <string name="flow_name_hint">Flow name</string>
+    <string name="redirect_url_label">Redirect URL</string>
+    <string name="document_country_label">Documentation country *</string>
+    <string name="flow_type_label">Flow type</string>
+    <string name="validation_method_label">Validation method</string>
+    <string name="verification_value_label">Verification value</string>
+    <string name="verification_value_hint">Email, phone number or WhatsApp</string>
+    <string name="mark_as_default">Mark as default</string>
+    <string name="update_profile">Save Profile</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Configuration</string>
+    <string name="settings_profile_photo">Profile Photo</string>
+    <string name="settings_admin">Administrator</string>
+    <string name="settings_active">Active</string>
+    <string name="settings_inactive">Inactive</string>
+    <string name="settings_company">Company</string>
+    <string name="settings_company_name">Name</string>
+    <string name="settings_company_icon">Company Icon</string>
+    <string name="settings_application">Application</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_version_icon">Version Icon</string>
+    <string name="settings_kyc">KYC</string>
+    <string name="settings_profile">Environment</string>
+    <string name="settings_profile_icon">Profile Icon</string>
+    <string name="settings_session_profiles">Session Profiles</string>
+    <string name="settings_session_profiles_icon">Session Profiles Icon</string>
+    <string name="settings_arrow_icon">Arrow Icon</string>
+    <string name="settings_session">Session</string>
+    <string name="settings_logout">Log Out</string>
+    <string name="settings_profile_change_title">Change Environment</string>
+    <string name="settings_profile_change_message">Do you want to change the environment to %1$s?\n\nAPI URL: %2$s</string>
+    <string name="settings_profile_change_confirm">Change</string>
+    <string name="settings_profile_change_cancel">Cancel</string>
+    <string name="settings_restart_required_title">Restart Required</string>
+    <string name="settings_restart_required_message">The application needs to restart to apply the new environment settings.</string>
+    <string name="settings_restart_now">Restart Now</string>
+    <string name="settings_restart_later">Restart Later</string>
+    <string name="settings_logout_confirmation_title">Log Out</string>
+    <string name="settings_logout_confirmation_message">Are you sure you want to log out?</string>
+    <string name="settings_logout_confirm">Yes</string>
+    <string name="settings_logout_cancel">Cancel</string>
+
+    <!-- Sessions KYC Strings -->
+    <string name="sessions_title">KYC Sessions</string>
+    <string name="sessions_search_hint">Search by shortkey, name, flow or ID...</string>
+    <string name="sessions_filters">Filters</string>
+    <string name="sessions_empty_title">Select a session</string>
+    <string name="sessions_empty_subtitle">Tap a session from the list to see its details</string>
+    <string name="session_status_icon">Session Status Icon</string>
+    <string name="session_score_label">Score</string>
+    <string name="session_arrow_icon">Arrow Icon</string>
+    <string name="session_document_icon">Document Icon</string>
+    <string name="session_status_pending">Pending</string>
+    <string name="session_status_expired">Expired</string>
+    <string name="session_status_rejected">Rejected</string>
+    <string name="session_status_success">Success</string>
+    <string name="filters_title">Filter Sessions</string>
+    <string name="filters_date_subtitle">Select date and time range</string>
+    <string name="filter_start_date">Start Date</string>
+    <string name="filter_start_time">Start Time</string>
+    <string name="filter_end_date">End Date</string>
+    <string name="filter_end_time">End Time</string>
+    <string name="clear_filters">Clear</string>
+    <string name="apply_filters">Select</string>
+    <string name="error_end_date_before_start">End date cannot be before start date</string>
+    <string name="error_end_time_before_start">End time must be after start time</string>
+
+    <!-- Session Detail Strings -->
+    <string name="session_detail_title">Session Detail</string>
+    <string name="user_photo">User photo</string>
+    <string name="score_total">Total</string>
+    <string name="score_document">Document</string>
+    <string name="score_liveness">Liveness</string>
+    <string name="score_oto">1-to-1</string>
+    <string name="tab_info">Info</string>
+    <string name="tab_document">Document</string>
+    <string name="tab_liveness">Liveness</string>
+    <string name="tab_oto">One-to-One</string>
+
+    <!-- Session Info Fragment -->
+    <string name="user_information">User Information</string>
+    <string name="name_label">Name</string>
+    <string name="state_label">State</string>
+    <string name="state_colon">State:</string>
+    <string name="stage_colon">Stage:</string>
+    <string name="score_label">Score</string>
+    <string name="created_label">Created</string>
+    <string name="duration_label">Duration</string>
+    <string name="quick_scores">Quick Scores</string>
+    <string name="document_label">Document</string>
+    <string name="one_to_one_label">1:1</string>
+    <string name="recent_events">Recent Events</string>
+    <string name="view_all">View all</string>
+
+    <!-- Session Liveness Fragment -->
+    <string name="session_data">Session Data</string>
+    <string name="flow_id">Flow ID</string>
+    <string name="shortkey_label">shortKey</string>
+    <string name="shortkey_title">ShortKey</string>
+    <string name="flow_name">Flow Name</string>
+    <string name="started_label">Started</string>
+    <string name="updated_label">Updated</string>
+    <string name="expired_label">Expired</string>
+    <string name="total_flow_time">Total Flow Time</string>
+    <string name="origin_label">Origin</string>
+    <string name="validation_label">Validation</string>
+    <string name="flow_type">Flow Type</string>
+    <string name="consent_label">Consent</string>
+    <string name="contact_data">Contact Data</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="contact_label">Contact</string>
+    <string name="captured_first_names">Captured First Names</string>
+    <string name="captured_last_names">Captured Last Names</string>
+    <string name="city_label">City</string>
+    <string name="country_label">Country</string>
+    <string name="location_label">Location</string>
+    <string name="view_link">View</string>
+
+    <!-- Session Document & OTO Fragments -->
+    <string name="document_title_emoji">📄 Document</string>
+    <string name="one_to_one_title_emoji">👤 One-to-One</string>
+
+    <!-- Edit Session Profile -->
+    <string name="redirect_url_hint">https://example.com</string>
+    <string name="kyc_traditional">Traditional KYC</string>
+
+    <!-- Session List -->
+    <string name="date_label">Date</string>
+    <string name="sessions_kyc_coming_soon">Sessions KYC Screen\n(Coming Soon)</string>
+
+    <!-- Dashboard Fallback Values -->
+    <string name="dashboard_fallback_name">DANIELA</string>
+    <string name="dashboard_fallback_role">Administrator</string>
+    <string name="dashboard_fallback_email">daniela.robles@jaak.ai</string>
+    <string name="dashboard_no_name">User without name</string>
+    <string name="dashboard_logout_button">Log Out</string>
+
+    <!-- Error Messages -->
+    <string name="error_no_default_profile">No default profile configured</string>
+    <string name="error_api_key_unavailable">Error: API Key not available</string>
+    <string name="error_create_flow_failed">Error creating KYC flow: %s</string>
+    <string name="error_empty_server_response">Error: Empty server response</string>
+    <string name="error_create_session_failed">Error creating session: %s</string>
+    <string name="error_empty_session_response">Error: Empty session response</string>
+    <string name="error_network">Network error: %s</string>
+    <string name="error_loading_sessions">Error loading sessions: %s</string>
+    <string name="error_invalid_session_id">Invalid Session ID</string>
+    <string name="error_field_required">Required field</string>
+
+    <!-- Session Detail Info -->
+    <string name="user_no_name">User without name</string>
+    <string name="info_total_time_format">Total Time\n%s</string>
+    <string name="info_total_time_na">Total Time\nN/A</string>
+    <string name="info_default_subtitle">test</string>
+    <string name="info_flow_label_format">Flow: %s</string>
+    <string name="liveness_total_time_format">Total Time\n%s</string>
+    <string name="liveness_total_time_na">Total Time\nN/A</string>
+
+    <!-- Session Messages -->
+    <string name="sessions_loaded_more">Loaded %d more sessions</string>
+    <string name="document_no_data_available">No document data available</string>
+    <string name="oto_no_data_available">No one-to-one data available</string>
+
+    <!-- Location Dialog -->
+    <string name="location_dialog_title">Open location</string>
+    <string name="location_dialog_message">How do you want to view the location?</string>
+    <string name="location_google_maps">Google Maps</string>
+
+    <!-- Settings Fallback Values -->
+    <string name="settings_fallback_name">DANIELA</string>
+    <string name="settings_fallback_email">daniela.robles@jaak.ai</string>
+    <string name="settings_fallback_company">JAAK COMPLIANCE</string>
+    <string name="settings_version_unknown">Unknown</string>
+
+    <!-- Profile Messages -->
+    <string name="profile_created_success">Profile created successfully</string>
+    <string name="profile_updated_success">Profile updated successfully</string>
 
 </resources>

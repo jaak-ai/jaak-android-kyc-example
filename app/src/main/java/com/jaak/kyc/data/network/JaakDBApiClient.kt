@@ -16,13 +16,23 @@ import com.jaak.kyc.data.model.otoverify.OtoVerifyResponse
 import com.jaak.kyc.data.model.session.SessionResponse
 import com.jaak.kyc.data.model.verify.VerifyRequest
 import com.jaak.kyc.data.model.verify.VerifyResponse
+import com.jaak.kyc.data.model.api.SessionListResponse
+import com.jaak.kyc.data.model.api.SessionDetailResponse
+import com.jaak.kyc.data.model.api.LoginRequest
+import com.jaak.kyc.data.model.api.LoginResponse
+import com.jaak.kyc.data.model.flow.CreateFlowRequest
+import com.jaak.kyc.data.model.flow.CreateFlowResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface JaakDBApiClient {
 
+    // POST /api/v1/kyc/session - CREAR nueva sesión con shortkey
     @POST("api/v1/kyc/session")
     suspend fun sessionApi(@Header("Short-Key") shortKey: String,
                            @Header("Origin-Device") originDevice: String): Response<SessionResponse>
@@ -54,5 +64,38 @@ interface JaakDBApiClient {
     @POST("api/v2/blacklist/investigate")
     suspend fun blacklistInvestigateApi(@Header("Authorization") auth: String,
                                         @Body request: BlacklistRequest): Response<BlacklistResponse>
+
+    // GET /api/v1/kyc/session - LISTAR sesiones existentes
+    @GET("api/v1/kyc/session")
+    suspend fun getSessionListApi(
+        @Header("Authorization") auth: String,
+        @Header("Language") language: String = "es",
+        @Query("id") id: String? = null,
+        @Query("shortKey") shortKey: String? = null,
+        @Query("contactName") contactName: String? = null,
+        @Query("flowName") flowName: String? = null,
+        @Query("limit") limit: Int? = 20,
+        @Query("page") page: Int? = 1,
+        @Query("min-created-at") minCreatedAt: String? = null,
+        @Query("max-created-at") maxCreatedAt: String? = null
+    ): Response<SessionListResponse>
+
+    // GET /api/v1/kyc/session/{id} - OBTENER detalle de sesión específica
+    @GET("api/v1/kyc/session/{id}")
+    suspend fun getSessionDetailApi(
+        @Path("id") sessionId: String,
+        @Header("Authorization") auth: String
+    ): Response<SessionDetailResponse>
+
+    // POST /api/auth/sign-in - LOGIN de usuario
+    @POST("api/auth/sign-in")
+    suspend fun loginApi(@Body request: LoginRequest): Response<LoginResponse>
+
+    // POST /api/v1/kyc/flow - CREAR flujo KYC y obtener sessionUrl
+    @POST("api/v1/kyc/flow")
+    suspend fun createFlowApi(
+        @Header("Authorization") auth: String,
+        @Body request: CreateFlowRequest
+    ): Response<CreateFlowResponse>
 
 }

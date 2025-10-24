@@ -6,7 +6,7 @@ data class DocumentExtractV4Response(
     @SerializedName("eventId") val eventId: String,
     @SerializedName("requestId") val requestId: String,
     @SerializedName("status") val status: String,
-    @SerializedName("content") val content: DocumentExtractV4Content,
+    @SerializedName("content") val content: DocumentExtractV4Content?, // nullable cuando status es REJECTED
     @SerializedName("processingTime") val processingTime: String,
     @SerializedName("state") val state: DocumentExtractV4State
 )

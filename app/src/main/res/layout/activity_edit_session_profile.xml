@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaak_background_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <!-- Header con botón cancelar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/cancel"
+                android:textColor="@color/jaak_primary"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/edit_profile_title"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- Contenido del formulario -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Nombre del perfil -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_name_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etProfileName"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="@string/profile_name_hint"
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+
+            <!-- Nombre del contacto -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_name_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etContactName"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="@string/contact_name_hint"
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+
+            <!-- Nombre del flujo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flow_name_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etFlowName"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="@string/flow_name_hint"
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+
+            <!-- URL de redireccionamiento -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/redirect_url_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etRedirectUrl"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="@string/redirect_url_hint"
+                android:inputType="textUri"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+
+            <!-- País de documentación -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/document_country_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerCountry"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:paddingHorizontal="16dp" />
+
+            <!-- Tipo de flujo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flow_type_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFlowType"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:text="@string/kyc_traditional"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="16sp" />
+
+            <!-- Medio de validación -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/validation_method_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinnerValidationMethod"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:paddingHorizontal="16dp" />
+
+            <!-- Valor de verificación (Email, SMS o WhatsApp) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verification_value_label"
+                android:textColor="@color/jaak_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etVerificationValue"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="@string/verification_value_hint"
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+
+            <!-- Marcar como predeterminado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/mark_as_default"
+                    android:textColor="@color/jaak_text_primary"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/switch_track_color" />
+            </LinearLayout>
+
+            <!-- Botón Actualizar Perfil -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateProfile"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:enabled="false"
+                android:text="@string/update_profile"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/button_background_color"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

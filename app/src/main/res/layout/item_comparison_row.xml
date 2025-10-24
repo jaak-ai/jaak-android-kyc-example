@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout para tabla de comparación 1:1 con 4 columnas -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="8dp">
+
+    <!-- Header (solo para primera fila) -->
+    <LinearLayout
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp"
+        android:background="@color/jaak_background_light"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Propiedad"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_secondary"
+            android:paddingStart="8dp"
+            android:paddingEnd="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Datos recibidos"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_secondary"
+            android:paddingHorizontal="4dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Datos esperados"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_secondary"
+            android:paddingHorizontal="4dp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:text="Resultados"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_secondary"
+            android:paddingStart="4dp"
+            android:paddingEnd="8dp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- Data Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/tvProperty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_primary"
+            android:paddingStart="8dp"
+            android:paddingEnd="4dp"
+            tools:text="Score" />
+
+        <TextView
+            android:id="@+id/tvDataReceived"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/jaak_text_secondary"
+            android:paddingHorizontal="4dp"
+            android:gravity="center"
+            tools:text="96.38 %" />
+
+        <TextView
+            android:id="@+id/tvDataExpected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/jaak_text_secondary"
+            android:paddingHorizontal="4dp"
+            android:gravity="center"
+            tools:text="Mayor a 96..." />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="8dp">
+
+            <ImageView
+                android:id="@+id/ivResultIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_check_small"
+                android:contentDescription="Result icon"
+                app:tint="@color/jaak_success"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                android:id="@+id/tvResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:textColor="@color/jaak_success"
+                tools:text="Correcto" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/jaak_divider" />
+
+</LinearLayout>

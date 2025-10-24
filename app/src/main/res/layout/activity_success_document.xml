@@ -386,8 +386,7 @@
                     <!-- Progress Bar (Green) -->
                     <ProgressBar
                         android:id="@+id/loading"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
+                        style="@style/JaakProgressBar.Large"
                         android:indeterminateTint="@color/jaak_success"
                         android:visibility="visible"
                         app:layout_constraintBottom_toTopOf="@+id/tvProcessStatus"

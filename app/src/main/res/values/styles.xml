@@ -239,4 +239,29 @@
         <item name="android:enabled">false</item>
     </style>
 
+    <!-- ========== JAAK PROGRESS BAR STYLES ========== -->
+
+    <!-- Standard Progress Bar Style (Green) -->
+    <style name="JaakProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/green_instruction</item>
+    </style>
+
+    <!-- Small Progress Bar (24dp) -->
+    <style name="JaakProgressBar.Small">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+
+    <!-- Medium Progress Bar (48dp) - Default for dialogs -->
+    <style name="JaakProgressBar.Medium">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <!-- Large Progress Bar (64dp) -->
+    <style name="JaakProgressBar.Large">
+        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+
 </resources>

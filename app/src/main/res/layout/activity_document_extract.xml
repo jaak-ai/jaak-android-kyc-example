@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaak_background">
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Extracción de Documento"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido principal -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ========== SECCIÓN: Imagen documento ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Imagen documento"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Container horizontal para ambos documentos -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Documento Frontal -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingEnd="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Documento\nFrontal"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/jaak_text_primary"
+                                android:layout_marginBottom="8dp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="120dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="2dp">
+
+                                <ImageView
+                                    android:id="@+id/ivDocumentFront"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:contentDescription="Documento Frontal"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:foreground="?attr/selectableItemBackground" />
+
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <!-- Documento Trasero -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Documento\nTrasero"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/jaak_text_primary"
+                                android:layout_marginBottom="8dp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="120dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="2dp">
+
+                                <ImageView
+                                    android:id="@+id/ivDocumentBack"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:contentDescription="Documento Trasero"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:foreground="?attr/selectableItemBackground" />
+
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Extracción de datos (OCR) ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Título -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Extracción de datos (OCR)"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="12dp" />
+
+                        <!-- Tiempo de procesamiento -->
+                        <TextView
+                            android:id="@+id/tvProcessingTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="16dp"
+                            tools:text="Tiempo de procesamiento: N/A" />
+
+                        <!-- Subtítulo: Datos personales -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Datos personales"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="12dp" />
+
+                        <!-- Nombre completo -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre completo:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvFullName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="DANIELA JUDITH ROBLES VASQUEZ" />
+
+                        <!-- Nombre -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nombre:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="DANIELA" />
+
+                        <!-- Segundo nombre -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Segundo nombre:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvMiddleName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="JUDITH" />
+
+                        <!-- Apellido materno -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Apellido materno:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvMotherLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="VASQUEZ" />
+
+                        <!-- Apellido paterno -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Apellido paterno:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvFatherLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="ROBLES" />
+
+                        <!-- Fecha de nacimiento -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fecha de nacimiento:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvBirthDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="10/02/1999" />
+
+                        <!-- Lugar de nacimiento -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lugar de nacimiento:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvBirthPlace"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="-" />
+
+                        <!-- Género -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Género:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvGender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="Femenino" />
+
+                        <!-- Nacionalidad -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nacionalidad:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvNationality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="MEXICAN" />
+
+                        <!-- Estado civil -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Estado civil:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvMaritalStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="-" />
+
+                        <!-- OCR -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="OCR:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvOcr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="1327107379263" />
+
+                        <!-- Año de registro -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Año de registro:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvRegistrationYear"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginBottom="8dp"
+                            tools:text="2016 01" />
+
+                        <!-- RFC -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="RFC:"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginBottom="2dp" />
+                        <TextView
+                            android:id="@+id/tvRfc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            tools:text="ROVD990210L4A" />
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Domicilio ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Domicilio"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Dirección completa -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dirección completa:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvFullAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="AV CHAPULETEPEC 7 COL VISTA HERMOSA 55028 ECATEPEC DE MORELOS, MEX" />
+
+                    <!-- Código postal -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Código postal:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvPostalCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="55028" />
+
+                    <!-- Ciudad -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ciudad:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="ECATEPEC DE MORELOS" />
+
+                    <!-- Número exterior -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número exterior:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvExteriorNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="7" />
+
+                    <!-- Número interior -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número interior:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvInteriorNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="No proporcionado" />
+
+                    <!-- Colonia -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Colonia:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvNeighborhood"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="VISTA HERMOSA" />
+
+                    <!-- Estado -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estado:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="ESTADO DE MEXICO" />
+
+                    <!-- Calle -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Calle:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvStreet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        tools:text="AVENIDA CHAPULETEPEC" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Documento ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Documento"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Número adicional -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número adicional:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvAdditionalNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="RBVSDN99021015M800" />
+
+                    <!-- Fecha de emisión -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha de emisión:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvIssueDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="01/01/2019" />
+
+                    <!-- Autoridad emisora -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Autoridad emisora:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvIssuingAuthority"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="INE" />
+
+                    <!-- Número -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvDocumentNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="8dp"
+                        tools:text="194108329" />
+
+                    <!-- Número de identificación personal -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Número de identificación personal:"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="2dp" />
+                    <TextView
+                        android:id="@+id/tvPersonalIdNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        tools:text="ROVD990210MMCBSN07" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Estados OCR ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardEstadosOcr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estados OCR"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- RecyclerView para Estados OCR -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvEstadosOcr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="3" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ========== SECCIÓN: Fotos OCR ========== -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_surface">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Título -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fotos OCR"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Foto OCR -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center_horizontal"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="2dp">
+
+                        <ImageView
+                            android:id="@+id/ivOcrPhoto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="Foto OCR"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

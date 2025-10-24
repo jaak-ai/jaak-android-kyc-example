@@ -67,7 +67,8 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
 
     override fun onSuccessStamps(typeProcess: Int,
                                  frontOriginalUri: Uri?, frontCropUri: Uri?,
-                                 backOriginalUri: Uri?, backCropUri: Uri?) {
+                                 backOriginalUri: Uri?, backCropUri: Uri?,
+                                 frontFaceCropUri: Uri?) {
 
         // 🔧 Convertir URIs temporales → archivos permanentes
         val frontImagePath = frontCropUri?.let {

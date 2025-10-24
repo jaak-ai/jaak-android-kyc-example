@@ -9,18 +9,18 @@ object BlacklistRequestBuilder {
      * Crea un payload de blacklist a partir del response de Document Extract V4
      */
     fun createPayloadFromDocumentExtract(ocrResponse: DocumentExtractV4Response): BlacklistPayload {
-        val personal = ocrResponse.content.data.personal
-        val address = ocrResponse.content.data.address
-        val document = ocrResponse.content.data.document
+        val personal = ocrResponse.content?.data?.personal
+        val address = ocrResponse.content?.data?.address
+        val document = ocrResponse.content?.data?.document
 
         return BlacklistPayload(
             person = BlacklistPerson(
-                name = personal.firstName ?: "",
-                lastName = personal.surname ?: "",
-                secondName = personal.secondName ?: "",
-                secondLastName = personal.motherSurname ?: "",
-                birthDate = personal.dateOfBirth ?: "",
-                nationality = personal.nationality ?: ""
+                name = personal?.firstName ?: "",
+                lastName = personal?.surname ?: "",
+                secondName = personal?.secondName ?: "",
+                secondLastName = personal?.motherSurname ?: "",
+                birthDate = personal?.dateOfBirth ?: "",
+                nationality = personal?.nationality ?: ""
             ),
             address = BlacklistAddress(
                 address = address?.extra?.street ?: address?.fullAddress ?: "",
@@ -32,14 +32,14 @@ object BlacklistRequestBuilder {
                 postalCode = address?.postalCode ?: ""
             ),
             identifications = BlacklistIdentifications(
-                curp = document.personalIdNumber ?: "",
-                rfc = personal.extra?.rfc ?: "",
+                curp = document?.personalIdNumber ?: "",
+                rfc = personal?.extra?.rfc ?: "",
                 socialSecurityNumber = "",
-                electorKey = if (document.type == "I") document.number ?: "" else "", // Clave de elector si es INE
-                ine = if (document.type == "I" && (personal.extra?.ocr != null || document.additionalNumber != null)) {
+                electorKey = if (document?.type == "I") document.number ?: "" else "", // Clave de elector si es INE
+                ine = if (document?.type == "I" && (personal?.extra?.ocr != null || document.additionalNumber != null)) {
                     BlacklistIne(
                         cic = document.additionalNumber ?: "",
-                        ocr = personal.extra?.ocr ?: ""
+                        ocr = personal?.extra?.ocr ?: ""
                     )
                 } else null
             ),

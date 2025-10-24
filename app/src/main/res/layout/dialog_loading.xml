@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="32dp">
+
+    <ProgressBar
+        style="@style/JaakProgressBar.Medium" />
+
+    <TextView
+        android:id="@+id/tvLoadingMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/loading_creating_session"
+        android:textColor="@color/jaak_text_primary"
+        android:textSize="16sp" />
+</LinearLayout>

@@ -80,6 +80,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.jaak.kyc.ui.view.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name="com.jaak.kyc.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.jaak.kyc.ui.view.SecurityPermissionsActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
@@ -110,6 +117,36 @@
         <activity android:name="com.jaak.kyc.ui.view.DocumentVerificationInstructionsActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.EditSessionProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.SessionDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.BlacklistDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.OtoDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.LivenessDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.DocumentDetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.DocumentExtractActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.jaak.kyc.ui.view.ProfilesListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Bloquear actividad LAUNCHER del Visage SDK que causa íconos duplicados -->
+        <activity
+            android:name="com.jaak.visagesdk.ui.view.InitialFormActivity"
+            tools:node="remove"/>
+
         <!-- Notification Action Receivers -->
         <receiver android:name="com.jaak.kyc.notification.NotificationActionReceiver"
             android:enabled="true"

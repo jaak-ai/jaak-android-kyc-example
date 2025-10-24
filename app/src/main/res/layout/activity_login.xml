@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- Logo JAAK -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/login_logo_description"
+            android:src="@drawable/jaak_logo_purple"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/login_title"
+            android:textColor="@color/jaak_text_primary"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+
+        <!-- Indicador SSL Seguro -->
+        <LinearLayout
+            android:id="@+id/llSslIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="@string/login_ssl_icon_description"
+                android:src="@drawable/ic_lock"
+                app:tint="@color/jaak_success" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/login_ssl_secure"
+                android:textColor="@color/jaak_success"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Label Email -->
+        <TextView
+            android:id="@+id/tvEmailLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/login_email_label"
+            android:textColor="@color/jaak_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            app:layout_constraintTop_toBottomOf="@id/llSslIndicator" />
+
+        <!-- Campo Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/jaak_input_border"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tvEmailLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="12dp"
+                android:hint="@string/login_email_hint"
+                android:inputType="textEmailAddress"
+                android:padding="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Label Contraseña -->
+        <TextView
+            android:id="@+id/tvPasswordLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/login_password_label"
+            android:textColor="@color/jaak_text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            app:layout_constraintTop_toBottomOf="@id/tilEmail" />
+
+        <!-- Campo Contraseña -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/jaak_input_border"
+            app:boxStrokeWidth="1dp"
+            app:hintEnabled="false"
+            app:passwordToggleEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/tvPasswordLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="12dp"
+                android:hint="@string/login_password_hint"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textColor="@color/jaak_text_primary"
+                android:textColorHint="@color/jaak_text_tertiary"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Forgot Password Link -->
+        <TextView
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/login_forgot_password"
+            android:textColor="@color/jaak_login_link"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPassword" />
+
+        <!-- reCAPTCHA Container -->
+        <FrameLayout
+            android:id="@+id/flRecaptcha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:minHeight="78dp"
+            app:layout_constraintTop_toBottomOf="@id/tvForgotPassword">
+
+            <!-- Placeholder for reCAPTCHA WebView -->
+            <WebView
+                android:id="@+id/webViewRecaptcha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="78dp" />
+
+        </FrameLayout>
+
+        <!-- Botón Iniciar Sesión -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/login_button"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/jaak_login_button"
+            app:cornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/flRecaptcha" />
+
+        <!-- Help Section -->
+        <LinearLayout
+            android:id="@+id/llHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_need_help"
+                android:textColor="@color/jaak_text_secondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvContactSupport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/login_contact_support"
+                android:textColor="@color/jaak_login_link"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

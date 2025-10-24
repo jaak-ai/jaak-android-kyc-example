@@ -96,7 +96,6 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="32dp"
         android:background="@drawable/bg_button_continue"
         android:backgroundTint="@null"
         android:drawableEnd="@drawable/ic_arrow_forward"
@@ -110,10 +109,45 @@
         android:textColor="@color/button_text_color"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etShort" />
+
+    <!-- Texto "¿Tienes una cuenta?" -->
+    <TextView
+        android:id="@+id/tvHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/have_account"
+        android:textColor="@color/jaak_text_secondary"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBtnStart" />
+
+    <!-- Botón Iniciar Sesión -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@android:color/transparent"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:text="@string/login_button_shortkey"
+        android:textColor="@color/jaak_text_blue"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:icon="@drawable/ic_person"
+        app:iconGravity="start"
+        app:iconPadding="8dp"
+        app:iconTint="@color/jaak_text_blue"
+        app:rippleColor="@color/jaak_primary"
+        app:strokeColor="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHaveAccount" />
 
     <!-- Overlay de progreso (loading) -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,11 +162,10 @@
 
         <ProgressBar
             android:id="@+id/loading"
+            style="@style/JaakProgressBar.Large"
             android:background="@color/orange"
             android:backgroundTint="@android:color/transparent"
-            android:layout_width="100dp"
             android:visibility="visible"
-            android:layout_height="100dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

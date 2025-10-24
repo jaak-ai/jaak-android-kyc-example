@@ -5,6 +5,7 @@ import android.content.Context
 import com.jaak.kyc.BuildConfig
 import com.jaak.kyc.data.network.JaakDBApiClient
 import com.jaak.kyc.domain.service.NetworkConnectivityService
+import com.jaak.kyc.utils.ProfileManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,9 +21,27 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit():Retrofit{
+    fun provideRetrofit(profileManager: ProfileManager): Retrofit {
+        // Usar URL dinámica según el perfil seleccionado
+        val baseUrl = profileManager.getCurrentBaseUrl()
+        android.util.Log.d("NetworkModule", "Using API Base URL: $baseUrl (Profile: ${profileManager.getCurrentProfile()})")
+
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.API_BASE_URL)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    @javax.inject.Named("AuthRetrofit")
+    fun provideAuthRetrofit(profileManager: ProfileManager): Retrofit {
+        // Usar URL de autenticación según el perfil seleccionado
+        val authUrl = profileManager.getCurrentAuthUrl()
+        android.util.Log.d("NetworkModule", "Using Auth URL: $authUrl (Profile: ${profileManager.getCurrentProfile()})")
+
+        return Retrofit.Builder()
+            .baseUrl(authUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -30,6 +49,13 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideJaakApiClient(retrofit: Retrofit): JaakDBApiClient {
+        return retrofit.create(JaakDBApiClient::class.java)
+    }
+
+    @Singleton
+    @Provides
+    @javax.inject.Named("AuthService")
+    fun provideAuthApiClient(@javax.inject.Named("AuthRetrofit") retrofit: Retrofit): JaakDBApiClient {
         return retrofit.create(JaakDBApiClient::class.java)
     }
     @Singleton

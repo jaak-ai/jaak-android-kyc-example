@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Header para tabla de calidad de imagen -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="8dp"
+    android:background="#F5F5F5">
+
+    <!-- Columna 1: Propiedad -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="Propiedad"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/jaak_text_primary"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Columna 2: Datos de imagen -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="Datos de imagen"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/jaak_text_primary"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Columna 3: Datos esperados -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="Datos esperados"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/jaak_text_primary"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Columna 4: Resultados -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Resultados"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/jaak_text_primary" />
+
+</LinearLayout>

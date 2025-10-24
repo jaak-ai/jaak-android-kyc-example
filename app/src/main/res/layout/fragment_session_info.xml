@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaak_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- ========== SECCIÓN: Información del Usuario ========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/jaak_surface">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Título de sección -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_information"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/jaak_text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Contenedor: Foto + Nombre/Tiempo -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Foto del usuario -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        app:cardCornerRadius="32dp"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="@color/jaak_divider">
+
+                        <ImageView
+                            android:id="@+id/ivUserPhoto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/user_photo"
+                            tools:src="@drawable/ic_person" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Info del usuario -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/name_label"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvUserName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            android:layout_marginTop="2dp"
+                            tools:text="DANIELA JUDITH ROBLES VASQUEZ" />
+
+                        <TextView
+                            android:id="@+id/tvTotalTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            tools:text="Tiempo Total\n0m 1s" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ========== SECCIÓN: Estado ========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/jaak_surface">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Título de sección -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/state_label"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/jaak_text_primary"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Estado -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/state_colon"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary" />
+
+                    <TextView
+                        android:id="@+id/tvState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        tools:text="Finalizado" />
+
+                </LinearLayout>
+
+                <!-- Etapa -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/stage_colon"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary" />
+
+                    <TextView
+                        android:id="@+id/tvStage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="Aprobado"
+                        tools:textColor="@color/jaak_success" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ========== SECCIÓN: Info del Flujo KYC ========== -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/jaak_surface">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Contenedor: Ícono Status + Nombre/Puntaje -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <!-- Ícono de status (checkmark o cross) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cvFlowStatusIcon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@color/jaak_success_light">
+
+                        <TextView
+                            android:id="@+id/tvFlowStatusIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_success"
+                            tools:text="✓" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Info del flujo -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical">
+
+                        <!-- Nombre del flujo / shortkey -->
+                        <TextView
+                            android:id="@+id/tvFlowName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/jaak_text_primary"
+                            tools:text="NjvfRCe" />
+
+                        <!-- Subtitle (test) -->
+                        <TextView
+                            android:id="@+id/tvFlowSubtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginTop="2dp"
+                            tools:text="test" />
+
+                        <!-- Flujo: test -->
+                        <TextView
+                            android:id="@+id/tvFlowLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_secondary"
+                            android:layout_marginTop="2dp"
+                            tools:text="Flujo: test" />
+
+                    </LinearLayout>
+
+                    <!-- Puntaje -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="end">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/score_label"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvFlowScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"
+                            tools:text="100.0%"
+                            tools:textColor="@color/jaak_success" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Divisor -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/jaak_divider"
+                    android:layout_marginVertical="8dp" />
+
+                <!-- Fila: Creada / Duración -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <!-- Creada -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="start|center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_clock"
+                            android:contentDescription="@string/created_label"
+                            app:tint="@color/jaak_text_tertiary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/created_label"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_tertiary"
+                            android:layout_marginStart="4dp" />
+
+                    </LinearLayout>
+
+                    <!-- Duración -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="start|center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_clock"
+                            android:contentDescription="@string/duration_label"
+                            app:tint="@color/jaak_text_tertiary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/duration_label"
+                            android:textSize="12sp"
+                            android:textColor="@color/jaak_text_tertiary"
+                            android:layout_marginStart="4dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Fila: Valores Creada / Duración -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvCreatedAt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        tools:text="15/10/2025 16:14" />
+
+                    <TextView
+                        android:id="@+id/tvDuration"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_text_primary"
+                        tools:text="0m 1s" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ========== SECCIÓN: Puntajes Rápidos ========== -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_scores"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_primary"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Grid de 3 cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginBottom="16dp">
+
+            <!-- Card Documento -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvScoreDocument"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_success_light">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/document_label"
+                        android:textSize="12sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvScoreDocument"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_success"
+                        tools:text="100.0%" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Liveness -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvScoreLiveness"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_success_light">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/liveness"
+                        android:textSize="12sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvScoreLiveness"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_success"
+                        tools:text="100.0%" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card 1:1 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvScoreOto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/jaak_success_light">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/one_to_one_label"
+                        android:textSize="12sp"
+                        android:textColor="@color/jaak_text_secondary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvScoreOto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/jaak_success"
+                        tools:text="100.0%" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- ========== SECCIÓN: Eventos Recientes ========== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/recent_events"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/jaak_text_primary" />
+
+            <TextView
+                android:id="@+id/tvViewAllEvents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_all"
+                android:textSize="14sp"
+                android:textColor="@color/jaak_primary"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+
+        <!-- Lista de eventos recientes (RecyclerView placeholder) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecentEvents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@android:layout/simple_list_item_1"
+            tools:itemCount="3" />
+
+    </LinearLayout>
+
+</ScrollView>
