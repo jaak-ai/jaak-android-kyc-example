@@ -52,55 +52,77 @@ object BlacklistRequestBuilder {
     
     /**
      * Crea un request para investigación INE
+     * Solo requiere: identifications.ine (cic, ocr)
      */
     fun createIneRequest(payload: BlacklistPayload): BlacklistRequest {
         return BlacklistRequest(
             services = BlacklistServices(ine = true),
-            payload = payload
+            payload = BlacklistPayload(
+                identifications = payload.identifications // Solo INE
+            )
         )
     }
     
     /**
      * Crea un request para investigación INTERPOL
+     * Solo requiere: person (name, lastName) y extras.wantedIn
      */
     fun createInterpolRequest(payload: BlacklistPayload): BlacklistRequest {
         return BlacklistRequest(
             services = BlacklistServices(interpol = true),
-            payload = payload
+            payload = BlacklistPayload(
+                person = payload.person,
+                extras = BlacklistExtras(wantedIn = "MEX") // Código de país requerido
+            )
         )
     }
     
     /**
      * Crea un request para investigación OFAC
+     * Solo requiere: person (name, lastName) y extras.wantedIn
      */
     fun createOfacRequest(payload: BlacklistPayload): BlacklistRequest {
         return BlacklistRequest(
             services = BlacklistServices(ofac = true),
-            payload = payload
+            payload = BlacklistPayload(
+                person = payload.person,
+                extras = BlacklistExtras(wantedIn = "MEX") // Código de país requerido
+            )
         )
     }
     
     /**
      * Crea un request para investigación RENAPO
+     * Solo requiere: identifications.curp
      */
     fun createRenapoRequest(payload: BlacklistPayload): BlacklistRequest {
         return BlacklistRequest(
             services = BlacklistServices(
                 renapo = BlacklistRenapoService(curp = true)
             ),
-            payload = payload
+            payload = BlacklistPayload(
+                identifications = BlacklistIdentifications(
+                    curp = payload.identifications?.curp ?: ""
+                )
+            )
         )
     }
     
     /**
-     * Crea un request para investigación SAT
+     * Crea un request para investigación SAT69B
+     * Solo requiere: person (name, lastName) e identifications.rfc
      */
     fun createSatRequest(payload: BlacklistPayload): BlacklistRequest {
         return BlacklistRequest(
             services = BlacklistServices(
                 sat = BlacklistSatService(sat69b = true)
             ),
-            payload = payload
+            payload = BlacklistPayload(
+                person = payload.person,
+                identifications = BlacklistIdentifications(
+                    rfc = payload.identifications?.rfc ?: ""
+                )
+            )
         )
     }
     

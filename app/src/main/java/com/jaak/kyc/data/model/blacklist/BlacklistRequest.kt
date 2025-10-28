@@ -29,10 +29,10 @@ data class BlacklistCdcService(
 )
 
 data class BlacklistPayload(
-    @SerializedName("person") val person: BlacklistPerson,
-    @SerializedName("address") val address: BlacklistAddress,
-    @SerializedName("identifications") val identifications: BlacklistIdentifications,
-    @SerializedName("extras") val extras: BlacklistExtras
+    @SerializedName("person") val person: BlacklistPerson? = null,
+    @SerializedName("address") val address: BlacklistAddress? = null,
+    @SerializedName("identifications") val identifications: BlacklistIdentifications? = null,
+    @SerializedName("extras") val extras: BlacklistExtras? = null
 )
 
 data class BlacklistPerson(

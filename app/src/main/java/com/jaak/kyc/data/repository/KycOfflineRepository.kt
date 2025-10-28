@@ -1058,11 +1058,11 @@ class KycOfflineRepository @Inject constructor(
             val payload = com.jaak.kyc.utils.BlacklistRequestBuilder.createPayloadFromDocumentExtract(ocrResponse)
 
             android.util.Log.d("KycOfflineRepository", "📞 Payload created:")
-            android.util.Log.d("KycOfflineRepository", "📞   - Name: ${payload.person.name} ${payload.person.lastName}")
-            android.util.Log.d("KycOfflineRepository", "📞   - CURP: ${payload.identifications.curp}")
-            android.util.Log.d("KycOfflineRepository", "📞   - RFC: ${payload.identifications.rfc}")
-            android.util.Log.d("KycOfflineRepository", "📞   - INE OCR: ${payload.identifications.ine?.ocr}")
-            android.util.Log.d("KycOfflineRepository", "📞   - INE CIC: ${payload.identifications.ine?.cic}")
+            android.util.Log.d("KycOfflineRepository", "📞   - Name: ${payload.person?.name} ${payload.person?.lastName}")
+            android.util.Log.d("KycOfflineRepository", "📞   - CURP: ${payload.identifications?.curp}")
+            android.util.Log.d("KycOfflineRepository", "📞   - RFC: ${payload.identifications?.rfc}")
+            android.util.Log.d("KycOfflineRepository", "📞   - INE OCR: ${payload.identifications?.ine?.ocr}")
+            android.util.Log.d("KycOfflineRepository", "📞   - INE CIC: ${payload.identifications?.ine?.cic}")
 
             // Lanzar los 5 servicios secuencialmente (fire-and-forget)
             android.util.Log.d("KycOfflineRepository", "📞 ============ CALLING BLACKLIST SERVICES ============")
