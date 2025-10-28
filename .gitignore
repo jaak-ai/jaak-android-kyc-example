@@ -28,3 +28,6 @@
 /idea/*
 /.idea/
 /build/
+
+# Ignorar configuración local con URLs sensibles
+local.properties
