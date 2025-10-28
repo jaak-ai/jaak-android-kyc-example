@@ -31,3 +31,6 @@
 
 # Ignorar configuración local con URLs sensibles
 local.properties
+
+# Ignorar archivo de configuración de Firebase con API keys
+app/google-services.json

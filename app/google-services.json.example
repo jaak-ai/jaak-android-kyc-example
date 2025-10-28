@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "530359740026",
-    "project_id": "kyc-demo-android",
-    "storage_bucket": "kyc-demo-android.firebasestorage.app"
+    "project_number": "YOUR_PROJECT_NUMBER",
+    "project_id": "your-project-id",
+    "storage_bucket": "your-project-id.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:530359740026:android:61f274d1d9f3cd3f3cbdc3",
+        "mobilesdk_app_id": "YOUR_MOBILE_SDK_APP_ID",
         "android_client_info": {
           "package_name": "com.jaak.kyc"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAGu3G5MF7MMQqAhABq26zYK1PPCa66odo"
+          "current_key": "YOUR_FIREBASE_API_KEY_HERE"
         }
       ],
       "services": {
