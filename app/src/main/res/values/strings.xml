@@ -421,4 +421,9 @@
     <string name="profile_created_success">Profile created successfully</string>
     <string name="profile_updated_success">Profile updated successfully</string>
 
+    <!-- reCAPTCHA Configuration -->
+    <string name="recaptcha_site_key">6Lc5QfsrAAAAAOzKVU6MrlujsvjbEDZtgEnKSdFa</string>
+    <string name="recaptcha_verifying">Verifying you are not a robot...</string>
+    <string name="recaptcha_error">reCAPTCHA verification failed. Please try again.</string>
+
 </resources>

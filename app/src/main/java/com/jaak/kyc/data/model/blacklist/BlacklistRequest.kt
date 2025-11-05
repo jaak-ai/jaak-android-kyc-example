@@ -55,10 +55,10 @@ data class BlacklistAddress(
 )
 
 data class BlacklistIdentifications(
-    @SerializedName("curp") val curp: String = "",
-    @SerializedName("rfc") val rfc: String = "",
-    @SerializedName("socialSecurityNumber") val socialSecurityNumber: String = "",
-    @SerializedName("electorKey") val electorKey: String = "",
+    @SerializedName("curp") val curp: String? = null,
+    @SerializedName("rfc") val rfc: String? = null,
+    @SerializedName("socialSecurityNumber") val socialSecurityNumber: String? = null,
+    @SerializedName("electorKey") val electorKey: String? = null,
     @SerializedName("ine") val ine: BlacklistIne? = null
 )
 

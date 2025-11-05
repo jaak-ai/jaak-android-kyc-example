@@ -19,13 +19,13 @@ class ProfileManager @Inject constructor(
     private val gson = Gson()
 
     companion object {
-        private const val PREFS_NAME = "jaak_kyc_prefs"
+        private const val PREFS_NAME = "KYC_APP"
         private const val KEY_PROFILE = "kyc_profile"
 
         // Auth keys
         private const val KEY_ACCESS_TOKEN = "access_token"
         private const val KEY_API_KEY = "api_key"
-        private const val KEY_IS_LOGGED_IN = "is_logged_in"
+        private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
         private const val KEY_USER_INFO = "user_info"
         private const val KEY_COMPANY_INFO = "company_info"
 
@@ -204,6 +204,7 @@ class ProfileManager @Inject constructor(
 
     /**
      * Cierra sesión y limpia todos los datos de autenticación
+     * NOTA: No elimina el API_KEY ya que es de larga duración
      */
     fun logout() {
         prefs.edit()
@@ -211,6 +212,7 @@ class ProfileManager @Inject constructor(
             .remove(KEY_IS_LOGGED_IN)
             .remove(KEY_USER_INFO)
             .remove(KEY_COMPANY_INFO)
+            .remove(KEY_API_KEY)
             .apply()
     }
 

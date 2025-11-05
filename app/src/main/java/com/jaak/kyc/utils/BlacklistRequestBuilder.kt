@@ -35,8 +35,9 @@ object BlacklistRequestBuilder {
                 curp = document?.personalIdNumber ?: "",
                 rfc = personal?.extra?.rfc ?: "",
                 socialSecurityNumber = "",
-                electorKey = if (document?.type == "I") document.number ?: "" else "", // Clave de elector si es INE
-                ine = if (document?.type == "I" && (personal?.extra?.ocr != null || document.additionalNumber != null)) {
+                electorKey = if (document?.type?.contains("VOTER_ID", ignoreCase = true) == true) document.number ?: "" else "",
+                ine = if (document?.type?.contains("VOTER_ID", ignoreCase = true) == true &&
+                         (personal?.extra?.ocr != null || document.additionalNumber != null)) {
                     BlacklistIne(
                         cic = document.additionalNumber ?: "",
                         ocr = personal?.extra?.ocr ?: ""
@@ -58,7 +59,9 @@ object BlacklistRequestBuilder {
         return BlacklistRequest(
             services = BlacklistServices(ine = true),
             payload = BlacklistPayload(
-                identifications = payload.identifications // Solo INE
+                identifications = BlacklistIdentifications(
+                    ine = payload.identifications?.ine // Solo el objeto INE con cic y ocr
+                )
             )
         )
     }
@@ -72,7 +75,7 @@ object BlacklistRequestBuilder {
             services = BlacklistServices(interpol = true),
             payload = BlacklistPayload(
                 person = payload.person,
-                extras = BlacklistExtras(wantedIn = "MEX") // Código de país requerido
+                extras = BlacklistExtras(wantedIn = "MX") // Código ISO 3166 Alpha-2 (2 letras)
             )
         )
     }
@@ -86,7 +89,7 @@ object BlacklistRequestBuilder {
             services = BlacklistServices(ofac = true),
             payload = BlacklistPayload(
                 person = payload.person,
-                extras = BlacklistExtras(wantedIn = "MEX") // Código de país requerido
+                extras = BlacklistExtras(wantedIn = "MX") // Código ISO 3166 Alpha-2 (2 letras)
             )
         )
     }
@@ -102,7 +105,7 @@ object BlacklistRequestBuilder {
             ),
             payload = BlacklistPayload(
                 identifications = BlacklistIdentifications(
-                    curp = payload.identifications?.curp ?: ""
+                    curp = payload.identifications?.curp  // Solo CURP, otros campos null
                 )
             )
         )
@@ -120,7 +123,7 @@ object BlacklistRequestBuilder {
             payload = BlacklistPayload(
                 person = payload.person,
                 identifications = BlacklistIdentifications(
-                    rfc = payload.identifications?.rfc ?: ""
+                    rfc = payload.identifications?.rfc  // Solo RFC, otros campos null
                 )
             )
         )

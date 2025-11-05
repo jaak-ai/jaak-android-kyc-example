@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.recaptcha.Recaptcha
+import com.google.android.recaptcha.RecaptchaAction
+import com.google.android.recaptcha.RecaptchaClient
 import com.jaak.kyc.R
 import com.jaak.kyc.data.model.api.LoginRequest
 import com.jaak.kyc.data.network.JaakDBApiClient
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private var recaptchaToken: String? = null
+    private var recaptchaClient: RecaptchaClient? = null
 
     @Inject
     lateinit var jaakDBService: JaakDBService
@@ -66,23 +68,61 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupRecaptcha() {
-        // TODO: Implementar reCAPTCHA Android con SafetyNet API
-        // El reCAPTCHA v2 web no funciona en Android nativo porque requiere un dominio web válido
-        //
-        // Para implementar reCAPTCHA en Android:
-        // 1. Configurar reCAPTCHA Android en Google Cloud Console
-        // 2. Agregar dependencia: implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
-        // 3. Usar SafetyNet Attestation API
-        //
-        // Documentación: https://developer.android.com/training/safetynet/recaptcha
-
-        // Por ahora, ocultar reCAPTCHA y NO enviar token
+        // Ocultar el contenedor de reCAPTCHA (no necesitamos UI visible)
         binding.flRecaptcha.visibility = View.GONE
 
-        // NO enviar token hasta que se configure reCAPTCHA Android
-        recaptchaToken = null
+        Log.d("LoginActivity", "Inicializando reCAPTCHA Enterprise...")
 
-        Log.d("LoginActivity", "reCAPTCHA Android no configurado - enviando sin token")
+        // Inicializar reCAPTCHA Enterprise de forma asíncrona
+        lifecycleScope.launch {
+            try {
+                val siteKey = getString(R.string.recaptcha_site_key)
+                val result = Recaptcha.getClient(application, siteKey)
+
+                result.onSuccess { client ->
+                    recaptchaClient = client
+                    Log.d("LoginActivity", "✅ reCAPTCHA Enterprise inicializado correctamente")
+                }.onFailure { exception ->
+                    Log.e("LoginActivity", "❌ Error inicializando reCAPTCHA: ${exception.message}", exception)
+                }
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "❌ Error inicializando reCAPTCHA: ${e.message}", e)
+            }
+        }
+    }
+
+    private fun executeRecaptcha(onSuccess: (String) -> Unit, onError: () -> Unit) {
+        Log.d("LoginActivity", "Ejecutando reCAPTCHA Enterprise...")
+
+        lifecycleScope.launch {
+            try {
+                val client = recaptchaClient
+                if (client == null) {
+                    Log.e("LoginActivity", "❌ reCAPTCHA client no inicializado")
+                    Toast.makeText(this@LoginActivity, getString(R.string.recaptcha_error), Toast.LENGTH_SHORT).show()
+                    onError()
+                    return@launch
+                }
+
+                // Ejecutar reCAPTCHA con acción LOGIN
+                val result = client.execute(RecaptchaAction.LOGIN)
+
+                result.onSuccess { token ->
+                    Log.d("LoginActivity", "✅ reCAPTCHA token obtenido: ${token.toString().substring(0, minOf(50, token.toString().length))}...")
+                    recaptchaToken = token.toString()
+                    onSuccess(token.toString())
+                }.onFailure { exception ->
+                    Log.e("LoginActivity", "❌ Error en reCAPTCHA: ${exception.message}", exception)
+                    Toast.makeText(this@LoginActivity, getString(R.string.recaptcha_error), Toast.LENGTH_SHORT).show()
+                    onError()
+                }
+
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "❌ Error en reCAPTCHA: ${e.message}", e)
+                Toast.makeText(this@LoginActivity, getString(R.string.recaptcha_error), Toast.LENGTH_SHORT).show()
+                onError()
+            }
+        }
     }
 
     private fun attemptLogin() {
@@ -110,50 +150,54 @@ class LoginActivity : AppCompatActivity() {
             hasError = true
         }
 
-        // Validar reCAPTCHA (solo si está visible)
-        // Por ahora está deshabilitado hasta configurar reCAPTCHA Android
-        // if (recaptchaToken == null && binding.flRecaptcha.visibility == View.VISIBLE) {
-        //     Toast.makeText(this, getString(R.string.login_error_recaptcha), Toast.LENGTH_SHORT).show()
-        //     hasError = true
-        // }
-
         if (hasError) {
             return
         }
 
-        // Proceder con el login
-        performLogin(email, password, recaptchaToken)
+        // ⭐ Ejecutar reCAPTCHA antes de hacer login
+        Toast.makeText(this, getString(R.string.recaptcha_verifying), Toast.LENGTH_SHORT).show()
+
+        executeRecaptcha(
+            onSuccess = { token ->
+                // reCAPTCHA exitoso, proceder con login
+                performLogin(email, password, token)
+            },
+            onError = {
+                // Error en reCAPTCHA, no continuar
+                Log.e("LoginActivity", "No se pudo completar reCAPTCHA")
+            }
+        )
     }
 
     private fun performLogin(email: String, password: String, recaptchaToken: String?) {
         binding.btnLogin.isEnabled = false
         binding.btnLogin.text = getString(R.string.processing)
 
-        // TODO: Reactivar login real cuando el backend y reCAPTCHA estén configurados
-        // Por ahora usar API Key temporal para acceder al dashboard
-
         lifecycleScope.launch {
             try {
-                // Simular delay de red
-                kotlinx.coroutines.delay(1000)
+                // ⚠️ BYPASS TEMPORAL - Login automático mientras backend está caído (502)
+                kotlinx.coroutines.delay(800)
 
-                Log.d("LoginActivity", "Login bypass - usando API Key temporal")
+                Log.d("LoginActivity", "🔧 Login bypass activo - servidor backend tiene error 502")
+                Log.d("LoginActivity", "Email ingresado: $email")
+                Log.d("LoginActivity", "reCAPTCHA token obtenido: ${recaptchaToken?.take(50)}...")
 
                 // API Key temporal proporcionada por el equipo de backend
-                val temporaryApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiNjczNjQwNmE4ZTY3MDFkYWZlZDg0NDFhIiwiY29tcGFueV9pZCI6IjY3MzY0MDZhOGU2NzAxZGFmZWQ4NDQxYSIsImV4cCI6MTc2MTM0NzEwNywiaWF0IjoxNzYxMjYwNzA3LCJyb2wiOiIiLCJzZXNzaW9uX2lkIjoiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3ViIjoiNjhmYWI0YTM3ZWExNmFjM2JiZDk0ZTc4IiwidHlwZSI6ImFwaS1rZXkiLCJ1dWlkIjoiZWM3OGQ5M2QtN2MxZS00YWJkLTg1ZGUtMDFiYTc0OWU0MDA4In0.rAC6A2ZCS_RiH35eoeOC3X1smw8UYfq6PUX9CQLlMUI"
+                // Actualizado: 2025-11-05
+                val temporaryApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiNjczNjQwNmE4ZTY3MDFkYWZlZDg0NDFhIiwiY29tcGFueV9pZCI6IjY3MzY0MDZhOGU2NzAxZGFmZWQ4NDQxYSIsImV4cCI6MTc2Mjk2MTY4OCwiaWF0IjoxNzYyMzU2ODg4LCJyb2wiOiIiLCJzZXNzaW9uX2lkIjoiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3ViIjoiNjkwYjZlOTg2MjUzZDI1YzcxOWQ2ODg0IiwidHlwZSI6ImFwaS1rZXkiLCJ1dWlkIjoiZjg4MjNlYmQtMWZhNC00MzI3LWI3ZGMtYjIwZDZiMmU2NDA4In0.EMLfh9MLr0vaWmsPcg9J5soiGs9DUUTZ5NSoZetrPhg"
 
-                // Guardar API Key de larga duración (para listar sesiones y crear flows)
+                // Guardar API Key de larga duración
                 profileManager.saveApiKey(temporaryApiKey)
                 profileManager.setLoggedIn(true)
 
-                Log.d("LoginActivity", "API Key guardada exitosamente")
+                Log.d("LoginActivity", "✅ Bypass completado - API Key temporal guardada")
 
                 Toast.makeText(this@LoginActivity, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
 
                 // Navegar al dashboard principal
                 navigateToMainMenu()
 
-                /* TODO: Descomentar cuando el login real esté listo
+                /* TODO: Activar cuando backend esté funcionando (actualmente error 502)
                 // Crear request
                 val loginRequest = LoginRequest(
                     email = email,
@@ -162,6 +206,7 @@ class LoginActivity : AppCompatActivity() {
                 )
 
                 Log.d("LoginActivity", "Enviando login - Email: $email")
+                Log.d("LoginActivity", "reCAPTCHA token: ${recaptchaToken?.take(50)}...")
 
                 val response = authService.loginApi(loginRequest)
 
@@ -171,7 +216,18 @@ class LoginActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val loginResponse = response.body()!!
 
-                    Log.d("LoginActivity", "Login exitoso: ${loginResponse.user.fullName}")
+                    // Imprimir respuesta completa en formato JSON
+                    val gson = com.google.gson.Gson()
+                    val jsonResponse = gson.toJson(loginResponse)
+                    Log.d("LoginActivity", "✅ Login exitoso! Respuesta completa:")
+                    Log.d("LoginActivity", jsonResponse)
+
+                    Log.d("LoginActivity", "═══════════════════════════════════════")
+                    Log.d("LoginActivity", "User: ${loginResponse.user.fullName}")
+                    Log.d("LoginActivity", "Email: ${loginResponse.user.email}")
+                    Log.d("LoginActivity", "Company: ${loginResponse.company.name}")
+                    Log.d("LoginActivity", "Access Token: ${loginResponse.accessToken.take(50)}...")
+                    Log.d("LoginActivity", "═══════════════════════════════════════")
 
                     // Guardar token y datos del usuario usando ProfileManager
                     profileManager.saveAccessToken(loginResponse.accessToken)
@@ -186,7 +242,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // Leer el cuerpo de error
                     val errorBody = response.errorBody()?.string()
-                    Log.e("LoginActivity", "Error en login: ${response.code()} - ${response.message()}")
+                    Log.e("LoginActivity", "❌ Error en login: ${response.code()} - ${response.message()}")
                     Log.e("LoginActivity", "Error body: $errorBody")
 
                     // Mostrar mensaje más específico

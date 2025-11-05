@@ -2,10 +2,13 @@ package com.jaak.kyc.ui.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.jaak.kyc.databinding.ActivityFinalSuccessBinding
+import com.jaak.kyc.utils.ProfileManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Pantalla final de éxito después de completar todo el proceso KYC
@@ -15,12 +18,18 @@ class FinalSuccessActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFinalSuccessBinding
 
+    @Inject
+    lateinit var profileManager: ProfileManager
+
+    private var countDownTimer: CountDownTimer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFinalSuccessBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initComponents()
+        startCountdown()
     }
 
     private fun initComponents() {
@@ -31,26 +40,56 @@ class FinalSuccessActivity : AppCompatActivity() {
             }
         })
 
-        // Botón finalizar
+        // Botón finalizar - ahora navega inmediatamente cancelando el contador
         binding.btnFinishSuccess.setOnClickListener {
+            countDownTimer?.cancel()
             navigateToMenu()
         }
 
-        // Botón empezar de nuevo
+        // Botón empezar de nuevo - vuelve a MenuMainActivity para iniciar nuevo flujo
         binding.btnStartAgain.setOnClickListener {
-            navigateToMenu()
+            countDownTimer?.cancel()
+            navigateToMenuMain()
         }
     }
 
-    private fun navigateToMenu() {
-        // TODO: Verificar si hay sesión activa
-        // Por ahora, siempre regresar al Dashboard (MainActivity)
-        // Si no hay sesión, deberías redirigir a LoginActivity
+    private fun startCountdown() {
+        countDownTimer = object : CountDownTimer(3000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsLeft = (millisUntilFinished / 1000).toInt()
+                binding.btnFinishSuccess.text = "Finalizar ($secondsLeft)"
+            }
 
-        // Regresar al Dashboard (MainActivity con bottom nav)
-        val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
+            override fun onFinish() {
+                binding.btnFinishSuccess.text = "Finalizar"
+                navigateToMenu()
+            }
+        }.start()
+    }
+
+    private fun navigateToMenu() {
+        // Verificar si el usuario está logueado
+        if (profileManager.isLoggedIn()) {
+            // Usuario logueado -> Regresar al Dashboard
+            val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        } else {
+            // Usuario NO logueado -> Regresar a MenuMainActivity
+            navigateToMenuMain()
+        }
+        finish()
+    }
+
+    private fun navigateToMenuMain() {
+        val intent = Intent(this, MenuMainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         finish()
+    }
+
+    override fun onDestroy() {
+        countDownTimer?.cancel()
+        super.onDestroy()
     }
 }

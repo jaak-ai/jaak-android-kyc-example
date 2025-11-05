@@ -22,6 +22,7 @@ import com.jaak.kyc.ui.viewmodel.SessionModel
 import com.jaak.kyc.ui.viewmodel.KycOfflineViewModel
 import com.jaak.kyc.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.getValue
 
 /**
@@ -35,6 +36,9 @@ class MenuMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMenuMainBinding
     private val sessionModel: SessionModel by viewModels()
     private val kycOfflineViewModel: KycOfflineViewModel by viewModels()
+
+    @Inject
+    lateinit var profileManager: com.jaak.kyc.utils.ProfileManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +64,7 @@ class MenuMainActivity : AppCompatActivity() {
         }
 
         // Solo hacer redirect si NO viene del Dashboard y está logueado
-        val sharedPreferences = getSharedPreferences("KYC_APP", MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
-
-        if (isLoggedIn) {
+        if (profileManager.isLoggedIn()) {
             // Usuario ya está logueado, ir directamente al Dashboard
             val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
             startActivity(intent)
@@ -107,9 +108,8 @@ class MenuMainActivity : AppCompatActivity() {
         // Verificar si viene del Dashboard
         val fromDashboard = intent.getBooleanExtra("FROM_DASHBOARD", false)
 
-        // Verificar si el usuario está logueado (usando SharedPreferences)
-        val sharedPreferences = getSharedPreferences("KYC_APP", MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("IS_LOGGED_IN", false)
+        // Verificar si el usuario está logueado usando ProfileManager
+        val isLoggedIn = profileManager.isLoggedIn()
 
         // Si está logueado O viene del Dashboard, ocultar el texto "¿Tienes una cuenta?" y el botón "Iniciar Sesión"
         if (isLoggedIn || fromDashboard) {

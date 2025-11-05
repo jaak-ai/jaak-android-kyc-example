@@ -17,7 +17,7 @@ android {
         minSdkVersion 24
         targetSdk 33
         versionCode 110
-        versionName "1.1.0-beta.6"
+        versionName "1.1.0-beta.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -114,8 +114,8 @@ dependencies {
     // Picasso - Carga de imágenes desde URL
     implementation 'com.squareup.picasso:picasso:2.8'
 
-    // Google reCAPTCHA v2
-    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+    // Google reCAPTCHA Enterprise
+    implementation 'com.google.android.recaptcha:recaptcha:18.6.0'
 
     // Bibliotecas de Google ML Kit y CameraX
     implementation 'com.google.android.gms:play-services-mlkit-face-detection:17.1.0'

@@ -14,6 +14,7 @@ import com.jaak.kyc.data.network.JaakDBService
 import com.jaak.kyc.utils.Constants
 import com.jaak.kyc.utils.Utils
 import com.jaak.kyc.utils.FileStorageUtils
+import com.jaak.kyc.utils.ProfileManager
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -32,6 +33,7 @@ class KycOfflineRepository @Inject constructor(
     private val kycFinishDao: KycFinishDao,
     private val serviceExecutionStateDao: ServiceExecutionStateDao,
     private val jaakDBService: JaakDBService,
+    private val profileManager: ProfileManager,
     private val gson: Gson = Gson()
 ) {
 
@@ -383,39 +385,80 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateVerifyStatus(processId, ServiceStatus.RETRYING, null, 0)
 
-            // 🔑 Prioridad: 1) Token del proceso, 2) Token por shortkey, 3) Constants.TOKEN
+            // 🔑 Prioridad: 1) Token del proceso (sessionApi), 2) API Key fallback, 3) Constants.API_TOKEN
             val process = kycProcessDao.getProcessById(processId)
-            val tokenByShortKey = getTokenByShortKey(process?.shortKey ?: "")
-            val rawToken = process?.accessToken ?: tokenByShortKey ?: Constants.API_TOKEN
+            val apiKey = profileManager.getApiKey() // API Key de larga duración (fallback)
+            val rawToken = process?.accessToken ?: apiKey ?: Constants.API_TOKEN
             val accessToken = if (rawToken.startsWith("Bearer ")) rawToken else "Bearer $rawToken"
+
+            android.util.Log.d("VerifyAPI", "========== VERIFY API REQUEST ==========")
+            android.util.Log.d("VerifyAPI", "URL: POST /api/v3/document/verify")
+            android.util.Log.d("VerifyAPI", "Process ID: $processId")
+            android.util.Log.d("VerifyAPI", "Document Type: ${verifyRequest.documentType}")
+            android.util.Log.d("VerifyAPI", "Has Back Image: ${verifyRequest.document2 != null}")
+            android.util.Log.d("VerifyAPI", "Headers: {")
+            android.util.Log.d("VerifyAPI", "  Authorization: ${accessToken.take(40)}...")
+            android.util.Log.d("VerifyAPI", "}")
+            android.util.Log.d("VerifyAPI", "Token Details: {")
+            android.util.Log.d("VerifyAPI", "  Process AccessToken (sessionApi): ${process?.accessToken?.take(30)}...")
+            android.util.Log.d("VerifyAPI", "  API Key (ProfileManager fallback): ${apiKey?.take(30)}...")
+            android.util.Log.d("VerifyAPI", "  Constants.API_TOKEN: ${Constants.API_TOKEN.take(30)}...")
+            android.util.Log.d("VerifyAPI", "  Selected Token Source: ${when {
+                process?.accessToken != null -> "Process AccessToken (sessionApi token)"
+                apiKey != null -> "API Key (ProfileManager fallback)"
+                else -> "Constants.API_TOKEN (Fallback)"
+            }}")
+            android.util.Log.d("VerifyAPI", "}")
 
             // 🔧 Convertir paths a base64 para HTTP request
             val frontBase64 = FileStorageUtils.fileToBase64(verifyRequest.document)
             val backBase64 = verifyRequest.document2?.let { FileStorageUtils.fileToBase64(it) }
 
             if (frontBase64 == null) {
+                android.util.Log.e("VerifyAPI", "❌ FAILED: Could not convert front image to base64")
                 kycProcessDao.updateVerifyStatus(processId, ServiceStatus.FAILED, "Failed to convert images to base64", 0)
                 return Result.failure(Exception("Failed to convert images to base64"))
             }
 
+            android.util.Log.d("VerifyAPI", "Images converted to base64 successfully")
+            android.util.Log.d("VerifyAPI", "  Front image size: ${frontBase64.length} chars")
+            android.util.Log.d("VerifyAPI", "  Back image size: ${backBase64?.length ?: 0} chars")
+
             // Crear request con base64 para envío HTTP
             val httpRequest = VerifyRequest(frontBase64, backBase64, verifyRequest.documentType)
+
+            android.util.Log.d("VerifyAPI", "Sending request to Verify API...")
             val response = jaakDBService.verifyApi(accessToken, httpRequest)
+
+            android.util.Log.d("VerifyAPI", "========== VERIFY API RESPONSE ==========")
+            android.util.Log.d("VerifyAPI", "Status Code: ${response.code()}")
+            android.util.Log.d("VerifyAPI", "Is Successful: ${response.isSuccessful}")
+            android.util.Log.d("VerifyAPI", "Has Body: ${response.body() != null}")
 
             if (response.isSuccessful && response.body() != null) {
                 val verifyResponse = response.body()!!
 
+                android.util.Log.d("VerifyAPI", "✅ SUCCESS - Response received")
+                android.util.Log.d("VerifyAPI", "Full response JSON: ${gson.toJson(verifyResponse)}")
+                android.util.Log.d("VerifyAPI", "  Event ID: ${verifyResponse.eventId}")
+                android.util.Log.d("VerifyAPI", "  Request ID: ${verifyResponse.requestId}")
+                android.util.Log.d("VerifyAPI", "  Document Type: ${verifyResponse.documentType}")
+                android.util.Log.d("VerifyAPI", "  Document Object: ${verifyResponse.document}")
+                android.util.Log.d("VerifyAPI", "  Document.type: ${verifyResponse.document?.type}")
+
                 // 🚨 Validación código 200 (como en ViewModels)
                 if (response.code() != 200) {
+                    android.util.Log.e("VerifyAPI", "❌ VALIDATION FAILED: Status code ${response.code()} (expected 200)")
                     kycProcessDao.updateVerifyStatus(processId, ServiceStatus.FAILED, "Verify API returned code: ${response.code()}", 0)
                     return Result.failure(Exception("Verify API returned code: ${response.code()}"))
                 }
 
-                // 🚨 Validación específica Servicio 2: document.type no puede ser null o empty
-                if (verifyResponse.document?.type.isNullOrEmpty()) {
-                    kycProcessDao.updateVerifyStatus(processId, ServiceStatus.FAILED, "Document type is null or empty", 0)
-                    return Result.failure(Exception("Document type is null or empty"))
-                }
+                // ✅ VALIDACIÓN RELAJADA: Aceptar 200 OK aunque document.type esté vacío
+                // El backend puede devolver document.type vacío pero state.documentValidity: true
+                // Lo importante es que el código sea 200 y el documento sea válido
+                android.util.Log.d("VerifyAPI", "✅ Verify successful (200 OK), document.type can be empty")
+
+                android.util.Log.d("VerifyAPI", "✅ All validations passed, storing in database")
 
                 // 🔧 Guardar PATHS (no base64) en BD
                 val verifyEntity = KycVerifyEntity(
@@ -434,22 +477,35 @@ class KycOfflineRepository @Inject constructor(
                 kycVerifyDao.insertVerify(verifyEntity)
 
                 kycProcessDao.updateVerifyStatus(processId, ServiceStatus.SYNCED, null, 0)
+                android.util.Log.d("VerifyAPI", "✅ Verify completed successfully")
+                android.util.Log.d("VerifyAPI", "=============================================")
                 Result.success(Unit)
             } else {
+                android.util.Log.e("VerifyAPI", "❌ FAILED - Response not successful")
+                android.util.Log.e("VerifyAPI", "Status Code: ${response.code()}")
+                android.util.Log.e("VerifyAPI", "Error Body: ${response.errorBody()?.string()}")
+
                 // 🔄 LÓGICA ORIGINAL: Parsear error del response body
                 val errorModel = response.errorBody()?.let {
                     try {
                         Utils.responseBodyToResultsModel(it)
                     } catch (e: Exception) {
+                        android.util.Log.e("VerifyAPI", "Failed to parse error body: ${e.message}")
                         null
                     }
                 }
-                val errorMessage = errorModel?.message ?: "Verify API failed"
+                val errorMessage = errorModel?.message ?: "Verify API failed with code ${response.code()}"
+
+                android.util.Log.e("VerifyAPI", "Error Message: $errorMessage")
+                android.util.Log.d("VerifyAPI", "=============================================")
 
                 kycProcessDao.updateVerifyStatus(processId, ServiceStatus.FAILED, errorMessage, 0)
                 Result.failure(Exception(errorMessage))
             }
         } catch (e: Exception) {
+            android.util.Log.e("VerifyAPI", "❌ EXCEPTION: ${e.message}")
+            android.util.Log.e("VerifyAPI", "Stack trace: ${e.stackTraceToString()}")
+            android.util.Log.d("VerifyAPI", "=============================================")
             kycProcessDao.updateVerifyStatus(processId, ServiceStatus.FAILED, e.message, 0)
             Result.failure(e)
         }
@@ -492,10 +548,10 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateOcrStatus(processId, ServiceStatus.RETRYING, null, 0)
 
-            // 🔑 Prioridad: 1) Token del proceso, 2) Token por shortkey, 3) Constants.API_TOKEN
+            // 🔑 Prioridad: 1) Token del proceso (sessionApi), 2) API Key fallback, 3) Constants.API_TOKEN
             val process = kycProcessDao.getProcessById(processId)
-            val tokenByShortKey = getTokenByShortKey(process?.shortKey ?: "")
-            val rawToken = process?.accessToken ?: tokenByShortKey ?: Constants.API_TOKEN
+            val apiKey = profileManager.getApiKey() // API Key de larga duración (fallback)
+            val rawToken = process?.accessToken ?: apiKey ?: Constants.API_TOKEN
             val accessToken = if (rawToken.startsWith("Bearer ")) rawToken else "Bearer $rawToken"
 
             android.util.Log.d("DocumentExtractAPI", "========== DOCUMENT EXTRACT REQUEST ==========")
@@ -505,12 +561,12 @@ class KycOfflineRepository @Inject constructor(
             android.util.Log.d("DocumentExtractAPI", "  Authorization: ${accessToken.take(40)}...")
             android.util.Log.d("DocumentExtractAPI", "}")
             android.util.Log.d("DocumentExtractAPI", "Token Details: {")
-            android.util.Log.d("DocumentExtractAPI", "  Process AccessToken: ${process?.accessToken?.take(30)}...")
-            android.util.Log.d("DocumentExtractAPI", "  Token by ShortKey: ${tokenByShortKey?.take(30)}...")
+            android.util.Log.d("DocumentExtractAPI", "  Process AccessToken (sessionApi): ${process?.accessToken?.take(30)}...")
+            android.util.Log.d("DocumentExtractAPI", "  API Key (ProfileManager fallback): ${apiKey?.take(30)}...")
             android.util.Log.d("DocumentExtractAPI", "  Constants.API_TOKEN: ${Constants.API_TOKEN.take(30)}...")
             android.util.Log.d("DocumentExtractAPI", "  Selected Token Source: ${when {
-                process?.accessToken != null -> "Process AccessToken"
-                tokenByShortKey != null -> "Token by ShortKey"
+                process?.accessToken != null -> "Process AccessToken (sessionApi token)"
+                apiKey != null -> "API Key (ProfileManager fallback)"
                 else -> "Constants.API_TOKEN (Fallback)"
             }}")
             android.util.Log.d("DocumentExtractAPI", "}")

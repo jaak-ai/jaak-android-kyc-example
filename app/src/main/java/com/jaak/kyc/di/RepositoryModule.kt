@@ -36,6 +36,7 @@ object RepositoryModule {
         kycFinishDao: KycFinishDao,
         serviceExecutionStateDao: ServiceExecutionStateDao,
         jaakDBService: JaakDBService,
+        profileManager: com.jaak.kyc.utils.ProfileManager,
         gson: Gson
     ): KycOfflineRepository {
         return KycOfflineRepository(
@@ -49,6 +50,7 @@ object RepositoryModule {
             kycFinishDao = kycFinishDao,
             serviceExecutionStateDao = serviceExecutionStateDao,
             jaakDBService = jaakDBService,
+            profileManager = profileManager,
             gson = gson
         )
     }
