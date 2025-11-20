@@ -147,6 +147,8 @@ class DocumentDetailActivity : AppCompatActivity() {
      */
     private fun parseVerificationResults(documentData: com.jaak.kyc.data.model.DocumentDetailData) {
         val verificationJson = documentData.verificationData
+        val thresholdsJson = documentData.thresholdsData
+        val validationJson = documentData.validationData
 
         if (verificationJson.isNullOrEmpty()) {
             android.util.Log.w("DocumentDetailActivity", "❌ No hay datos de verificación disponibles")
@@ -156,6 +158,12 @@ class DocumentDetailActivity : AppCompatActivity() {
         try {
             val gson = com.google.gson.Gson()
             val evaluation = gson.fromJson(verificationJson, Map::class.java) as? Map<*, *>
+            val thresholds = if (!thresholdsJson.isNullOrEmpty()) {
+                gson.fromJson(thresholdsJson, Map::class.java) as? Map<*, *>
+            } else null
+            val validation = if (!validationJson.isNullOrEmpty()) {
+                gson.fromJson(validationJson, Map::class.java) as? Map<*, *>
+            } else null
 
             if (evaluation == null) {
                 android.util.Log.e("DocumentDetailActivity", "❌ Error al parsear JSON de verificación")
@@ -166,117 +174,135 @@ class DocumentDetailActivity : AppCompatActivity() {
 
             // Score
             val score = (evaluation["score"] as? Number)?.toDouble()
+            val scoreThreshold = (thresholds?.get("score") as? Number)?.toDouble()
+            val scoreValidation = validation?.get("score") as? Boolean
             if (score != null) {
                 results.add(
                     VerificationResult(
                         property = "Score",
                         receivedData = String.format("%.0f", score),
-                        expectedData = "1",
-                        isCorrect = score >= 1.0
+                        expectedData = scoreThreshold?.toString() ?: "1",
+                        isCorrect = scoreValidation ?: (score >= (scoreThreshold ?: 1.0))
                     )
                 )
             }
 
             // Consistencia de datos
             val dataConsistent = evaluation["data_consistent"] as? Boolean
+            val dataConsistentThreshold = thresholds?.get("data_consistent") as? Boolean
+            val dataConsistentValidation = validation?.get("data_consistent") as? Boolean
             if (dataConsistent != null) {
                 results.add(
                     VerificationResult(
                         property = "Consistencia de datos",
                         receivedData = if (dataConsistent) "Consistente" else "Inconsistente",
-                        expectedData = "Consistente",
-                        isCorrect = dataConsistent
+                        expectedData = if (dataConsistentThreshold == true) "Consistente" else "Inconsistente",
+                        isCorrect = dataConsistentValidation ?: dataConsistent
                     )
                 )
             }
 
             // Documento capturado completamente
             val documentComplete = evaluation["document_complete_sides"] as? Boolean
+            val documentCompleteThreshold = thresholds?.get("document_complete_sides") as? Boolean
+            val documentCompleteValidation = validation?.get("document_complete_sides") as? Boolean
             if (documentComplete != null) {
                 results.add(
                     VerificationResult(
                         property = "Documento capturado completamente",
                         receivedData = if (documentComplete) "Completo" else "Incompleto",
-                        expectedData = "Completo",
-                        isCorrect = documentComplete
+                        expectedData = if (documentCompleteThreshold == true) "Completo" else "Incompleto",
+                        isCorrect = documentCompleteValidation ?: documentComplete
                     )
                 )
             }
 
             // Liveness del documento
             val documentLiveness = evaluation["document_liveness"] as? Boolean
+            val documentLivenessThreshold = thresholds?.get("document_liveness") as? Boolean
+            val documentLivenessValidation = validation?.get("document_liveness") as? Boolean
             if (documentLiveness != null) {
                 results.add(
                     VerificationResult(
                         property = "Liveness",
                         receivedData = if (documentLiveness) "Aprobado" else "Rechazado",
-                        expectedData = "Aprobado",
-                        isCorrect = documentLiveness
+                        expectedData = if (documentLivenessThreshold == true) "Aprobado" else "Rechazado",
+                        isCorrect = documentLivenessValidation ?: documentLiveness
                     )
                 )
             }
 
             // Falsificación de fotografías
             val photoForgery = evaluation["photo_forgery"] as? Boolean
+            val photoForgeryThreshold = thresholds?.get("photo_forgery") as? Boolean
+            val photoForgeryValidation = validation?.get("photo_forgery") as? Boolean
             if (photoForgery != null) {
                 results.add(
                     VerificationResult(
                         property = "Falsificación de fotografías",
-                        receivedData = if (photoForgery) "Válido" else "Inválido",
-                        expectedData = "Válido",
-                        isCorrect = photoForgery
+                        receivedData = if (photoForgery) "Detectada" else "No detectada",
+                        expectedData = if (photoForgeryThreshold == true) "Detectada" else "No detectada",
+                        isCorrect = photoForgeryValidation ?: !photoForgery
                     )
                 )
             }
 
             // Validez del documento
             val documentValidity = evaluation["document_validity"] as? Boolean
+            val documentValidityThreshold = thresholds?.get("document_validity") as? Boolean
+            val documentValidityValidation = validation?.get("document_validity") as? Boolean
             if (documentValidity != null) {
                 results.add(
                     VerificationResult(
                         property = "Validez",
                         receivedData = if (documentValidity) "Válido" else "Inválido",
-                        expectedData = "Válido",
-                        isCorrect = documentValidity
+                        expectedData = if (documentValidityThreshold == true) "Válido" else "Inválido",
+                        isCorrect = documentValidityValidation ?: documentValidity
                     )
                 )
             }
 
             // Presencia de manos
             val handPresence = evaluation["hand_presence"] as? Boolean
+            val handPresenceThreshold = thresholds?.get("hand_presence") as? Boolean
+            val handPresenceValidation = validation?.get("hand_presence") as? Boolean
             if (handPresence != null) {
                 results.add(
                     VerificationResult(
                         property = "Presencia de manos",
-                        receivedData = if (handPresence) "Verdadero" else "Falso",
-                        expectedData = "Verdadero",
-                        isCorrect = handPresence
+                        receivedData = if (handPresence) "Presente" else "Ausente",
+                        expectedData = if (handPresenceThreshold == true) "Presente" else "Ausente",
+                        isCorrect = handPresenceValidation ?: handPresence
                     )
                 )
             }
 
             // Calidad en la imagen
             val imageQuality = evaluation["image_quality"] as? Boolean
+            val imageQualityThreshold = thresholds?.get("image_quality") as? Boolean
+            val imageQualityValidation = validation?.get("image_quality") as? Boolean
             if (imageQuality != null) {
                 results.add(
                     VerificationResult(
                         property = "Calidad en la imagen",
-                        receivedData = if (imageQuality) "Verdadero" else "Falso",
-                        expectedData = "Verdadero",
-                        isCorrect = imageQuality
+                        receivedData = if (imageQuality) "Buena" else "Mala",
+                        expectedData = if (imageQualityThreshold == true) "Buena" else "Mala",
+                        isCorrect = imageQualityValidation ?: imageQuality
                     )
                 )
             }
 
             // Verificación de elementos de seguridad
             val securityFeatures = evaluation["security_features"] as? Boolean
+            val securityFeaturesThreshold = thresholds?.get("security_features") as? Boolean
+            val securityFeaturesValidation = validation?.get("security_features") as? Boolean
             if (securityFeatures != null) {
                 results.add(
                     VerificationResult(
                         property = "Verificación de elementos de seguridad",
-                        receivedData = if (securityFeatures) "Verdadero" else "Falso",
-                        expectedData = "Verdadero",
-                        isCorrect = securityFeatures
+                        receivedData = if (securityFeatures) "Válido" else "Inválido",
+                        expectedData = if (securityFeaturesThreshold == true) "Válido" else "Inválido",
+                        isCorrect = securityFeaturesValidation ?: securityFeatures
                     )
                 )
             }

@@ -23,45 +23,53 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Propiedad"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@color/jaak_text_secondary"
             android:paddingStart="8dp"
-            android:paddingEnd="4dp" />
+            android:paddingEnd="4dp"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Datos recibidos"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@color/jaak_text_secondary"
             android:paddingHorizontal="4dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Datos esperados"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@color/jaak_text_secondary"
             android:paddingHorizontal="4dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:text="Resultados"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@color/jaak_text_secondary"
             android:paddingStart="4dp"
             android:paddingEnd="8dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
     </LinearLayout>
 
@@ -77,11 +85,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@color/jaak_text_primary"
             android:paddingStart="8dp"
             android:paddingEnd="4dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="none"
             tools:text="Score" />
 
         <TextView
@@ -89,10 +101,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/jaak_text_secondary"
             android:paddingHorizontal="4dp"
             android:gravity="center"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="none"
             tools:text="96.38 %" />
 
         <TextView
@@ -100,36 +116,45 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/jaak_text_secondary"
             android:paddingHorizontal="4dp"
             android:gravity="center"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="none"
             tools:text="Mayor a 96..." />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:orientation="vertical"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:paddingStart="4dp"
             android:paddingEnd="8dp">
 
             <ImageView
                 android:id="@+id/ivResultIcon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:src="@drawable/ic_check_small"
                 android:contentDescription="Result icon"
                 app:tint="@color/jaak_success"
-                android:layout_marginBottom="2dp" />
+                android:layout_marginBottom="4dp" />
 
             <TextView
                 android:id="@+id/tvResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
+                android:textSize="8sp"
                 android:textColor="@color/jaak_success"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:breakStrategy="balanced"
+                android:hyphenationFrequency="none"
                 tools:text="Correcto" />
 
         </LinearLayout>

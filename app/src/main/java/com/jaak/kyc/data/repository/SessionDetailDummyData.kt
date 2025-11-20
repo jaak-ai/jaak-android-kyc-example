@@ -78,13 +78,17 @@ object SessionDetailDummyData {
                             score = 0.88,
                             status = "completed",
                             meta = SessionDetailResourceMeta(
+                                time = "2024-01-15T10:31:00Z",
+                                processTime = 4518.0,
                                 extra = SessionDetailResourceExtra(
                                     evaluation = mapOf(
                                         "document_type" to "INE",
                                         "confidence" to 0.88,
                                         "is_valid" to true,
                                         "expiry_date" to "2028-12-31"
-                                    )
+                                    ),
+                                    thresholds = null,
+                                    validation = null
                                 )
                             )
                         )
@@ -120,12 +124,16 @@ object SessionDetailDummyData {
                             score = 0.95,
                             status = "completed",
                             meta = SessionDetailResourceMeta(
+                                time = "2024-01-15T10:33:00Z",
+                                processTime = 1318.641,
                                 extra = SessionDetailResourceExtra(
                                     evaluation = mapOf(
                                         "is_live" to true,
                                         "confidence" to 0.95,
                                         "quality" to "high"
-                                    )
+                                    ),
+                                    thresholds = null,
+                                    validation = null
                                 )
                             )
                         )
@@ -161,12 +169,16 @@ object SessionDetailDummyData {
                             score = 1.0,
                             status = "completed",
                             meta = SessionDetailResourceMeta(
+                                time = "2024-01-15T10:34:00Z",
+                                processTime = 412.7,
                                 extra = SessionDetailResourceExtra(
                                     evaluation = mapOf(
                                         "found_in_risk_lists" to false,
                                         "found_in_validation_lists" to true,
                                         "lists_checked" to listOf("OFAC", "Interpol", "INE", "CURP")
-                                    )
+                                    ),
+                                    thresholds = null,
+                                    validation = null
                                 )
                             )
                         )
@@ -202,12 +214,16 @@ object SessionDetailDummyData {
                             score = 0.93,
                             status = "completed",
                             meta = SessionDetailResourceMeta(
+                                time = "2024-01-15T10:35:00Z",
+                                processTime = 890.5,
                                 extra = SessionDetailResourceExtra(
                                     evaluation = mapOf(
                                         "match" to true,
                                         "confidence" to 0.93,
                                         "similarity" to 0.95
-                                    )
+                                    ),
+                                    thresholds = null,
+                                    validation = null
                                 )
                             )
                         )
@@ -246,6 +262,8 @@ object SessionDetailDummyData {
                             score = 0.91,
                             status = "completed",
                             meta = SessionDetailResourceMeta(
+                                time = "2024-01-15T10:32:00Z",
+                                processTime = 2150.3,
                                 extra = SessionDetailResourceExtra(
                                     evaluation = mapOf(
                                         "is_valid" to true,
@@ -253,7 +271,9 @@ object SessionDetailDummyData {
                                         "quality_score" to 0.91,
                                         "hands_detected" to true,
                                         "document_liveness" to true
-                                    )
+                                    ),
+                                    thresholds = null,
+                                    validation = null
                                 )
                             )
                         )

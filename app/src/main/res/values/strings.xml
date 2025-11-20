@@ -251,6 +251,7 @@
     <string name="verification_value_hint">Email, phone number or WhatsApp</string>
     <string name="mark_as_default">Mark as default</string>
     <string name="update_profile">Save Profile</string>
+    <string name="start_kyc_session">Start KYC Session</string>
 
     <!-- Settings Screen -->
     <string name="settings_title">Configuration</string>
@@ -387,6 +388,8 @@
     <string name="error_empty_server_response">Error: Empty server response</string>
     <string name="error_create_session_failed">Error creating session: %s</string>
     <string name="error_empty_session_response">Error: Empty session response</string>
+    <string name="error_invalid_response">Error: Invalid server response</string>
+    <string name="error_session_failed">Error executing session: %s</string>
     <string name="error_network">Network error: %s</string>
     <string name="error_loading_sessions">Error loading sessions: %s</string>
     <string name="error_invalid_session_id">Invalid Session ID</string>
@@ -400,6 +403,7 @@
     <string name="info_flow_label_format">Flow: %s</string>
     <string name="liveness_total_time_format">Total Time\n%s</string>
     <string name="liveness_total_time_na">Total Time\nN/A</string>
+    <string name="liveness_processing_time">Tiempo de proceso de Liveness</string>
 
     <!-- Session Messages -->
     <string name="sessions_loaded_more">Loaded %d more sessions</string>

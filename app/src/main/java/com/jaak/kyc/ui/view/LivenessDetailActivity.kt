@@ -9,7 +9,6 @@ import android.util.Base64
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
-import android.widget.MediaController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaak.kyc.R
@@ -20,7 +19,6 @@ import com.jaak.kyc.ui.adapter.ComparisonAdapter
 class LivenessDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLivenessDetailBinding
-    private var mediaController: MediaController? = null
 
     companion object {
         const val EXTRA_EVENT_ID = "event_id"
@@ -46,12 +44,10 @@ class LivenessDetailActivity : AppCompatActivity() {
     }
 
     private fun setupVideoPlayer() {
-        // Configurar MediaController para controles de video
-        mediaController = MediaController(this)
-        mediaController?.setAnchorView(binding.videoView)
-        binding.videoView.setMediaController(mediaController)
+        // NO usar MediaController porque causa que los controles queden flotantes al hacer scroll
+        // En su lugar, se usan controles personalizados (ivPlayButton) integrados en el layout
 
-        // Click en play button
+        // Click en play button personalizado
         binding.ivPlayButton.setOnClickListener {
             playVideo()
         }

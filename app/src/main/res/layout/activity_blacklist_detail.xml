@@ -36,6 +36,17 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Tiempo de procesamiento general -->
+            <TextView
+                android:id="@+id/tvProcessingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="⏱️ Tiempo de procesamiento: N/A"
+                android:textSize="14sp"
+                android:textColor="@color/jaak_text_secondary"
+                android:layout_marginBottom="16dp"
+                android:gravity="center" />
+
             <!-- ========== SECCIÓN: Listas de Riesgo ========== -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

@@ -87,7 +87,7 @@
 
                             <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
-                                android:layout_height="150dp"
+                                android:layout_height="180dp"
                                 app:cardCornerRadius="8dp"
                                 app:cardElevation="2dp">
 
@@ -95,7 +95,8 @@
                                     android:id="@+id/ivDocumentFront"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
+                                    android:scaleType="fitCenter"
+                                    android:adjustViewBounds="true"
                                     android:contentDescription="Documento Frontal"
                                     android:clickable="true"
                                     android:focusable="true"
@@ -124,7 +125,7 @@
 
                             <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
-                                android:layout_height="150dp"
+                                android:layout_height="180dp"
                                 app:cardCornerRadius="8dp"
                                 app:cardElevation="2dp">
 
@@ -132,7 +133,8 @@
                                     android:id="@+id/ivDocumentBack"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
+                                    android:scaleType="fitCenter"
+                                    android:adjustViewBounds="true"
                                     android:contentDescription="Documento Trasero"
                                     android:clickable="true"
                                     android:focusable="true"

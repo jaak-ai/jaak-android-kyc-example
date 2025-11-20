@@ -158,8 +158,14 @@ class SessionDetailViewModel @Inject constructor(
         // Extraer video URL del request.meta.request.video
         val videoUrl = event?.request?.meta?.request?.get("video") as? String
 
-        // Extraer tiempo de procesamiento (si existe)
-        val processingTime = (evaluation?.get("processing_time") as? String) ?: "N/A"
+        // Extraer tiempo de procesamiento desde meta.processTime
+        val processTime = livenessResource?.meta?.processTime
+        val processingTime = if (processTime != null) {
+            val seconds = processTime / 1000.0 // Convertir milisegundos a segundos
+            String.format("%.2fs", seconds)
+        } else {
+            "N/A"
+        }
 
         return com.jaak.kyc.data.model.LivenessDetailData(
             eventId = eventId,
@@ -223,15 +229,30 @@ class SessionDetailViewModel @Inject constructor(
 
         // Buscar el recurso "one-to-one" para el tiempo de procesamiento de comparación
         val otoResource = event?.flow?.firstOrNull { it.resource == "one-to-one" }
-        val otoMeta = otoResource?.meta?.extra as? Map<*, *>
-        val otoProcessingTime = otoMeta?.get("processing_time") as? String ?: "N/A"
+        val otoProcessTime = otoResource?.meta?.processTime
+        val otoProcessingTime = if (otoProcessTime != null) {
+            val seconds = otoProcessTime / 1000.0
+            String.format("%.2fs", seconds)
+        } else {
+            "N/A"
+        }
 
         // Tiempos de procesamiento de accesorios y calidad
-        val accessoriesMeta = accessoriesResource?.meta?.extra as? Map<*, *>
-        val accessoriesTime = accessoriesMeta?.get("processing_time") as? String ?: "N/A"
+        val accessoriesProcessTime = accessoriesResource?.meta?.processTime
+        val accessoriesTime = if (accessoriesProcessTime != null) {
+            val seconds = accessoriesProcessTime / 1000.0
+            String.format("%.2fs", seconds)
+        } else {
+            "N/A"
+        }
 
-        val qualityMeta = qualityResource?.meta?.extra as? Map<*, *>
-        val qualityTime = qualityMeta?.get("processing_time") as? String ?: "N/A"
+        val qualityProcessTime = qualityResource?.meta?.processTime
+        val qualityTime = if (qualityProcessTime != null) {
+            val seconds = qualityProcessTime / 1000.0
+            String.format("%.2fs", seconds)
+        } else {
+            "N/A"
+        }
 
         return com.jaak.kyc.data.model.OtoDetailData(
             eventId = eventId,
@@ -281,9 +302,14 @@ class SessionDetailViewModel @Inject constructor(
 
         // Extraer estados OCR del recurso "ocr-states"
         val statesResource = event?.flow?.firstOrNull { it.resource == "ocr-states" }
-        val statesEvaluation = statesResource?.meta?.extra?.evaluation
+        val statesExtra = statesResource?.meta?.extra
+        val statesEvaluation = statesExtra?.evaluation
+        val statesThresholds = statesExtra?.thresholds
+        val statesValidation = statesExtra?.validation
 
         android.util.Log.d("SessionDetailViewModel", "OCR States Evaluation: $statesEvaluation")
+        android.util.Log.d("SessionDetailViewModel", "OCR States Thresholds: $statesThresholds")
+        android.util.Log.d("SessionDetailViewModel", "OCR States Validation: $statesValidation")
 
         // Combinar evaluation de ocr-document con estados de ocr-states
         val combinedEvaluation = if (evaluation != null) {
@@ -300,8 +326,23 @@ class SessionDetailViewModel @Inject constructor(
             com.google.gson.Gson().toJson(combinedEvaluation)
         } else null
 
-        // Extraer tiempo de procesamiento (si existe)
-        val processingTime = (evaluation?.get("processing_time") as? String) ?: "N/A"
+        // Convertir thresholds y validation a JSON
+        val thresholdsJson = if (statesThresholds != null) {
+            com.google.gson.Gson().toJson(statesThresholds)
+        } else null
+
+        val validationJson = if (statesValidation != null) {
+            com.google.gson.Gson().toJson(statesValidation)
+        } else null
+
+        // Extraer tiempo de procesamiento desde meta.processTime
+        val processTime = extractResource?.meta?.processTime
+        val processingTime = if (processTime != null) {
+            val seconds = processTime / 1000.0
+            String.format("%.2fs", seconds)
+        } else {
+            "N/A"
+        }
 
         return com.jaak.kyc.data.model.DocumentExtractData(
             eventId = eventId,
@@ -309,7 +350,9 @@ class SessionDetailViewModel @Inject constructor(
             documentBackUrl = documentBackUrl,
             faceUrl = faceUrl, // URL de la cara (no Base64)
             extractedData = extractedDataJson, // JSON con todos los datos extraídos
-            processingTime = processingTime
+            processingTime = processingTime,
+            thresholdsData = thresholdsJson,
+            validationData = validationJson
         )
     }
 
@@ -342,18 +385,35 @@ class SessionDetailViewModel @Inject constructor(
 
         // Buscar el recurso "liveness-document" que contiene los datos de verificación
         val livenessDocResource = event?.flow?.firstOrNull { it.resource == "liveness-document" }
-        val evaluation = livenessDocResource?.meta?.extra?.evaluation
+        val extra = livenessDocResource?.meta?.extra
+        val evaluation = extra?.evaluation
+        val thresholds = extra?.thresholds
+        val validation = extra?.validation
 
         // Extraer score
         val score = (evaluation?.get("score") as? Number)?.toDouble()
 
-        // Convertir datos de verificación a JSON
+        // Convertir datos a JSON
         val verificationDataJson = if (evaluation != null) {
             com.google.gson.Gson().toJson(evaluation)
         } else null
 
-        // Extraer tiempo de procesamiento (si existe)
-        val processingTime = (evaluation?.get("processing_time") as? String) ?: "N/A"
+        val thresholdsDataJson = if (thresholds != null) {
+            com.google.gson.Gson().toJson(thresholds)
+        } else null
+
+        val validationDataJson = if (validation != null) {
+            com.google.gson.Gson().toJson(validation)
+        } else null
+
+        // Extraer tiempo de procesamiento desde meta.processTime
+        val processTime = livenessDocResource?.meta?.processTime
+        val processingTime = if (processTime != null) {
+            val seconds = processTime / 1000.0
+            String.format("%.2fs", seconds)
+        } else {
+            "N/A"
+        }
 
         return com.jaak.kyc.data.model.DocumentDetailData(
             eventId = eventId,
@@ -361,6 +421,8 @@ class SessionDetailViewModel @Inject constructor(
             documentBackUrl = documentBackUrl,
             verificationScore = score ?: summary.scores?.document,
             verificationData = verificationDataJson,
+            thresholdsData = thresholdsDataJson,
+            validationData = validationDataJson,
             processingTime = processingTime
         )
     }
@@ -382,6 +444,8 @@ class SessionDetailViewModel @Inject constructor(
 
         // Combinar todos los resultados de todos los eventos blacklist
         val allBlacklistResults = mutableListOf<Map<String, Any?>>()
+        var totalProcessingTime = 0.0
+        var processCount = 0
 
         allBlacklistEvents.forEachIndexed { index, event ->
             android.util.Log.d("SessionDetailViewModel", "Processing blacklist event ${index + 1}: ${event.eventId}")
@@ -395,26 +459,45 @@ class SessionDetailViewModel @Inject constructor(
                 android.util.Log.d("SessionDetailViewModel", "  Resource: $resourceName, Status: $status")
 
                 if (resourceName.endsWith("-blacklist")) {
+                    // Extraer tiempo de procesamiento desde meta.processTime
+                    val processTime = resource.meta?.processTime
+                    val processingTimeStr = if (processTime != null) {
+                        val seconds = processTime / 1000.0
+                        totalProcessingTime += seconds
+                        processCount++
+                        String.format("%.2fs", seconds)
+                    } else {
+                        "N/A"
+                    }
+
                     allBlacklistResults.add(mapOf(
                         "eventId" to event.eventId,
                         "resourceName" to resourceName,
                         "status" to status,
                         "evaluation" to evaluation,
-                        "createdAt" to event.createdAt
+                        "createdAt" to event.createdAt,
+                        "processingTime" to processingTimeStr
                     ))
                 }
             }
         }
 
         android.util.Log.d("SessionDetailViewModel", "Total blacklist results: ${allBlacklistResults.size}")
-        android.util.Log.d("SessionDetailViewModel", "=========================================")
+
+        // Calcular tiempo promedio si hay múltiples checks
+        val processingTime = if (processCount > 0) {
+            val avgTime = totalProcessingTime / processCount
+            String.format("%.2fs", avgTime)
+        } else {
+            "N/A"
+        }
 
         return com.jaak.kyc.data.model.BlacklistDetailData(
             eventId = eventId, // Se mantiene el eventId del primero para referencia
             blacklistResults = if (allBlacklistResults.isNotEmpty()) {
                 com.google.gson.Gson().toJson(allBlacklistResults)
             } else null,
-            processingTime = null
+            processingTime = processingTime
         )
     }
 }

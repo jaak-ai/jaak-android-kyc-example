@@ -11,7 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="32dp"
+        android:clipToPadding="false">
 
         <!-- ========== SECCIÓN: Información del Usuario ========== -->
         <com.google.android.material.card.MaterialCardView
@@ -263,6 +267,25 @@
                     android:textColor="@color/jaak_text_primary"
                     android:layout_marginTop="4dp"
                     tools:text="0m 1s" />
+
+                <!-- Tiempo de proceso de Liveness -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/liveness_processing_time"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/jaak_text_primary"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:id="@+id/tvLivenessProcessingTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/jaak_text_primary"
+                    android:layout_marginTop="4dp"
+                    tools:text="N/A" />
 
                 <!-- Origen -->
                 <TextView

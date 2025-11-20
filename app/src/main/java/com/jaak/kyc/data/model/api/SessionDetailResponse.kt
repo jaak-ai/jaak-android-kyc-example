@@ -210,13 +210,25 @@ data class SessionDetailFlowResource(
 )
 
 data class SessionDetailResourceMeta(
+    @SerializedName("time")
+    val time: String?,
+
+    @SerializedName("processTime")
+    val processTime: Double?, // Tiempo de procesamiento en milisegundos
+
     @SerializedName("extra")
     val extra: SessionDetailResourceExtra?
 )
 
 data class SessionDetailResourceExtra(
     @SerializedName("evaluation")
-    val evaluation: Map<String, Any>? // Datos dinámicos de evaluación
+    val evaluation: Map<String, Any>?, // Datos dinámicos de evaluación
+
+    @SerializedName("thresholds")
+    val thresholds: Map<String, Any>?, // Umbrales esperados
+
+    @SerializedName("validation")
+    val validation: Map<String, Any>? // Resultados de validación
 )
 
 data class SessionDetailFlowMeta(

@@ -41,10 +41,22 @@ class SessionOtoFragment : Fragment() {
                     appendLine("👤 Resource: ${resource.resource}")
                     appendLine("📊 Score: ${formatScore(resource.score)}")
                     appendLine("✅ Status: ${resource.status ?: "N/A"}")
+
+                    // Mostrar tiempo de procesamiento desde meta.processTime
+                    val processTime = resource.meta?.processTime
+                    val processingTimeStr = if (processTime != null) {
+                        val seconds = processTime / 1000.0 // Convertir milisegundos a segundos
+                        String.format("%.2fs", seconds)
+                    } else {
+                        "N/A"
+                    }
+                    appendLine("⏱️ Tiempo de proceso: $processingTimeStr")
+
                     appendLine()
                     appendLine("📋 Evaluation:")
 
-                    resource.meta?.extra?.evaluation?.forEach { (key, value) ->
+                    val evaluation = resource.meta?.extra?.evaluation
+                    evaluation?.forEach { (key, value) ->
                         appendLine("  • $key: $value")
                     }
 

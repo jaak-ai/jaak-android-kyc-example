@@ -39,6 +39,9 @@ class DashboardFragment : Fragment() {
     @Inject
     lateinit var jaakDBApiClient: JaakDBApiClient
 
+    @Inject
+    lateinit var kycOfflineRepository: com.jaak.kyc.data.repository.KycOfflineRepository
+
     private var loadingDialog: Dialog? = null
 
     override fun onCreateView(
@@ -130,10 +133,12 @@ class DashboardFragment : Fragment() {
             startActivity(intent)
         }
 
-        // Botón de Creación Manual
+        // Botón de Creación Manual - Nueva Sesión KYC
         binding.cardManualCreation.setOnClickListener {
-            // Lanzar MenuMainActivity para ingresar shortkey manualmente
-            startKycProcess()
+            // Abrir formulario de perfil en modo manual (sin guardar)
+            val intent = Intent(requireContext(), EditSessionProfileActivity::class.java)
+            intent.putExtra("MODE_MANUAL", true)
+            startActivity(intent)
         }
     }
 
@@ -266,6 +271,10 @@ class DashboardFragment : Fragment() {
                 val shortKey = flowData.extractShortKey()
                 Log.d("DashboardFragment", "ShortKey extraído: $shortKey")
 
+                // ✅ CREAR PROCESO EN BD con shortKey
+                val processId = kycOfflineRepository.createKycProcess(shortKey)
+                Log.d("DashboardFragment", "✓ Proceso creado en BD con ID: $processId")
+
                 // Paso 2: Crear sesión con el shortKey
                 Log.d("DashboardFragment", "========== CREATE SESSION REQUEST ==========")
                 Log.d("DashboardFragment", "URL: POST /api/v1/kyc/session")
@@ -310,6 +319,10 @@ class DashboardFragment : Fragment() {
                 Log.d("DashboardFragment", "  assets: ${sessionData.assets}")
                 Log.d("DashboardFragment", "}")
                 Log.d("DashboardFragment", "=========================================")
+
+                // ✅ GUARDAR TOKEN EN EL PROCESO DE BD
+                kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
+                Log.d("DashboardFragment", "✓ Token guardado en proceso BD")
 
                 // Guardar accessToken de la sesión
                 profileManager.saveAccessToken(sessionData.accessToken)

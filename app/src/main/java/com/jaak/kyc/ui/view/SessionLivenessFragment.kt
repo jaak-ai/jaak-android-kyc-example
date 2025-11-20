@@ -51,6 +51,21 @@ class SessionLivenessFragment : Fragment() {
         val session = state.data.session
         val summary = state.data.summary
 
+        // Obtener tiempo de procesamiento de liveness desde meta.processTime
+        val livenessEvent = state.data.flow.firstOrNull { it.action == "liveness-process" }
+        val livenessProcessingTime = if (livenessEvent != null) {
+            val processTime = livenessEvent.flow?.firstOrNull()?.meta?.processTime
+            if (processTime != null) {
+                val seconds = processTime / 1000.0 // Convertir milisegundos a segundos
+                String.format("%.2fs", seconds)
+            } else {
+                "N/A"
+            }
+        } else {
+            "N/A"
+        }
+
+
         // ========== INFORMACIÓN DEL USUARIO ==========
         // Foto (URL de Google Cloud Storage)
         if (!summary.photo.isNullOrEmpty()) {
@@ -91,6 +106,7 @@ class SessionLivenessFragment : Fragment() {
         } else {
             "N/A"
         }
+        binding.tvLivenessProcessingTime.text = livenessProcessingTime
         binding.tvOrigin.text = session.origin?.replaceFirstChar { it.uppercase() } ?: "N/A"
         binding.tvValidation.text = session.validation?.uppercase() ?: "N/A"
         binding.tvFlowType.text = session.flowType?.uppercase() ?: "N/A"

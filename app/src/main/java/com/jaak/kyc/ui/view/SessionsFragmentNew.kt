@@ -40,6 +40,9 @@ class SessionsFragmentNew : Fragment() {
     private val searchHandler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
 
+    // Job para controlar carga de sesiones
+    private var loadSessionsJob: kotlinx.coroutines.Job? = null
+
     // Paginación
     private var currentPage = 1
     private var totalPages = 1
@@ -159,7 +162,21 @@ class SessionsFragmentNew : Fragment() {
         setupSearchBar()
         setupListeners()
         setupScrollListener()
+        setupSwipeRefresh()
         loadSessions(page = 1, clearList = true)
+    }
+
+    private fun setupSwipeRefresh() {
+        binding.swipeRefresh.setColorSchemeResources(
+            R.color.jaak_button_start_enabled,
+            R.color.jaak_success,
+            R.color.jaak_primary
+        )
+
+        binding.swipeRefresh.setOnRefreshListener {
+            Log.d("SessionsFragment", "🔄 Pull-to-refresh activado")
+            loadSessions(page = 1, clearList = true)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -188,11 +205,11 @@ class SessionsFragmentNew : Fragment() {
     }
 
     private fun setupListeners() {
-        // Botón + para agregar nueva sesión
+        // Botón + para agregar nueva sesión (Creación Manual)
         binding.fabAddSession.setOnClickListener {
-            // Navegar a MenuMainActivity para crear nuevo KYC
-            val intent = Intent(requireContext(), MenuMainActivity::class.java)
-            intent.putExtra("FROM_DASHBOARD", true)
+            // Abrir formulario de perfil en modo manual (sin guardar)
+            val intent = Intent(requireContext(), EditSessionProfileActivity::class.java)
+            intent.putExtra("MODE_MANUAL", true)
             startActivity(intent)
         }
 
@@ -390,7 +407,7 @@ class SessionsFragmentNew : Fragment() {
         } else {
             binding.rvSessions.visibility = View.VISIBLE
             binding.llEmptyState.visibility = View.GONE
-            adapter.submitList(sessions)
+            adapter.submitList(sessions.toList())
         }
     }
 
@@ -413,6 +430,9 @@ class SessionsFragmentNew : Fragment() {
     private fun loadSessions(page: Int, clearList: Boolean) {
         if (isLoading) return
 
+        // Cancelar job anterior si existe
+        loadSessionsJob?.cancel()
+
         isLoading = true
 
         // Mostrar loading indicator para paginación
@@ -433,7 +453,7 @@ class SessionsFragmentNew : Fragment() {
 
         Log.d("SessionsFragment", "Filtros aplicados: minCreatedAt=$minCreatedAt, maxCreatedAt=$maxCreatedAt")
 
-        lifecycleScope.launch {
+        loadSessionsJob = lifecycleScope.launch {
             val result = sessionsRepository.getSessions(
                 page = page,
                 limit = 20,
@@ -457,18 +477,26 @@ class SessionsFragmentNew : Fragment() {
                 totalPages = sessionsPage.totalPages
                 canLoadMore = sessionsPage.hasNextPage
 
-                // Ocultar loading indicator
-                binding.progressBarPagination.visibility = View.GONE
+                // Proteger actualización de UI con try-catch por si el fragment ya no existe
+                try {
+                    if (_binding != null && isAdded) {
+                        // Ocultar loading indicators
+                        binding.progressBarPagination.visibility = View.GONE
+                        binding.swipeRefresh.isRefreshing = false
 
-                updateSessionsList(allSessions)
+                        updateSessionsList(allSessions)
 
-                // Mostrar Toast informativo si se cargaron más páginas
-                if (!clearList && sessionsPage.sessions.isNotEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.sessions_loaded_more, sessionsPage.sessions.size),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        // Mostrar Toast informativo si se cargaron más páginas
+                        if (!clearList && sessionsPage.sessions.isNotEmpty()) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.sessions_loaded_more, sessionsPage.sessions.size),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("SessionsFragment", "Error actualizando UI: ${e.message}")
                 }
 
                 // Log si no hay más páginas
@@ -477,8 +505,17 @@ class SessionsFragmentNew : Fragment() {
                 }
             }.onFailure { error ->
                 Log.e("SessionsFragment", "❌ Error loading sessions: ${error.message}", error)
-                binding.progressBarPagination.visibility = View.GONE
-                Toast.makeText(requireContext(), getString(R.string.error_loading_sessions, error.message ?: ""), Toast.LENGTH_SHORT).show()
+
+                // Proteger actualización de UI
+                try {
+                    if (_binding != null && isAdded) {
+                        binding.progressBarPagination.visibility = View.GONE
+                        binding.swipeRefresh.isRefreshing = false
+                        Toast.makeText(requireContext(), getString(R.string.error_loading_sessions, error.message ?: ""), Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("SessionsFragment", "Error mostrando mensaje de error: ${e.message}")
+                }
             }
 
             isLoading = false
@@ -507,7 +544,11 @@ class SessionsFragmentNew : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Cancelar búsqueda pendiente
         searchRunnable?.let { searchHandler.removeCallbacks(it) }
+        // Cancelar carga de sesiones en progreso
+        loadSessionsJob?.cancel()
+        // Limpiar binding
         _binding = null
     }
 }

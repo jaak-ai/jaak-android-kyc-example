@@ -34,3 +34,7 @@ local.properties
 
 # Ignorar archivo de configuración de Firebase con API keys
 app/google-services.json
+
+# Ignorar archivos de sistema macOS
+.DS_Store
+**/.DS_Store

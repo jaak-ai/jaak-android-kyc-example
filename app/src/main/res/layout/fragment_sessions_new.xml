@@ -135,20 +135,27 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-    <!-- RecyclerView con lista de sesiones -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSessions"
+    <!-- SwipeRefreshLayout para pull-to-refresh -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:clipToPadding="false"
-        android:paddingBottom="80dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llSearchBar"
-        tools:listitem="@layout/item_kyc_session" />
+        app:layout_constraintTop_toBottomOf="@id/llSearchBar">
+
+        <!-- RecyclerView con lista de sesiones -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSessions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_kyc_session" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Loading indicator para paginación -->
     <ProgressBar

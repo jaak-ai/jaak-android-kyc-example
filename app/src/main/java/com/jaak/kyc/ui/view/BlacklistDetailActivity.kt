@@ -54,6 +54,9 @@ class BlacklistDetailActivity : AppCompatActivity() {
         android.util.Log.d("BlacklistDetailActivity", blacklistData.blacklistResults ?: "null")
         android.util.Log.d("BlacklistDetailActivity", "============================================")
 
+        // Mostrar tiempo de procesamiento
+        binding.tvProcessingTime.text = "⏱️ Tiempo de procesamiento: ${blacklistData.processingTime ?: "N/A"}"
+
         // Intentar parsear y mostrar de forma estructurada
         if (blacklistData.blacklistResults != null) {
             try {
@@ -113,27 +116,32 @@ class BlacklistDetailActivity : AppCompatActivity() {
 
                 // Parsear INE
                 groupedResults["ine-blacklist"]?.let { item ->
-                    parseIneBlacklist(item)?.let { validationLists.add(it) }
+                    val processingTime = item["processingTime"] as? String ?: "N/A"
+                    parseIneBlacklist(item, processingTime)?.let { validationLists.add(it) }
                 }
 
                 // Parsear OFAC
                 groupedResults["ofac-blacklist"]?.let { item ->
-                    parseOfacBlacklist(item)?.let { riskLists.add(it) }
+                    val processingTime = item["processingTime"] as? String ?: "N/A"
+                    parseOfacBlacklist(item, processingTime)?.let { riskLists.add(it) }
                 }
 
                 // Parsear SAT69B
                 groupedResults["sat69b-blacklist"]?.let { item ->
-                    parseSat69bBlacklist(item)?.let { riskLists.add(it) }
+                    val processingTime = item["processingTime"] as? String ?: "N/A"
+                    parseSat69bBlacklist(item, processingTime)?.let { riskLists.add(it) }
                 }
 
                 // Parsear Interpol
                 groupedResults["interpol-blacklist"]?.let { item ->
-                    parseInterpolBlacklist(item)?.let { riskLists.add(it) }
+                    val processingTime = item["processingTime"] as? String ?: "N/A"
+                    parseInterpolBlacklist(item, processingTime)?.let { riskLists.add(it) }
                 }
 
                 // Parsear CURP
                 groupedResults["curp-blacklist"]?.let { item ->
-                    parseCurpBlacklist(item)?.let { validationLists.add(it) }
+                    val processingTime = item["processingTime"] as? String ?: "N/A"
+                    parseCurpBlacklist(item, processingTime)?.let { validationLists.add(it) }
                 }
 
             } catch (e: Exception) {
@@ -159,7 +167,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
     /**
      * Parsea datos de INE blacklist
      */
-    private fun parseIneBlacklist(item: Map<*, *>): BlacklistItem? {
+    private fun parseIneBlacklist(item: Map<*, *>, processingTime: String): BlacklistItem? {
         val evaluation = item["evaluation"] as? Map<*, *>
         val ineData = evaluation?.get("ine") as? Map<*, *>
         val identification = ineData?.get("identification") as? Map<*, *>
@@ -171,7 +179,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
                 status = BlacklistStatus.VALID,
                 description = "El usuario ha sido identificado en bases oficiales de INE, lo que respalda la autenticidad de su información.",
                 attempts = 1,
-                processingTime = "N/A",
+                processingTime = processingTime,
                 detailedData = listOf(
                     DataRow("Número CIC", content["cicNumber"]?.toString() ?: "-"),
                     DataRow("Distrito Federal", content["federalDistrict"]?.toString() ?: "-"),
@@ -192,7 +200,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
     /**
      * Parsea datos de OFAC blacklist
      */
-    private fun parseOfacBlacklist(item: Map<*, *>): BlacklistItem? {
+    private fun parseOfacBlacklist(item: Map<*, *>, processingTime: String): BlacklistItem? {
         val evaluation = item["evaluation"] as? Map<*, *>
         val coincidences = evaluation?.get("coincidences") as? Map<*, *>
         val firstCoincidence = coincidences?.get("0") as? Map<*, *>
@@ -206,9 +214,9 @@ class BlacklistDetailActivity : AppCompatActivity() {
             BlacklistItem(
                 name = "OFAC",
                 status = BlacklistStatus.RISK,
-                description = "El usuario ha sido identificado en la lista de OFAC con coincidencia: $name (Score: $score). El usuario ha sido clasificado como de Riesgo en el proceso de verificación.",
+                description = "El usuario ha sido identificado en la lista de OFAC. El usuario ha sido clasificado como de Riesgo en el proceso de verificación.",
                 attempts = 1,
-                processingTime = "N/A",
+                processingTime = processingTime,
                 detailedData = listOf(
                     DataRow("Nombre Coincidente", name),
                     DataRow("Score", score),
@@ -227,7 +235,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
                 status = BlacklistStatus.RELIABLE,
                 description = "El usuario no ha sido identificado en la lista de OFAC. El usuario ha sido clasificado como Confiable en el proceso de verificación.",
                 attempts = 1,
-                processingTime = "N/A",
+                processingTime = processingTime,
                 detailedData = null,
                 isRiskList = true
             )
@@ -237,7 +245,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
     /**
      * Parsea datos de SAT69B blacklist
      */
-    private fun parseSat69bBlacklist(item: Map<*, *>): BlacklistItem? {
+    private fun parseSat69bBlacklist(item: Map<*, *>, processingTime: String): BlacklistItem? {
         val evaluation = item["evaluation"] as? Map<*, *>
 
         return if (evaluation.isNullOrEmpty()) {
@@ -247,7 +255,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
                 status = BlacklistStatus.RELIABLE,
                 description = "El usuario no ha sido identificado en la lista de SAT69B. El usuario ha sido clasificado como Confiable en el proceso de verificación.",
                 attempts = 1,
-                processingTime = "N/A",
+                processingTime = processingTime,
                 detailedData = null,
                 isRiskList = true
             )
@@ -257,7 +265,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
     /**
      * Parsea datos de Interpol blacklist
      */
-    private fun parseInterpolBlacklist(item: Map<*, *>): BlacklistItem? {
+    private fun parseInterpolBlacklist(item: Map<*, *>, processingTime: String): BlacklistItem? {
         val evaluation = item["evaluation"] as? Map<*, *>
 
         return if (evaluation.isNullOrEmpty()) {
@@ -267,7 +275,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
                 status = BlacklistStatus.RELIABLE,
                 description = "El usuario no ha sido identificado en la lista de Interpol. El usuario ha sido clasificado como Confiable en el proceso de verificación.",
                 attempts = 1,
-                processingTime = "N/A",
+                processingTime = processingTime,
                 detailedData = null,
                 isRiskList = true
             )
@@ -277,7 +285,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
     /**
      * Parsea datos de CURP blacklist
      */
-    private fun parseCurpBlacklist(item: Map<*, *>): BlacklistItem? {
+    private fun parseCurpBlacklist(item: Map<*, *>, processingTime: String): BlacklistItem? {
         val evaluation = item["evaluation"] as? Map<*, *>
         val curpData = evaluation?.get("curp") as? Map<*, *>
         val validaCurp = curpData?.get("validaCurp") as? Map<*, *>
@@ -289,7 +297,7 @@ class BlacklistDetailActivity : AppCompatActivity() {
                 status = BlacklistStatus.VALID,
                 description = "El usuario ha sido identificado en bases oficiales de RENAPO, lo que respalda la autenticidad de su información.",
                 attempts = 1,
-                processingTime = "N/A",
+                processingTime = processingTime,
                 detailedData = listOf(
                     DataRow("Código de Error", content["codeError"]?.toString() ?: "-"),
                     DataRow("CURP", content["curp"]?.toString() ?: "-"),

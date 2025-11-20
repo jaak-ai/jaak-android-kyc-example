@@ -219,7 +219,7 @@ class DocumentExtractActivity : AppCompatActivity() {
             binding.tvPersonalIdNumber.text = (document?.get("personalIdNumber") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
 
             // ========== ESTADOS OCR ==========
-            parseEstadosOcr(evaluation)
+            parseEstadosOcr(evaluation, extractData.thresholdsData, extractData.validationData)
 
             android.util.Log.d("DocumentExtractActivity", "✅ Datos extraídos parseados correctamente")
 
@@ -231,34 +231,61 @@ class DocumentExtractActivity : AppCompatActivity() {
     /**
      * Parsea los estados OCR del servicio y los muestra si existen
      */
-    private fun parseEstadosOcr(evaluation: Map<*, *>) {
+    private fun parseEstadosOcr(evaluation: Map<*, *>, thresholdsJson: String?, validationJson: String?) {
         try {
             val estadosOcrList = mutableListOf<com.jaak.kyc.ui.adapter.EstadoOcrItem>()
 
             // Buscar el objeto "ocr-states" que viene del recurso ocr-states
             val ocrStates = evaluation["ocr-states"] as? Map<*, *>
 
-            android.util.Log.d("DocumentExtractActivity", "ocr-states: $ocrStates")
+            android.util.Log.d("DocumentExtractActivity", "ocr-states evaluation: $ocrStates")
+            android.util.Log.d("DocumentExtractActivity", "thresholdsJson: $thresholdsJson")
+            android.util.Log.d("DocumentExtractActivity", "validationJson: $validationJson")
 
-            // Si existe "ocr-states", parsear los campos
-            ocrStates?.let { states ->
-                val documentCompleteSides = states["documentCompleteSides"] as? Boolean
+            // Parsear thresholds y validation si existen
+            val gson = com.google.gson.Gson()
+            val thresholds = if (!thresholdsJson.isNullOrEmpty()) {
+                gson.fromJson(thresholdsJson, Map::class.java) as? Map<*, *>
+            } else null
 
-                if (documentCompleteSides != null) {
+            val validation = if (!validationJson.isNullOrEmpty()) {
+                gson.fromJson(validationJson, Map::class.java) as? Map<*, *>
+            } else null
+
+            // Si existe "ocr-states" evaluation, agregarlo como primer item
+            ocrStates?.forEach { (key, value) ->
+                if (value is Boolean) {
                     estadosOcrList.add(
                         com.jaak.kyc.ui.adapter.EstadoOcrItem(
-                            property = "Evaluación - Lados Completos del Documento",
-                            isValid = documentCompleteSides
+                            property = "Evaluación - ${formatPropertyName(key.toString())}",
+                            isValid = value
                         )
                     )
                 }
+            }
 
-                // Si hay más campos en ocr-states, agregarlos aquí
-                // Por ejemplo:
-                // val umbralCompleteSides = states["umbral_complete_sides"] as? Boolean
-                // if (umbralCompleteSides != null) {
-                //     estadosOcrList.add(EstadoOcrItem("Umbral - Lados Completos del Documento", umbralCompleteSides))
-                // }
+            // Si existe thresholds, agregarlo como segundo grupo
+            thresholds?.forEach { (key, value) ->
+                if (value is Boolean) {
+                    estadosOcrList.add(
+                        com.jaak.kyc.ui.adapter.EstadoOcrItem(
+                            property = "Umbral - ${formatPropertyName(key.toString())}",
+                            isValid = value
+                        )
+                    )
+                }
+            }
+
+            // Si existe validation, agregarlo como tercer grupo
+            validation?.forEach { (key, value) ->
+                if (value is Boolean) {
+                    estadosOcrList.add(
+                        com.jaak.kyc.ui.adapter.EstadoOcrItem(
+                            property = "Validación - ${formatPropertyName(key.toString())}",
+                            isValid = value
+                        )
+                    )
+                }
             }
 
             // Si hay estados OCR, mostrar la sección
@@ -278,6 +305,15 @@ class DocumentExtractActivity : AppCompatActivity() {
             android.util.Log.e("DocumentExtractActivity", "❌ Error al parsear estados OCR: ${e.message}", e)
             binding.cardEstadosOcr.visibility = android.view.View.GONE
         }
+    }
+
+    /**
+     * Formatea nombres de propiedades de camelCase a formato legible
+     */
+    private fun formatPropertyName(name: String): String {
+        // Convertir camelCase a espacios: documentCompleteSides -> Document Complete Sides
+        return name.replace(Regex("([a-z])([A-Z])"), "$1 $2")
+            .replaceFirstChar { it.uppercase() }
     }
 
     // ========== MÉTODOS OBSOLETOS ELIMINADOS ==========

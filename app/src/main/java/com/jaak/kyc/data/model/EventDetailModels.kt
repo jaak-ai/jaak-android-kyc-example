@@ -44,7 +44,9 @@ data class DocumentExtractData(
     val documentBackUrl: String?, // URL del reverso del documento
     val faceUrl: String?, // URL de la cara extraída del documento
     val extractedData: String?, // JSON con datos extraídos (nombre, apellido, etc)
-    val processingTime: String?
+    val processingTime: String?,
+    val thresholdsData: String?, // JSON con umbrales esperados de ocr-states
+    val validationData: String? // JSON con resultados de validación de ocr-states
 ) : Parcelable
 
 /**
@@ -56,7 +58,9 @@ data class DocumentDetailData(
     val documentFrontUrl: String?, // URL del frente del documento
     val documentBackUrl: String?, // URL del reverso del documento
     val verificationScore: Double?, // Score de verificación
-    val verificationData: String?, // JSON con todos los datos de verificación
+    val verificationData: String?, // JSON con datos de evaluación
+    val thresholdsData: String?, // JSON con umbrales esperados
+    val validationData: String?, // JSON con resultados de validación
     val processingTime: String?
 ) : Parcelable
 

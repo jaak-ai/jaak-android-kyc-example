@@ -8,20 +8,20 @@ data class BlacklistRequest(
 )
 
 data class BlacklistServices(
-    @SerializedName("ine") val ine: Boolean = false,
-    @SerializedName("interpol") val interpol: Boolean = false,
-    @SerializedName("ofac") val ofac: Boolean = false,
+    @SerializedName("ine") val ine: Boolean? = null,
+    @SerializedName("interpol") val interpol: Boolean? = null,
+    @SerializedName("ofac") val ofac: Boolean? = null,
     @SerializedName("renapo") val renapo: BlacklistRenapoService? = null,
     @SerializedName("sat") val sat: BlacklistSatService? = null,
     @SerializedName("cdc") val cdc: BlacklistCdcService? = null
 )
 
 data class BlacklistRenapoService(
-    @SerializedName("curp") val curp: Boolean = false
+    @SerializedName("curp") val curp: Boolean? = null
 )
 
 data class BlacklistSatService(
-    @SerializedName("sat69b") val sat69b: Boolean = false
+    @SerializedName("sat69b") val sat69b: Boolean? = null
 )
 
 data class BlacklistCdcService(

@@ -436,20 +436,26 @@
                     android:gravity="center">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/document_label"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/jaak_text_secondary"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="4dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/tvScoreDocument"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/jaak_success"
+                        android:maxLines="1"
+                        android:ellipsize="none"
+                        android:gravity="center"
                         tools:text="100.0%" />
 
                 </LinearLayout>
@@ -475,20 +481,26 @@
                     android:gravity="center">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/liveness"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/jaak_text_secondary"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="4dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/tvScoreLiveness"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/jaak_success"
+                        android:maxLines="1"
+                        android:ellipsize="none"
+                        android:gravity="center"
                         tools:text="100.0%" />
 
                 </LinearLayout>
@@ -513,20 +525,26 @@
                     android:gravity="center">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/one_to_one_label"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textColor="@color/jaak_text_secondary"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginBottom="4dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/tvScoreOto"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/jaak_success"
+                        android:maxLines="1"
+                        android:ellipsize="none"
+                        android:gravity="center"
                         tools:text="100.0%" />
 
                 </LinearLayout>
