@@ -33,13 +33,9 @@ class FacialVerificationInstructionsActivity : AppCompatActivity(), VisageListen
     }
 
     private fun initComponents() {
-        // Configurar botón de empezar de nuevo
+        // Configurar botón de empezar de nuevo - vuelve al Dashboard sin cerrar sesión
         binding.btnStartAgain.setOnClickListener {
-            // Navegar de vuelta a InitProcessLivenessActivity para reiniciar el flujo
-            val intent = Intent(this, InitProcessLivenessActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+            restartKycFlow()
         }
         
         // Configurar botón de iniciar verificación facial
@@ -49,7 +45,18 @@ class FacialVerificationInstructionsActivity : AppCompatActivity(), VisageListen
         }
     }
 
+    /**
+     * Reinicia el flujo KYC sin cerrar sesión
+     */
+    private fun restartKycFlow() {
+        val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+    }
+
     private fun initFaceDetector() {
+        VisageSDK.initialize("Y92M-A7DS-4H27-8BNL")
         visageSDK = VisageSDK(this, this)
         visageSDK.setShowTutorial(true)
         // Configurar SDK para no mostrar preview y retornar directamente

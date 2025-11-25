@@ -368,7 +368,9 @@
 
     <!-- Edit Session Profile -->
     <string name="redirect_url_hint">https://example.com</string>
-    <string name="kyc_traditional">Traditional KYC</string>
+    <string name="kyc_traditional">KYC Tradicional</string>
+    <string name="kyc_rigel">Rigel</string>
+    <string name="kyc_mosaic">KYC Mosaic</string>
 
     <!-- Session List -->
     <string name="date_label">Date</string>
@@ -430,4 +432,29 @@
     <string name="recaptcha_verifying">Verifying you are not a robot...</string>
     <string name="recaptcha_error">reCAPTCHA verification failed. Please try again.</string>
 
+    <!-- Mosaic Configuration -->
+    <string name="mosaic_config_title">Configuración Mosaic</string>
+    <string name="mosaic_config_description">Selecciona y ordena los módulos que deseas incluir en el flujo Mosaic</string>
+    <string name="mosaic_continue">Continuar</string>
+    <string name="module_not_available">⚠️ Módulo no disponible</string>
+    <string name="drag_to_reorder">Arrastra para reordenar</string>
+    <string name="warning">Advertencia</string>
+    <string name="mosaic_validation_error">Algunos módulos seleccionados no están disponibles. Desmárcalos para continuar.</string>
+    <string name="mosaic_min_modules_error">Debes seleccionar al menos los módulos de Bienvenida y Finalización</string>
+    <string name="mosaic_modules_config">Módulos</string>
+    <string name="mosaic_modules_description">Select and organize the modules to include</string>
+    <string name="search">Buscar</string>
+    <string name="search_by_shortkey">ShortKey</string>
+    <string name="search_by_contact_name">Nombre Contacto</string>
+    <string name="search_by_flow_name">Nombre Flujo</string>
+    <string name="search_by_session_id">ID Sesión</string>
+    <string name="end_date_label">Fecha Fin</string>
+    <string name="include_end_date">Incluir fecha fin</string>
+    
+    <!-- Mosaic validations -->
+    <string name="mosaic_info_message">Select the steps and drag them to order. Welcome and Completion are included automatically.</string>
+    <string name="mosaic_error_title">Cannot reorder</string>
+    <string name="mosaic_error_cannot_move">Cannot move this module to that position</string>
+    <string name="mosaic_error_1to1_first">1:1 Comparison requires: Document extraction, Identity verification</string>
+    <string name="mosaic_error_blacklist_first">Official lists requires: Document extraction</string>
 </resources>

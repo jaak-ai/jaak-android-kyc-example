@@ -70,6 +70,16 @@ class EditSessionProfileActivity : AppCompatActivity() {
     // Mapeo inverso: Valor API -> Texto mostrado
     private val validationCodeMap = validationMap.entries.associate { (name, code) -> code to name }
 
+    // Mapeo de tipos de flujo: Texto mostrado -> Código interno
+    private val flowTypeMap = mapOf(
+        "KYC Tradicional" to "TRADITIONAL",
+        "Rigel" to "RIGEL",
+        "KYC Mosaic" to "MOSAIC"
+    )
+
+    // Mapeo inverso: Código interno -> Texto mostrado
+    private val flowTypeCodeMap = flowTypeMap.entries.associate { (name, code) -> code to name }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditSessionProfileBinding.inflate(layoutInflater)
@@ -101,11 +111,132 @@ class EditSessionProfileActivity : AppCompatActivity() {
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerCountry.adapter = countryAdapter
 
+        // Tipos de flujo - Filtrar según el modo
+        val availableFlowTypes = if (isManualMode) {
+            // Modo manual: Mostrar todas las opciones (KYC Tradicional, Rigel, Mosaic)
+            flowTypeMap.keys.toTypedArray()
+        } else {
+            // Modo rápido (dashboard): Solo KYC Tradicional
+            arrayOf("KYC Tradicional")
+        }
+        
+        val flowTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, availableFlowTypes)
+        flowTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerFlowType.adapter = flowTypeAdapter
+
         // Métodos de validación (mostrar nombres amigables al usuario)
         val validationMethods = validationMap.keys.toTypedArray()
         val validationAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, validationMethods)
         validationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerValidationMethod.adapter = validationAdapter
+
+        // Listener para mostrar/ocultar módulos Mosaic
+        binding.spinnerFlowType.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                val selectedType = flowTypeMap[parent?.getItemAtPosition(position).toString()]
+                if (selectedType == "MOSAIC") {
+                    setupMosaicModules()
+                    binding.layoutMosaicModules.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.layoutMosaicModules.visibility = android.view.View.GONE
+                }
+            }
+
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {
+                binding.layoutMosaicModules.visibility = android.view.View.GONE
+            }
+        }
+    }
+
+    private var mosaicAdapter: com.jaak.kyc.ui.adapter.MosaicModuleAdapter? = null
+    private val mosaicModules = com.jaak.kyc.data.model.MosaicModule.getDefaultModules().toMutableList()
+
+    private fun setupMosaicModules() {
+        if (mosaicAdapter == null) {
+            // Configurar LayoutManager
+            binding.rvMosaicModules.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+            
+            mosaicAdapter = com.jaak.kyc.ui.adapter.MosaicModuleAdapter(mosaicModules) {
+                // Callback cuando cambia algo
+            }
+            binding.rvMosaicModules.adapter = mosaicAdapter
+
+            // Setup drag & drop
+            var lastDraggedModuleId: String? = null
+            var dragErrorShown = false
+            
+            val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(object : androidx.recyclerview.widget.ItemTouchHelper.Callback() {
+                override fun getMovementFlags(
+                    recyclerView: androidx.recyclerview.widget.RecyclerView,
+                    viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder
+                ): Int {
+                    // Todos los módulos pueden moverse
+                    return makeMovementFlags(
+                        androidx.recyclerview.widget.ItemTouchHelper.UP or androidx.recyclerview.widget.ItemTouchHelper.DOWN, 
+                        0
+                    )
+                }
+
+                override fun onMove(
+                    recyclerView: androidx.recyclerview.widget.RecyclerView,
+                    viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+                    target: androidx.recyclerview.widget.RecyclerView.ViewHolder
+                ): Boolean {
+                    val fromPos = viewHolder.adapterPosition
+                    val toPos = target.adapterPosition
+                    val moduleToMove = mosaicModules[fromPos]
+                    
+                    val moved = mosaicAdapter?.moveModule(fromPos, toPos) ?: false
+                    
+                    // Si no se pudo mover, mostrar AlertDialog UNA SOLA VEZ
+                    if (!moved && !dragErrorShown) {
+                        dragErrorShown = true
+                        
+                        val message = when (moduleToMove.id) {
+                            "IVERIFICATION" -> getString(R.string.mosaic_error_1to1_first)
+                            "BLACKLIST" -> getString(R.string.mosaic_error_blacklist_first)
+                            else -> getString(R.string.mosaic_error_cannot_move)
+                        }
+                        
+                        androidx.appcompat.app.AlertDialog.Builder(this@EditSessionProfileActivity)
+                            .setTitle(getString(R.string.mosaic_error_title))
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                    
+                    return moved
+                }
+                
+                override fun onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?, actionState: Int) {
+                    super.onSelectedChanged(viewHolder, actionState)
+                    
+                    // Cuando comienza el drag, resetear el flag
+                    if (actionState == androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG) {
+                        dragErrorShown = false
+                        viewHolder?.let {
+                            val position = it.adapterPosition
+                            if (position >= 0 && position < mosaicModules.size) {
+                                lastDraggedModuleId = mosaicModules[position].id
+                            }
+                        }
+                    }
+                    
+                    // Cuando termina el drag, resetear el flag
+                    if (actionState == androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_IDLE) {
+                        dragErrorShown = false
+                        lastDraggedModuleId = null
+                    }
+                }
+
+                override fun onSwiped(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder, direction: Int) {}
+                override fun isLongPressDragEnabled() = true
+            })
+
+            itemTouchHelper.attachToRecyclerView(binding.rvMosaicModules)
+        }
     }
 
     private fun setupListeners() {
@@ -145,6 +276,18 @@ class EditSessionProfileActivity : AppCompatActivity() {
                     for (i in 0 until countryAdapter.count) {
                         if (countryAdapter.getItem(i).toString() == countryName) {
                             binding.spinnerCountry.setSelection(i)
+                            break
+                        }
+                    }
+                }
+
+                // Seleccionar tipo de flujo
+                val flowTypeName = flowTypeCodeMap[it.selectedFlowType]
+                if (flowTypeName != null) {
+                    val flowTypeAdapter = binding.spinnerFlowType.adapter
+                    for (i in 0 until flowTypeAdapter.count) {
+                        if (flowTypeAdapter.getItem(i).toString() == flowTypeName) {
+                            binding.spinnerFlowType.setSelection(i)
                             break
                         }
                     }
@@ -258,6 +401,25 @@ class EditSessionProfileActivity : AppCompatActivity() {
             "WHATSAPP" -> whatsapp = verificationValue.ifEmpty { null }
         }
 
+        // Obtener tipo de flujo seleccionado del spinner
+        val selectedFlowTypeName = binding.spinnerFlowType.selectedItem.toString()
+        val selectedFlowType = flowTypeMap[selectedFlowTypeName] ?: "TRADITIONAL"
+
+        // Si es Mosaic, validar y serializar los módulos seleccionados
+        val mosaicModulesJson = if (selectedFlowType == "MOSAIC") {
+            // Validar orden de módulos
+            val validationError = mosaicAdapter?.validateModuleOrder()
+            if (validationError != null) {
+                android.widget.Toast.makeText(this, validationError, android.widget.Toast.LENGTH_LONG).show()
+                return
+            }
+            
+            val gson = com.google.gson.Gson()
+            gson.toJson(mosaicAdapter?.getModules() ?: mosaicModules)
+        } else {
+            null
+        }
+
         // Crear o actualizar perfil
         val profile = KycProfile(
             id = profileId ?: java.util.UUID.randomUUID().toString(),
@@ -267,6 +429,8 @@ class EditSessionProfileActivity : AppCompatActivity() {
             redirectUrl = redirectUrl.ifEmpty { null },
             countryDocument = countryDocument,
             flowType = "KYC",
+            selectedFlowType = selectedFlowType,
+            mosaicModulesJson = mosaicModulesJson,
             verificationType = verificationType,
             email = email,
             sms = sms,
@@ -298,6 +462,10 @@ class EditSessionProfileActivity : AppCompatActivity() {
         // Convertir nombre de país a código ISO
         val selectedCountryName = binding.spinnerCountry.selectedItem.toString()
         val countryDocument = countryMap[selectedCountryName] ?: "MEX"
+
+        // Obtener tipo de flujo seleccionado
+        val selectedFlowTypeName = binding.spinnerFlowType.selectedItem.toString()
+        val selectedFlowType = flowTypeMap[selectedFlowTypeName] ?: "TRADITIONAL"
 
         // Convertir nombre de validación a código API
         val selectedValidationName = binding.spinnerValidationMethod.selectedItem.toString()
@@ -378,48 +546,82 @@ class EditSessionProfileActivity : AppCompatActivity() {
                 val processId = kycOfflineRepository.createKycProcess(shortKey)
                 Log.d("EditSessionProfile", "✓ Proceso creado en BD con ID: $processId")
 
-                // Paso 2: Ejecutar sesión con el shortKey
-                Log.d("EditSessionProfile", "POST /api/v1/kyc/session")
-                val sessionResponse = jaakDBService.sessionApi(shortKey, Constants.ORIGIN_DEVICE)
+                // Decidir el flujo según el tipo seleccionado
+                when (selectedFlowType) {
+                    "RIGEL" -> {
+                        // Flujo Rigel: Abrir WebView con URL de Rigel
+                        val rigelUrl = "https://rigel.dev.jaak.ai/session/$shortKey"
+                        Log.d("EditSessionProfile", "✓ Abriendo Rigel WebView: $rigelUrl")
+                        
+                        hideLoadingDialog()
+                        
+                        val intent = Intent(this@EditSessionProfileActivity, KycWebViewActivity::class.java)
+                        intent.putExtra(KycWebViewActivity.EXTRA_URL, rigelUrl)
+                        intent.putExtra(KycWebViewActivity.EXTRA_FLOW_TYPE, "RIGEL")
+                        startActivity(intent)
+                        finish()
+                    }
+                    "MOSAIC" -> {
+                        // Flujo Mosaic: Usar configuración de módulos del formulario
+                        val modules = mosaicAdapter?.getModules() ?: mosaicModules
+                        val config = com.jaak.kyc.data.model.MosaicConfig(modules, shortKey)
+                        val mosaicUrl = config.buildMosaicUrl()
+                        
+                        Log.d("EditSessionProfile", "✓ Abriendo Mosaic WebView: $mosaicUrl")
+                        
+                        hideLoadingDialog()
+                        
+                        val intent = Intent(this@EditSessionProfileActivity, KycWebViewActivity::class.java)
+                        intent.putExtra(KycWebViewActivity.EXTRA_URL, mosaicUrl)
+                        intent.putExtra(KycWebViewActivity.EXTRA_FLOW_TYPE, "MOSAIC")
+                        startActivity(intent)
+                        finish()
+                    }
+                    else -> {
+                        // Flujo Tradicional (TRADITIONAL): Continuar con session API y servicios
+                        Log.d("EditSessionProfile", "POST /api/v1/kyc/session")
+                        val sessionResponse = jaakDBService.sessionApi(shortKey, Constants.ORIGIN_DEVICE)
 
-                if (!sessionResponse.isSuccessful) {
-                    val errorBody = sessionResponse.errorBody()?.string()
-                    Log.e("EditSessionProfile", "Error ejecutando sesión: $errorBody")
-                    hideLoadingDialog()
-                    Toast.makeText(this@EditSessionProfileActivity, getString(R.string.error_session_failed, sessionResponse.message()), Toast.LENGTH_SHORT).show()
-                    return@launch
+                        if (!sessionResponse.isSuccessful) {
+                            val errorBody = sessionResponse.errorBody()?.string()
+                            Log.e("EditSessionProfile", "Error ejecutando sesión: $errorBody")
+                            hideLoadingDialog()
+                            Toast.makeText(this@EditSessionProfileActivity, getString(R.string.error_session_failed, sessionResponse.message()), Toast.LENGTH_SHORT).show()
+                            return@launch
+                        }
+
+                        val sessionData = sessionResponse.body()
+                        if (sessionData == null) {
+                            hideLoadingDialog()
+                            Toast.makeText(this@EditSessionProfileActivity, getString(R.string.error_invalid_response), Toast.LENGTH_SHORT).show()
+                            return@launch
+                        }
+
+                        Log.d("EditSessionProfile", "✓ Sesión ejecutada exitosamente")
+                        Log.d("EditSessionProfile", "✓ Access Token: ${sessionData.accessToken.take(50)}...")
+
+                        // ✅ GUARDAR TOKEN EN EL PROCESO DE BD
+                        kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
+                        Log.d("EditSessionProfile", "✓ Token guardado en proceso BD")
+
+                        // Guardar token en Constants para usar en los servicios
+                        Constants.API_TOKEN = sessionData.accessToken
+                        Constants.TOKEN = Constants.BEARER + sessionData.accessToken
+
+                        // Guardar accessToken de la sesión
+                        profileManager.saveAccessToken(sessionData.accessToken)
+
+                        Log.d("EditSessionProfile", "✓ Flujo creado exitosamente. Navegando a InitProcessLivenessActivity...")
+
+                        // Ocultar loading dialog
+                        hideLoadingDialog()
+
+                        // Navegar a InitProcessLivenessActivity
+                        val intent = Intent(this@EditSessionProfileActivity, InitProcessLivenessActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
                 }
-
-                val sessionData = sessionResponse.body()
-                if (sessionData == null) {
-                    hideLoadingDialog()
-                    Toast.makeText(this@EditSessionProfileActivity, getString(R.string.error_invalid_response), Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
-
-                Log.d("EditSessionProfile", "✓ Sesión ejecutada exitosamente")
-                Log.d("EditSessionProfile", "✓ Access Token: ${sessionData.accessToken.take(50)}...")
-
-                // ✅ GUARDAR TOKEN EN EL PROCESO DE BD
-                kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
-                Log.d("EditSessionProfile", "✓ Token guardado en proceso BD")
-
-                // Guardar token en Constants para usar en los servicios
-                Constants.API_TOKEN = sessionData.accessToken
-                Constants.TOKEN = Constants.BEARER + sessionData.accessToken
-
-                // Guardar accessToken de la sesión
-                profileManager.saveAccessToken(sessionData.accessToken)
-
-                Log.d("EditSessionProfile", "✓ Flujo creado exitosamente. Navegando a InitProcessLivenessActivity...")
-
-                // Ocultar loading dialog
-                hideLoadingDialog()
-
-                // Navegar a InitProcessLivenessActivity
-                val intent = Intent(this@EditSessionProfileActivity, InitProcessLivenessActivity::class.java)
-                startActivity(intent)
-                finish()
 
             } catch (e: Exception) {
                 Log.e("EditSessionProfile", "Excepción al crear flujo KYC: ${e.message}", e)

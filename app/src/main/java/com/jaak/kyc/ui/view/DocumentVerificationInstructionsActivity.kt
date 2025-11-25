@@ -37,22 +37,35 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
 
     private fun initComponents() {
         // Inicializar StampsSDK
+        StampsSDK.initialize("DF1W-WZS5-RRHR-LF0H",this)
+        StampsSDK.setEnvironment(StampsSDK.Environment.DEV, this)
         stampsSDK = StampsSDK(this, this)
 
         // Configuración extrema para máxima velocidad
         stampsSDK.setAutoStampsClassification(true)  // Sin OCR
         stampsSDK.setCaptureDelay(0)                  // Sin countdown
         stampsSDK.setAlignmentTolerance(50)           // Muy permisivo
-        stampsSDK.setMaskSize(80)                     // Marco grande
+        stampsSDK.setMaskSize(80)
+        stampsSDK.setCropMargin(150)
         stampsSDK.setShowPreview(false)               // Sin preview
 
         binding.btnStartAgain.setOnClickListener {
-            // Navegar de vuelta al menú principal
-            val intent = Intent(this, InitProcessLivenessActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+            // Volver al Dashboard sin cerrar sesión
+            restartKycFlow()
         }
+    }
+
+    /**
+     * Reinicia el flujo KYC sin cerrar sesión
+     */
+    private fun restartKycFlow() {
+        val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+    }
+
+    private fun setupButtonsOld() {
 
         binding.btnStartDocumentCapture.setOnClickListener {
             // Iniciar captura de documentos con StampsSDK

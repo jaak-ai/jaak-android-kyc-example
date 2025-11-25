@@ -50,6 +50,32 @@ class SessionInfoFragment : Fragment() {
             // Cambiar al tab "Flujo" (index 1)
             (activity as? SessionDetailActivity)?.switchToTab(1)
         }
+
+        // Click listeners en puntajes rápidos - mostrar detalle expandido
+        binding.cvScoreDocument.setOnClickListener {
+            showScoreDetail("document")
+        }
+
+        binding.cvScoreLiveness.setOnClickListener {
+            showScoreDetail("liveness")
+        }
+
+        binding.cvScoreOto.setOnClickListener {
+            showScoreDetail("oto")
+        }
+    }
+
+    /**
+     * Muestra el detalle de un puntaje específico
+     */
+    private fun showScoreDetail(scoreType: String) {
+        android.util.Log.d("SessionInfoFragment", "Mostrando detalle de puntaje: $scoreType")
+        
+        // Cambiar al tab de Resumen (index 2) que tiene el detalle completo de puntajes
+        (activity as? SessionDetailActivity)?.switchToTab(2)
+        
+        // TODO: Si hay una sección específica para cada score, desplazarse a ella
+        // Por ahora solo cambiamos al tab de Resumen donde está "Ver todos"
     }
 
     private fun observeViewModel() {

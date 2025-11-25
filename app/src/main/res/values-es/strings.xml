@@ -423,4 +423,13 @@
     <string name="profile_created_success">Perfil creado exitosamente</string>
     <string name="profile_updated_success">Perfil actualizado exitosamente</string>
 
+    <!-- Mosaic Strings (Spanish) -->
+    <string name="mosaic_modules_config">Módulos</string>
+    <string name="mosaic_modules_description">Selecciona y organiza los módulos a incluir</string>
+    <string name="mosaic_info_message">Selecciona los pasos y arrástralos para ordenar. Bienvenida y Finalización se incluyen automáticamente.</string>
+    <string name="mosaic_error_title">No se puede reordenar</string>
+    <string name="mosaic_error_cannot_move">No se puede mover este módulo a esa posición</string>
+    <string name="mosaic_error_1to1_first">Comparación 1:1 requiere: Extracción de documento, Verificación de identidad</string>
+    <string name="mosaic_error_blacklist_first">Listas oficiales requiere: Extracción de documento</string>
+
 </resources>

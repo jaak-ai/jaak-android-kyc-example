@@ -190,12 +190,10 @@ class DocumentExtractActivity : AppCompatActivity() {
             binding.tvFatherLastName.text = (personal?.get("surname") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
             binding.tvBirthDate.text = (personal?.get("dateOfBirth") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
             binding.tvBirthPlace.text = (personal?.get("placeOfBirth") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
-            binding.tvGender.text = when (personal?.get("sex") as? String) {
-                "F" -> "Femenino"
-                "M" -> "Masculino"
-                else -> "-"
-            }
-            binding.tvNationality.text = (country?.get("name") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
+            // Mostrar valor crudo sin formatear (consistencia con dashboard)
+            binding.tvGender.text = (personal?.get("sex") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
+            // Mostrar código de país en vez de nombre completo (consistencia con dashboard)
+            binding.tvNationality.text = (country?.get("alpha3") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
             binding.tvMaritalStatus.text = (personal?.get("maritalStatus") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
             binding.tvOcr.text = (personalExtra?.get("ocr") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
             binding.tvRegistrationYear.text = (personalExtra?.get("registerYear") as? String).takeIf { !it.isNullOrBlank() } ?: "-"
@@ -348,14 +346,10 @@ class DocumentExtractActivity : AppCompatActivity() {
             binding.tvFatherLastName.text = extractStringValue(ocrData, "father_last_name", "paternal_surname", "last_name") ?: "ROBLES"
             binding.tvBirthDate.text = extractStringValue(ocrData, "birth_date", "date_of_birth") ?: "10/02/1999"
             binding.tvBirthPlace.text = extractStringValue(ocrData, "birth_place", "place_of_birth") ?: "-"
-            binding.tvGender.text = extractStringValue(ocrData, "gender", "sex")?.let {
-                when(it.lowercase()) {
-                    "f", "female", "femenino" -> "Femenino"
-                    "m", "male", "masculino" -> "Masculino"
-                    else -> it
-                }
-            } ?: "Femenino"
-            binding.tvNationality.text = extractStringValue(ocrData, "nationality") ?: "MEXICAN"
+            // Mostrar valor crudo sin formatear (consistencia con dashboard)
+            binding.tvGender.text = extractStringValue(ocrData, "gender", "sex") ?: "-"
+            // Mostrar código de país (MEX, USA, etc.) en vez de nombre completo
+            binding.tvNationality.text = extractStringValue(ocrData, "nationality") ?: "-"
             binding.tvMaritalStatus.text = extractStringValue(ocrData, "marital_status", "civil_status") ?: "-"
             binding.tvOcr.text = extractStringValue(ocrData, "ocr", "ocr_number") ?: "1327107379263"
             binding.tvRegistrationYear.text = extractStringValue(ocrData, "registration_year", "year_of_registration") ?: "2016 01"
@@ -405,8 +399,9 @@ class DocumentExtractActivity : AppCompatActivity() {
         binding.tvFatherLastName.text = "ROBLES"
         binding.tvBirthDate.text = "10/02/1999"
         binding.tvBirthPlace.text = "-"
-        binding.tvGender.text = "Femenino"
-        binding.tvNationality.text = "MEXICAN"
+        // Valores por defecto en formato crudo (consistencia con dashboard)
+        binding.tvGender.text = "F"
+        binding.tvNationality.text = "MEX"
         binding.tvMaritalStatus.text = "-"
         binding.tvOcr.text = "1327107379263"
         binding.tvRegistrationYear.text = "2016 01"

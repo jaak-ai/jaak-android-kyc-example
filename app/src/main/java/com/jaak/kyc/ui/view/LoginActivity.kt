@@ -183,8 +183,8 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("LoginActivity", "reCAPTCHA token obtenido: ${recaptchaToken?.take(50)}...")
 
                 // API Key temporal proporcionada por el equipo de backend
-                // Actualizado: 2025-11-05
-                val temporaryApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiNjczNjQwNmE4ZTY3MDFkYWZlZDg0NDFhIiwiY29tcGFueV9pZCI6IjY3MzY0MDZhOGU2NzAxZGFmZWQ4NDQxYSIsImV4cCI6MTc2Mjk2MTY4OCwiaWF0IjoxNzYyMzU2ODg4LCJyb2wiOiIiLCJzZXNzaW9uX2lkIjoiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3ViIjoiNjkwYjZlOTg2MjUzZDI1YzcxOWQ2ODg0IiwidHlwZSI6ImFwaS1rZXkiLCJ1dWlkIjoiZjg4MjNlYmQtMWZhNC00MzI3LWI3ZGMtYjIwZDZiMmU2NDA4In0.EMLfh9MLr0vaWmsPcg9J5soiGs9DUUTZ5NSoZetrPhg"
+                // Actualizado: 2025-11-20
+                val temporaryApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiNjkxMGM2YjZjNjdjYTQ0Mjc4N2VmZTJiIiwiY29tcGFueV9pZCI6IjY5MTBjNmI2YzY3Y2E0NDI3ODdlZmUyYiIsImV4cCI6MTc2NDg1OTA3MiwiaWF0IjoxNzYzNjQ5NDcyLCJyb2wiOiIiLCJzZXNzaW9uX2lkIjoiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3ViIjoiNjkxZjI3YzBmMTQzYjcwOWY4MGQxN2ExIiwidHlwZSI6ImFwaS1rZXkiLCJ1dWlkIjoiZWEwNGMwZTMtMmI5My00MGQ0LTkwYjItNmJjMDA0MmE2YTBmIn0.8kd3q96qlMRHc16x4RYzwa2gkoAcGIRiA7qCWKyi9u4"
 
                 // Guardar API Key de larga duración
                 profileManager.saveApiKey(temporaryApiKey)

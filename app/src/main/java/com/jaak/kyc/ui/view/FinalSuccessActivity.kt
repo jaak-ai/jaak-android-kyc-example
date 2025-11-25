@@ -46,10 +46,10 @@ class FinalSuccessActivity : AppCompatActivity() {
             navigateToMenu()
         }
 
-        // Botón empezar de nuevo - vuelve a MenuMainActivity para iniciar nuevo flujo
+        // Botón empezar de nuevo - vuelve al Dashboard para iniciar nuevo flujo
         binding.btnStartAgain.setOnClickListener {
             countDownTimer?.cancel()
-            navigateToMenuMain()
+            restartKycFlow()
         }
     }
 
@@ -83,6 +83,20 @@ class FinalSuccessActivity : AppCompatActivity() {
 
     private fun navigateToMenuMain() {
         val intent = Intent(this, MenuMainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+    }
+
+    /**
+     * Reinicia el flujo KYC sin cerrar sesión
+     */
+    private fun restartKycFlow() {
+        // Limpiar proceso offline actual si existe
+        // kycOfflineRepository.deleteCurrentProcess()
+        
+        // Volver al Dashboard
+        val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         finish()

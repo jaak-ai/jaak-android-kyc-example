@@ -136,4 +136,8 @@
     <color name="jaak_login_button_pressed">#64B5F6</color>
     <color name="jaak_login_link">#42A5F5</color> <!-- Blue links -->
 
+    <color name="error_light">#FFEBEE</color>
+    
+    <!-- Mosaic requirement warning color -->
+    <color name="warning_yellow">#FFC107</color>
 </resources>

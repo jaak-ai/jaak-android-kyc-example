@@ -120,18 +120,50 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Fecha Final -->
-    <TextView
+    <!-- Switch para incluir fecha final -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/filter_end_date"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/jaak_text_primary"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardEndDate"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/include_end_date"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_primary" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchIncludeEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
+    </LinearLayout>
+
+    <!-- Fecha Final (visible solo si el switch está activado) -->
+    <LinearLayout
+        android:id="@+id/layoutEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/end_date_label"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/jaak_text_primary"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEndDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -213,6 +245,9 @@
                 android:textColor="@color/jaak_text_primary" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+    <!-- Fin del layout de fecha final -->
 
     <!-- Botones -->
     <LinearLayout

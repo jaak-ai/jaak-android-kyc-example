@@ -165,5 +165,14 @@
             android:exported="false" />
 
 
+        <activity
+            android:name=".ui.view.KycWebViewActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.view.MosaicConfigActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
+
     </application>
 </manifest>

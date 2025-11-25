@@ -53,6 +53,13 @@ class SessionsFragmentNew : Fragment() {
     private var searchQuery: String? = null
     private var selectedFlowName: String? = null
 
+    // Búsqueda avanzada
+    private enum class SearchType {
+        SHORT_KEY, CONTACT_NAME, FLOW_NAME, SESSION_ID
+    }
+    private var currentSearchType = SearchType.SHORT_KEY
+    private var currentSearchQuery: String = ""
+
     // Lista de sesiones cargadas
     private val allSessions = mutableListOf<KycSessionItem>()
     private val filteredSessions get() = allSessions
@@ -187,22 +194,98 @@ class SessionsFragmentNew : Fragment() {
     }
 
     private fun setupSearchBar() {
+        // Mostrar chips cuando el campo de búsqueda gana foco
+        binding.etSearch.setOnFocusChangeListener { _, hasFocus ->
+            // Siempre mostrar chips cuando tiene foco, sin importar si hay texto
+            binding.chipGroupSearchType.visibility = if (hasFocus) View.VISIBLE else View.GONE
+        }
+
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Si el texto se borra completamente, restaurar lista original
+                if (s.isNullOrEmpty()) {
+                    currentSearchQuery = ""
+                    searchQuery = null
+                    // Recargar lista original
+                    loadSessions(page = 1, clearList = true)
+                    Log.d("SessionsFragment", "🔄 Texto borrado - Lista restaurada")
+                }
+            }
 
             override fun afterTextChanged(s: Editable?) {
-                // Cancelar búsqueda anterior
-                searchRunnable?.let { searchHandler.removeCallbacks(it) }
-
-                // Crear nueva búsqueda con delay de 500ms (debounce)
-                searchRunnable = Runnable {
-                    performSearch(s.toString())
-                }
-                searchHandler.postDelayed(searchRunnable!!, 500)
+                currentSearchQuery = s.toString()
             }
         })
+
+        // Botón de búsqueda - ejecuta búsqueda según chip seleccionado
+        binding.ivSearchAction.setOnClickListener {
+            if (currentSearchQuery.isNotEmpty()) {
+                performAdvancedSearch()
+            } else {
+                Toast.makeText(requireContext(), "Ingresa un texto para buscar", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Configurar chips como checkable (toggle on/off)
+        setupSearchChips()
     }
+
+    /**
+     * Configurar comportamiento de chips: toggle on/off
+     * Solo uno puede estar activo a la vez
+     */
+    private fun setupSearchChips() {
+        // Por defecto, ShortKey está seleccionado
+        binding.chipShortKey.isChecked = true
+        currentSearchType = SearchType.SHORT_KEY
+
+        // Listener para ShortKey
+        binding.chipShortKey.setOnCheckedChangeListener { chip, isChecked ->
+            if (isChecked) {
+                currentSearchType = SearchType.SHORT_KEY
+                // Desmarcar otros
+                binding.chipContactName.isChecked = false
+                binding.chipFlowName.isChecked = false
+                binding.chipSessionId.isChecked = false
+            }
+        }
+
+        // Listener para ContactName
+        binding.chipContactName.setOnCheckedChangeListener { chip, isChecked ->
+            if (isChecked) {
+                currentSearchType = SearchType.CONTACT_NAME
+                // Desmarcar otros
+                binding.chipShortKey.isChecked = false
+                binding.chipFlowName.isChecked = false
+                binding.chipSessionId.isChecked = false
+            }
+        }
+
+        // Listener para FlowName
+        binding.chipFlowName.setOnCheckedChangeListener { chip, isChecked ->
+            if (isChecked) {
+                currentSearchType = SearchType.FLOW_NAME
+                // Desmarcar otros
+                binding.chipShortKey.isChecked = false
+                binding.chipContactName.isChecked = false
+                binding.chipSessionId.isChecked = false
+            }
+        }
+
+        // Listener para SessionId
+        binding.chipSessionId.setOnCheckedChangeListener { chip, isChecked ->
+            if (isChecked) {
+                currentSearchType = SearchType.SESSION_ID
+                // Desmarcar otros
+                binding.chipShortKey.isChecked = false
+                binding.chipContactName.isChecked = false
+                binding.chipFlowName.isChecked = false
+            }
+        }
+    }
+
+
 
     private fun setupListeners() {
         // Botón + para agregar nueva sesión (Creación Manual)
@@ -226,6 +309,43 @@ class SessionsFragmentNew : Fragment() {
         loadSessions(page = 1, clearList = true)
     }
 
+    /**
+     * Búsqueda avanzada según el tipo seleccionado en los chips
+     */
+    private fun performAdvancedSearch() {
+        if (currentSearchQuery.isEmpty()) {
+            Toast.makeText(requireContext(), "Ingresa un texto para buscar", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        Log.d("SessionsFragment", "🔍 Búsqueda avanzada: tipo=$currentSearchType, query=$currentSearchQuery")
+
+        // Ocultar chips después de buscar
+        binding.chipGroupSearchType.visibility = View.GONE
+        
+        // Quitar foco del campo de búsqueda
+        binding.etSearch.clearFocus()
+
+        // Construir query según el tipo seleccionado
+        searchQuery = buildSearchQuery(currentSearchQuery, currentSearchType)
+        
+        // Realizar búsqueda
+        currentPage = 1
+        loadSessions(page = 1, clearList = true)
+    }
+
+    /**
+     * Construye el query de búsqueda según el tipo
+     */
+    private fun buildSearchQuery(query: String, type: SearchType): String {
+        return when (type) {
+            SearchType.SHORT_KEY -> query // Buscar por shortkey
+            SearchType.CONTACT_NAME -> query // El backend debe filtrar por contactName
+            SearchType.FLOW_NAME -> query // El backend debe filtrar por flowName
+            SearchType.SESSION_ID -> query // El backend debe filtrar por sessionId
+        }
+    }
+
     private fun showFiltersDialog() {
         val dialog = BottomSheetDialog(requireContext())
         val filterBinding = BottomSheetSessionFiltersBinding.inflate(layoutInflater)
@@ -233,13 +353,27 @@ class SessionsFragmentNew : Fragment() {
         // Mostrar valores actuales
         updateDateTimeDisplays(filterBinding)
 
-        // Click en Fecha Inicial
-        filterBinding.cardStartDate.setOnClickListener {
-            showDatePicker { year, month, dayOfMonth ->
-                val calendar = java.util.Calendar.getInstance()
-                calendar.set(year, month, dayOfMonth)
-                startDateMillis = calendar.timeInMillis
+        // Switch para incluir fecha final
+        filterBinding.switchIncludeEndDate.isChecked = endDateMillis != null
+        filterBinding.layoutEndDate.visibility = if (endDateMillis != null) View.VISIBLE else View.GONE
+
+        filterBinding.switchIncludeEndDate.setOnCheckedChangeListener { _, isChecked ->
+            filterBinding.layoutEndDate.visibility = if (isChecked) View.VISIBLE else View.GONE
+            if (!isChecked) {
+                // Limpiar fecha final si se desactiva el switch
+                endDateMillis = null
+                endHour = null
+                endMinute = null
                 updateDateTimeDisplays(filterBinding)
+            }
+        }
+
+        // Click en Fecha Inicial - Abrir DatePicker simple
+        filterBinding.cardStartDate.setOnClickListener {
+            showSimpleDatePicker { selectedDateMillis ->
+                startDateMillis = selectedDateMillis
+                updateDateTimeDisplays(filterBinding)
+                Log.d("SessionsFragment", "📅 Fecha inicio seleccionada: ${formatDateFromMillis(selectedDateMillis)}")
             }
         }
 
@@ -252,13 +386,12 @@ class SessionsFragmentNew : Fragment() {
             }
         }
 
-        // Click en Fecha Final
+        // Click en Fecha Final - Abrir DatePicker simple
         filterBinding.cardEndDate.setOnClickListener {
-            showDatePicker { year, month, dayOfMonth ->
-                val calendar = java.util.Calendar.getInstance()
-                calendar.set(year, month, dayOfMonth)
-                endDateMillis = calendar.timeInMillis
+            showSimpleDatePicker { selectedDateMillis ->
+                endDateMillis = selectedDateMillis
                 updateDateTimeDisplays(filterBinding)
+                Log.d("SessionsFragment", "📅 Fecha fin seleccionada: ${formatDateFromMillis(selectedDateMillis)}")
             }
         }
 
@@ -287,6 +420,28 @@ class SessionsFragmentNew : Fragment() {
 
         dialog.setContentView(filterBinding.root)
         dialog.show()
+    }
+
+    /**
+     * Muestra DatePicker simple para seleccionar UNA fecha
+     */
+    private fun showSimpleDatePicker(onDateSelected: (Long) -> Unit) {
+        val datePicker = com.google.android.material.datepicker.MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Seleccionar fecha")
+            .setSelection(com.google.android.material.datepicker.MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+            onDateSelected(selectedDateMillis)
+        }
+
+        datePicker.show(parentFragmentManager, "DATE_PICKER")
+    }
+
+    private fun formatDateFromMillis(millis: Long?): String {
+        if (millis == null) return "N/A"
+        val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+        return dateFormat.format(java.util.Date(millis))
     }
 
     private fun showDatePicker(onDateSet: (year: Int, month: Int, dayOfMonth: Int) -> Unit) {

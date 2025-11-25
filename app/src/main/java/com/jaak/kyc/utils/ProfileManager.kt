@@ -29,8 +29,9 @@ class ProfileManager @Inject constructor(
         private const val KEY_USER_INFO = "user_info"
         private const val KEY_COMPANY_INFO = "company_info"
 
-        // KYC Profiles keys
+        // KYC Profiles keys (legacy - no usar directamente)
         private const val KEY_KYC_PROFILES = "kyc_profiles"
+        private const val KEY_KYC_PROFILES_PREFIX = "kyc_profiles_user_"
 
         // Perfiles disponibles
         const val PROFILE_QA = "QA"
@@ -48,7 +49,7 @@ class ProfileManager @Inject constructor(
         private const val URL_AUTH_DEV = "https://api.dev.jaak.ai/"
 
         // Perfil por defecto
-        private const val DEFAULT_PROFILE = PROFILE_QA
+        private const val DEFAULT_PROFILE = PROFILE_DEV
     }
 
     /**
@@ -204,7 +205,7 @@ class ProfileManager @Inject constructor(
 
     /**
      * Cierra sesión y limpia todos los datos de autenticación
-     * NOTA: No elimina el API_KEY ya que es de larga duración
+     * NOTA: Los perfiles KYC del usuario se mantienen para cuando vuelva a iniciar sesión
      */
     fun logout() {
         prefs.edit()
@@ -217,6 +218,15 @@ class ProfileManager @Inject constructor(
     }
 
     /**
+     * Limpia los perfiles KYC del usuario actual
+     * Útil si se quiere borrar la configuración del usuario específico
+     */
+    fun clearUserKycProfiles() {
+        val key = getKycProfilesKey()
+        prefs.edit().remove(key).apply()
+    }
+
+    /**
      * Limpia todos los datos de la aplicación
      */
     fun clearAll() {
@@ -226,8 +236,23 @@ class ProfileManager @Inject constructor(
     // ==================== KYC PROFILES METHODS ====================
 
     /**
+     * Obtiene la clave de perfiles KYC asociada al usuario actual
+     */
+    private fun getKycProfilesKey(): String {
+        val userInfo = getUserInfo()
+        return if (userInfo != null) {
+            // Usar email del usuario como identificador único
+            "${KEY_KYC_PROFILES_PREFIX}${userInfo.email}"
+        } else {
+            // Fallback: usar clave legacy si no hay usuario logueado
+            KEY_KYC_PROFILES
+        }
+    }
+
+    /**
      * Guarda un perfil KYC
      * Si ya existe (mismo ID), lo actualiza
+     * Los perfiles se asocian al usuario logueado
      */
     fun saveKycProfile(profile: KycProfile) {
         val profiles = getKycProfiles().toMutableList()
@@ -251,16 +276,18 @@ class ProfileManager @Inject constructor(
             profiles.add(profile)
         }
 
-        // Guardar lista actualizada
+        // Guardar lista actualizada con clave específica del usuario
         val json = gson.toJson(profiles)
-        prefs.edit().putString(KEY_KYC_PROFILES, json).apply()
+        val key = getKycProfilesKey()
+        prefs.edit().putString(key, json).apply()
     }
 
     /**
-     * Obtiene todos los perfiles KYC guardados
+     * Obtiene todos los perfiles KYC guardados del usuario actual
      */
     fun getKycProfiles(): List<KycProfile> {
-        val json = prefs.getString(KEY_KYC_PROFILES, null) ?: return emptyList()
+        val key = getKycProfilesKey()
+        val json = prefs.getString(key, null) ?: return emptyList()
         val type = object : TypeToken<List<KycProfile>>() {}.type
         return gson.fromJson(json, type)
     }
@@ -280,14 +307,15 @@ class ProfileManager @Inject constructor(
     }
 
     /**
-     * Elimina un perfil KYC por ID
+     * Elimina un perfil KYC por ID del usuario actual
      */
     fun deleteKycProfile(id: String) {
         val profiles = getKycProfiles().toMutableList()
         profiles.removeAll { it.id == id }
 
         val json = gson.toJson(profiles)
-        prefs.edit().putString(KEY_KYC_PROFILES, json).apply()
+        val key = getKycProfilesKey()
+        prefs.edit().putString(key, json).apply()
     }
 
     /**
@@ -298,7 +326,7 @@ class ProfileManager @Inject constructor(
     }
 
     /**
-     * Marca un perfil como predeterminado
+     * Marca un perfil como predeterminado para el usuario actual
      */
     fun setDefaultProfile(profileId: String) {
         val profiles = getKycProfiles().toMutableList()
@@ -312,6 +340,7 @@ class ProfileManager @Inject constructor(
         }
 
         val json = gson.toJson(profiles)
-        prefs.edit().putString(KEY_KYC_PROFILES, json).apply()
+        val key = getKycProfilesKey()
+        prefs.edit().putString(key, json).apply()
     }
 }

@@ -46,13 +46,24 @@ class ErrorProcessActivity : AppCompatActivity() {
             }
         })
 
-        // Start Again button - goes back to InitProcessLivenessActivity to restart the full flow
+        // Start Again button - vuelve al Dashboard sin cerrar sesión
         binding.btnStartAgain.setOnClickListener {
-            val intent = Intent(this, InitProcessLivenessActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+            restartKycFlow()
         }
+    }
+
+    /**
+     * Reinicia el flujo KYC sin cerrar sesión
+     */
+    private fun restartKycFlow() {
+        // Volver al Dashboard
+        val intent = Intent(this, com.jaak.kyc.MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+    }
+
+    private fun setupListenersOld() {
     }
 
     private fun displayErrorDetails() {

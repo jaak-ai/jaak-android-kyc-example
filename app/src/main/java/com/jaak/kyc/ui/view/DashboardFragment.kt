@@ -275,66 +275,98 @@ class DashboardFragment : Fragment() {
                 val processId = kycOfflineRepository.createKycProcess(shortKey)
                 Log.d("DashboardFragment", "✓ Proceso creado en BD con ID: $processId")
 
-                // Paso 2: Crear sesión con el shortKey
-                Log.d("DashboardFragment", "========== CREATE SESSION REQUEST ==========")
-                Log.d("DashboardFragment", "URL: POST /api/v1/kyc/session")
-                Log.d("DashboardFragment", "Headers: {")
-                Log.d("DashboardFragment", "  Short-Key: $shortKey")
-                Log.d("DashboardFragment", "  Origin-Device: Android")
-                Log.d("DashboardFragment", "}")
-                Log.d("DashboardFragment", "=========================================")
+                // Decidir el flujo según el tipo seleccionado en el perfil
+                when (profile.selectedFlowType) {
+                    "RIGEL" -> {
+                        // Flujo Rigel: Abrir WebView con URL de Rigel
+                        val rigelUrl = "https://rigel.dev.jaak.ai/session/$shortKey"
+                        Log.d("DashboardFragment", "✓ Abriendo Rigel WebView: $rigelUrl")
+                        
+                        hideLoadingDialog()
+                        
+                        val intent = Intent(requireContext(), KycWebViewActivity::class.java)
+                        intent.putExtra(KycWebViewActivity.EXTRA_URL, rigelUrl)
+                        intent.putExtra(KycWebViewActivity.EXTRA_FLOW_TYPE, "RIGEL")
+                        startActivity(intent)
+                    }
+                    "MOSAIC" -> {
+                        // Flujo Mosaic: Usar configuración guardada del perfil
+                        val mosaicModules = profile.getMosaicModules() ?: com.jaak.kyc.data.model.MosaicModule.getDefaultModules()
+                        val config = com.jaak.kyc.data.model.MosaicConfig(mosaicModules, shortKey)
+                        val mosaicUrl = config.buildMosaicUrl()
+                        
+                        Log.d("DashboardFragment", "✓ Abriendo Mosaic WebView: $mosaicUrl")
+                        
+                        hideLoadingDialog()
+                        
+                        val intent = Intent(requireContext(), KycWebViewActivity::class.java)
+                        intent.putExtra(KycWebViewActivity.EXTRA_URL, mosaicUrl)
+                        intent.putExtra(KycWebViewActivity.EXTRA_FLOW_TYPE, "MOSAIC")
+                        startActivity(intent)
+                    }
+                    else -> {
+                        // Flujo Tradicional (TRADITIONAL): Continuar con session API y servicios
+                        Log.d("DashboardFragment", "========== CREATE SESSION REQUEST ==========")
+                        Log.d("DashboardFragment", "URL: POST /api/v1/kyc/session")
+                        Log.d("DashboardFragment", "Headers: {")
+                        Log.d("DashboardFragment", "  Short-Key: $shortKey")
+                        Log.d("DashboardFragment", "  Origin-Device: Android")
+                        Log.d("DashboardFragment", "}")
+                        Log.d("DashboardFragment", "=========================================")
 
-                val sessionResponse = jaakDBApiClient.sessionApi(
-                    shortKey = shortKey,
-                    originDevice = "Android"
-                )
+                        val sessionResponse = jaakDBApiClient.sessionApi(
+                            shortKey = shortKey,
+                            originDevice = "Android"
+                        )
 
-                Log.d("DashboardFragment", "========== CREATE SESSION RESPONSE ==========")
-                Log.d("DashboardFragment", "Status Code: ${sessionResponse.code()}")
-                Log.d("DashboardFragment", "Status Message: ${sessionResponse.message()}")
+                        Log.d("DashboardFragment", "========== CREATE SESSION RESPONSE ==========")
+                        Log.d("DashboardFragment", "Status Code: ${sessionResponse.code()}")
+                        Log.d("DashboardFragment", "Status Message: ${sessionResponse.message()}")
 
-                if (!sessionResponse.isSuccessful) {
-                    val errorBody = sessionResponse.errorBody()?.string()
-                    Log.e("DashboardFragment", "Error Body: $errorBody")
-                    Log.d("DashboardFragment", "=========================================")
-                    hideLoadingDialog()
-                    Toast.makeText(requireContext(), getString(R.string.error_create_session_failed, sessionResponse.message()), Toast.LENGTH_SHORT).show()
-                    return@launch
+                        if (!sessionResponse.isSuccessful) {
+                            val errorBody = sessionResponse.errorBody()?.string()
+                            Log.e("DashboardFragment", "Error Body: $errorBody")
+                            Log.d("DashboardFragment", "=========================================")
+                            hideLoadingDialog()
+                            Toast.makeText(requireContext(), getString(R.string.error_create_session_failed, sessionResponse.message()), Toast.LENGTH_SHORT).show()
+                            return@launch
+                        }
+
+                        val sessionData = sessionResponse.body()
+                        if (sessionData == null) {
+                            Log.e("DashboardFragment", "Session response body es null")
+                            Log.d("DashboardFragment", "=========================================")
+                            hideLoadingDialog()
+                            Toast.makeText(requireContext(), getString(R.string.error_empty_session_response), Toast.LENGTH_SHORT).show()
+                            return@launch
+                        }
+
+                        Log.d("DashboardFragment", "Response Body: {")
+                        Log.d("DashboardFragment", "  sessionId: ${sessionData.sessionId}")
+                        Log.d("DashboardFragment", "  accessToken: ${sessionData.accessToken}")
+                        Log.d("DashboardFragment", "  step: ${sessionData.step}")
+                        Log.d("DashboardFragment", "  document: ${sessionData.document}")
+                        Log.d("DashboardFragment", "  assets: ${sessionData.assets}")
+                        Log.d("DashboardFragment", "}")
+                        Log.d("DashboardFragment", "=========================================")
+
+                        // ✅ GUARDAR TOKEN EN EL PROCESO DE BD
+                        kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
+                        Log.d("DashboardFragment", "✓ Token guardado en proceso BD")
+
+                        // Guardar accessToken de la sesión
+                        profileManager.saveAccessToken(sessionData.accessToken)
+
+                        Log.d("DashboardFragment", "✓ Flujo creado exitosamente. Navegando a InitProcessLivenessActivity...")
+
+                        // Ocultar loading dialog
+                        hideLoadingDialog()
+
+                        // Navegar a InitProcessLivenessActivity
+                        val intent = Intent(requireContext(), InitProcessLivenessActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
-
-                val sessionData = sessionResponse.body()
-                if (sessionData == null) {
-                    Log.e("DashboardFragment", "Session response body es null")
-                    Log.d("DashboardFragment", "=========================================")
-                    hideLoadingDialog()
-                    Toast.makeText(requireContext(), getString(R.string.error_empty_session_response), Toast.LENGTH_SHORT).show()
-                    return@launch
-                }
-
-                Log.d("DashboardFragment", "Response Body: {")
-                Log.d("DashboardFragment", "  sessionId: ${sessionData.sessionId}")
-                Log.d("DashboardFragment", "  accessToken: ${sessionData.accessToken}")
-                Log.d("DashboardFragment", "  step: ${sessionData.step}")
-                Log.d("DashboardFragment", "  document: ${sessionData.document}")
-                Log.d("DashboardFragment", "  assets: ${sessionData.assets}")
-                Log.d("DashboardFragment", "}")
-                Log.d("DashboardFragment", "=========================================")
-
-                // ✅ GUARDAR TOKEN EN EL PROCESO DE BD
-                kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
-                Log.d("DashboardFragment", "✓ Token guardado en proceso BD")
-
-                // Guardar accessToken de la sesión
-                profileManager.saveAccessToken(sessionData.accessToken)
-
-                Log.d("DashboardFragment", "✓ Flujo creado exitosamente. Navegando a InitProcessLivenessActivity...")
-
-                // Ocultar loading dialog
-                hideLoadingDialog()
-
-                // Navegar a InitProcessLivenessActivity
-                val intent = Intent(requireContext(), InitProcessLivenessActivity::class.java)
-                startActivity(intent)
 
             } catch (e: Exception) {
                 Log.e("DashboardFragment", "Excepción al crear flujo KYC: ${e.message}", e)

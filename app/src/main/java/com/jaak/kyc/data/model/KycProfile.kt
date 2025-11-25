@@ -28,6 +28,12 @@ data class KycProfile(
     @SerializedName("flowType")
     val flowType: String = "KYC", // Siempre "KYC"
 
+    @SerializedName("selectedFlowType")
+    val selectedFlowType: String = "TRADITIONAL", // TRADITIONAL, RIGEL, MOSAIC
+
+    @SerializedName("mosaicModulesJson")
+    val mosaicModulesJson: String? = null, // JSON con configuración de módulos Mosaic
+
     @SerializedName("verificationType")
     val verificationType: String = "", // WHATSAPP, SMS, EMAIL o vacío
 
@@ -49,4 +55,18 @@ data class KycProfile(
 
     @SerializedName("updatedAt")
     val updatedAt: Long = System.currentTimeMillis()
-)
+) {
+    /**
+     * Obtiene los módulos Mosaic configurados
+     */
+    fun getMosaicModules(): List<MosaicModule>? {
+        if (mosaicModulesJson.isNullOrEmpty()) return null
+        return try {
+            val gson = com.google.gson.Gson()
+            val type = object : com.google.gson.reflect.TypeToken<List<MosaicModule>>() {}.type
+            gson.fromJson(mosaicModulesJson, type)
+        } catch (e: Exception) {
+            null
+        }
+    }
+}
