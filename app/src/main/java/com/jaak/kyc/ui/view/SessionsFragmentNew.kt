@@ -440,7 +440,9 @@ class SessionsFragmentNew : Fragment() {
 
     private fun formatDateFromMillis(millis: Long?): String {
         if (millis == null) return "N/A"
+        // MaterialDatePicker devuelve fecha en UTC medianoche, mantener en UTC al formatear
         val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+        dateFormat.timeZone = java.util.TimeZone.getTimeZone("UTC")
         return dateFormat.format(java.util.Date(millis))
     }
 
@@ -550,7 +552,7 @@ class SessionsFragmentNew : Fragment() {
     }
 
     private fun applyFilters() {
-        // Recargar sesiones con el filtro de fechas
+        // Recargar sesiones y aplicar filtro de fechas localmente
         loadSessions(page = 1, clearList = true)
     }
 
@@ -595,19 +597,7 @@ class SessionsFragmentNew : Fragment() {
             Log.d("SessionsFragment", "📥 Cargando página $page...")
         }
 
-        // Convertir fecha y hora a formato ISO 8601
-        // Fecha inicial es obligatoria si se filtra por fecha, fecha final es opcional
-        // Si solo hay fecha inicial: busca desde esa fecha en adelante
-        // Si hay ambas fechas: busca en el rango especificado
-        val minCreatedAt = if (startDateMillis != null) {
-            formatToISO8601(startDateMillis!!, startHour ?: 0, startMinute ?: 0)
-        } else null
-
-        val maxCreatedAt = if (endDateMillis != null) {
-            formatToISO8601(endDateMillis!!, endHour ?: 23, endMinute ?: 59)
-        } else null
-
-        Log.d("SessionsFragment", "Filtros de fecha - Inicio: $minCreatedAt, Fin: $maxCreatedAt (opcional)")
+        Log.d("SessionsFragment", "Filtros - SearchQuery: $searchQuery, SearchType: ${currentSearchType.name}")
 
         loadSessionsJob = lifecycleScope.launch {
             val result = sessionsRepository.getSessions(
@@ -616,8 +606,8 @@ class SessionsFragmentNew : Fragment() {
                 searchQuery = searchQuery,
                 searchType = currentSearchType.name,
                 flowName = selectedFlowName,
-                minCreatedAt = minCreatedAt,
-                maxCreatedAt = maxCreatedAt
+                minCreatedAt = null,
+                maxCreatedAt = null
             )
 
             result.onSuccess { sessionsPage ->
@@ -641,7 +631,9 @@ class SessionsFragmentNew : Fragment() {
                         binding.progressBarPagination.visibility = View.GONE
                         binding.swipeRefresh.isRefreshing = false
 
-                        updateSessionsList(allSessions)
+                        // Aplicar filtro de fechas local
+                        val filteredList = applyLocalDateFilter(allSessions)
+                        updateSessionsList(filteredList)
 
                         // Mostrar Toast informativo si se cargaron más páginas
                         if (!clearList && sessionsPage.sessions.isNotEmpty()) {
@@ -697,6 +689,63 @@ class SessionsFragmentNew : Fragment() {
         val isoFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", java.util.Locale.US)
         isoFormat.timeZone = java.util.TimeZone.getTimeZone("UTC")
         return isoFormat.format(calendar.time)
+    }
+
+    /**
+     * Filtra las sesiones por rango de fechas localmente
+     * Formato esperado de dateTime: "dd/MM/yyyy HH:mm"
+     */
+    private fun applyLocalDateFilter(sessions: List<KycSessionItem>): List<KycSessionItem> {
+        // Si no hay filtro de fecha, retornar todas
+        if (startDateMillis == null) {
+            return sessions
+        }
+
+        val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault())
+        
+        return sessions.filter { session ->
+            try {
+                // Parsear la fecha de la sesión
+                val sessionDate = dateFormat.parse(session.dateTime)
+                
+                if (sessionDate != null) {
+                    val sessionMillis = sessionDate.time
+                    
+                    // Crear fecha de inicio con hora
+                    val startCalendar = java.util.Calendar.getInstance()
+                    startCalendar.timeInMillis = startDateMillis!!
+                    startCalendar.set(java.util.Calendar.HOUR_OF_DAY, startHour ?: 0)
+                    startCalendar.set(java.util.Calendar.MINUTE, startMinute ?: 0)
+                    startCalendar.set(java.util.Calendar.SECOND, 0)
+                    startCalendar.set(java.util.Calendar.MILLISECOND, 0)
+                    val startMillis = startCalendar.timeInMillis
+                    
+                    // Si solo hay fecha inicial, buscar desde esa fecha en adelante
+                    if (endDateMillis == null) {
+                        sessionMillis >= startMillis
+                    } else {
+                        // Crear fecha final con hora
+                        val endCalendar = java.util.Calendar.getInstance()
+                        endCalendar.timeInMillis = endDateMillis!!
+                        endCalendar.set(java.util.Calendar.HOUR_OF_DAY, endHour ?: 23)
+                        endCalendar.set(java.util.Calendar.MINUTE, endMinute ?: 59)
+                        endCalendar.set(java.util.Calendar.SECOND, 59)
+                        endCalendar.set(java.util.Calendar.MILLISECOND, 999)
+                        val endMillis = endCalendar.timeInMillis
+                        
+                        // Verificar que esté en el rango
+                        sessionMillis in startMillis..endMillis
+                    }
+                } else {
+                    // Si no se puede parsear, incluir por defecto
+                    true
+                }
+            } catch (e: Exception) {
+                Log.e("SessionsFragment", "Error parseando fecha: ${session.dateTime}", e)
+                // Si hay error, incluir por defecto
+                true
+            }
+        }
     }
 
     override fun onDestroyView() {
