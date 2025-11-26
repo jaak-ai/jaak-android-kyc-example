@@ -49,6 +49,8 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
         stampsSDK.setCropMargin(150)
         stampsSDK.setShowPreview(false)               // Sin preview
 
+        setupButtons()
+
         binding.btnStartAgain.setOnClickListener {
             // Volver al Dashboard sin cerrar sesión
             restartKycFlow()
@@ -65,8 +67,7 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
         finish()
     }
 
-    private fun setupButtonsOld() {
-
+    private fun setupButtons() {
         binding.btnStartDocumentCapture.setOnClickListener {
             // Iniciar captura de documentos con StampsSDK
             stampsSDK.startStamps(1)
