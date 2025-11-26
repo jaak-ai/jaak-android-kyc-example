@@ -1,11 +1,14 @@
 package com.jaak.kyc.ui.view
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -34,7 +37,15 @@ class SessionLivenessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupClickListeners()
         observeViewModel()
+    }
+
+    private fun setupClickListeners() {
+        // Click en foto de perfil para ver en pantalla completa
+        binding.ivUserPhoto.setOnClickListener {
+            showImagePreview(binding.ivUserPhoto)
+        }
     }
 
     private fun observeViewModel() {
@@ -214,6 +225,26 @@ class SessionLivenessFragment : Fragment() {
                 dateString
             }
         }
+    }
+
+    /**
+     * Muestra preview de imagen en pantalla completa
+     */
+    private fun showImagePreview(imageView: ImageView) {
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(com.jaak.kyc.R.layout.dialog_image_preview)
+
+        val previewImage = dialog.findViewById<ImageView>(com.jaak.kyc.R.id.ivPreview)
+        val closeButton = dialog.findViewById<ImageView>(com.jaak.kyc.R.id.ivClose)
+
+        previewImage.setImageDrawable(imageView.drawable)
+
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {

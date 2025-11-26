@@ -304,7 +304,7 @@
     <string name="score_oto">1-a-1</string>
     <string name="tab_info">Info</string>
     <string name="tab_document">Documento</string>
-    <string name="tab_liveness">Liveness</string>
+    <string name="tab_liveness">Prueba de vida</string>
     <string name="tab_oto">Uno-a-Uno</string>
 
     <!-- Session Info Fragment -->
@@ -432,6 +432,11 @@
     <string name="mosaic_error_cannot_move">No se puede mover este módulo a esa posición</string>
     <string name="mosaic_error_1to1_first">Comparación 1:1 requiere: Extracción de documento, Verificación de identidad</string>
     <string name="mosaic_error_blacklist_first">Listas oficiales requiere: Extracción de documento</string>
+    <string name="mosaic_validation_title">Validación de módulos</string>
+    <string name="mosaic_validation_error">Algunos módulos habilitados no están disponibles</string>
+    <string name="mosaic_min_modules_error">Debe seleccionar al menos un módulo</string>
+    <string name="mosaic_blacklist_requires_doc">Las \"Listas oficiales\" deben ir después de \"Extracción de documento\"</string>
+    <string name="mosaic_1to1_requires_doc_and_oto">La \"Comparación 1:1\" debe ir después de \"Extracción de documento\" y \"Verificación de identidad\"</string>
     
     <string name="start_kyc_session">Guardar</string>
 

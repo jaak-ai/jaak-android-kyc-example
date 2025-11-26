@@ -56,7 +56,7 @@ class FacialVerificationInstructionsActivity : AppCompatActivity(), VisageListen
     }
 
     private fun initFaceDetector() {
-        VisageSDK.initialize("Y92M-A7DS-4H27-8BNL")
+        VisageSDK.initialize("6KIY-7OIX-71WZ-IFU8")
         visageSDK = VisageSDK(this, this)
         visageSDK.setShowTutorial(true)
         // Configurar SDK para no mostrar preview y retornar directamente

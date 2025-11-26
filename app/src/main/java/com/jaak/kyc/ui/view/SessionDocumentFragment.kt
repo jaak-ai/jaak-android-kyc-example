@@ -59,7 +59,10 @@ class SessionDocumentFragment : Fragment() {
                     appendLine("📋 Evaluation:")
 
                     evaluation?.forEach { (key, value) ->
-                        appendLine("  • $key: $value")
+                        when (key) {
+                            "nationality" -> appendLine("  • Nacionalidad: $value")
+                            else -> appendLine("  • $key: $value")
+                        }
                     }
 
                     appendLine()

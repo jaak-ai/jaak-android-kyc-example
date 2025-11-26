@@ -321,7 +321,7 @@
     <string name="score_oto">1-to-1</string>
     <string name="tab_info">Info</string>
     <string name="tab_document">Document</string>
-    <string name="tab_liveness">Liveness</string>
+    <string name="tab_liveness">Proof of Life</string>
     <string name="tab_oto">One-to-One</string>
 
     <!-- Session Info Fragment -->
@@ -458,4 +458,7 @@
     <string name="mosaic_error_cannot_move">Cannot move this module to that position</string>
     <string name="mosaic_error_1to1_first">1:1 Comparison requires: Document extraction, Identity verification</string>
     <string name="mosaic_error_blacklist_first">Official lists requires: Document extraction</string>
+    <string name="mosaic_validation_title">Module validation</string>
+    <string name="mosaic_blacklist_requires_doc">\"Official lists\" must be placed after \"Document extraction\"</string>
+    <string name="mosaic_1to1_requires_doc_and_oto">\"1:1 Comparison\" must be placed after \"Document extraction\" and \"Identity verification\"</string>
 </resources>

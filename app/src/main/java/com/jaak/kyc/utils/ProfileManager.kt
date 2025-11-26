@@ -49,7 +49,7 @@ class ProfileManager @Inject constructor(
         private const val URL_AUTH_DEV = "https://api.dev.jaak.ai/"
 
         // Perfil por defecto
-        private const val DEFAULT_PROFILE = PROFILE_DEV
+        private const val DEFAULT_PROFILE = PROFILE_QA
     }
 
     /**

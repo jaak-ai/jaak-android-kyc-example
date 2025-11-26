@@ -110,22 +110,25 @@ class MosaicModuleAdapter(
     fun moveModule(fromPosition: Int, toPosition: Int): Boolean {
         val moduleToMove = modules[fromPosition]
         
-        // Validación: Listas oficiales requiere que haya extracción de documento antes
-        if (moduleToMove.id == "BLACKLIST") {
-            val modulesBeforeTarget = modules.subList(0, toPosition)
-            val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
-            if (!hasDocExtractBefore) {
-                return false
+        // Solo validar si el módulo que se mueve está habilitado
+        if (moduleToMove.isEnabled) {
+            // Validación: Listas oficiales no puede estar antes de extracción de documento
+            if (moduleToMove.id == "BLACKLIST") {
+                val modulesBeforeTarget = modules.subList(0, toPosition)
+                val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
+                if (!hasDocExtractBefore) {
+                    return false
+                }
             }
-        }
-        
-        // Validación: 1:1 requiere extracción de documento Y verificación de identidad antes
-        if (moduleToMove.id == "IVERIFICATION") {
-            val modulesBeforeTarget = modules.subList(0, toPosition)
-            val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
-            val hasOtoBefore = modulesBeforeTarget.any { it.id == "OTO" && it.isEnabled }
-            if (!hasDocExtractBefore || !hasOtoBefore) {
-                return false
+            
+            // Validación: 1:1 no puede estar antes de extracción de documento NI de verificación de identidad
+            if (moduleToMove.id == "IVERIFICATION") {
+                val modulesBeforeTarget = modules.subList(0, toPosition)
+                val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
+                val hasOtoBefore = modulesBeforeTarget.any { it.id == "OTO" && it.isEnabled }
+                if (!hasDocExtractBefore || !hasOtoBefore) {
+                    return false
+                }
             }
         }
         
@@ -140,12 +143,14 @@ class MosaicModuleAdapter(
             }
         }
         
-        // Actualizar orden
+        // Actualizar orden basado en la posición en la lista
         modules.forEachIndexed { index, module ->
             module.order = index
         }
         
         notifyItemMoved(fromPosition, toPosition)
+        // Actualizar todos los números después del movimiento
+        notifyItemRangeChanged(0, modules.size)
         onModuleChanged()
         return true
     }

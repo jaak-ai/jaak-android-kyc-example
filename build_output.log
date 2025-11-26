@@ -1,382 +1,56 @@
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.12/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
-Calculating task graph as no cached configuration is available for tasks: clean build
-Settings file '/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle': line 6
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('url = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure1$_closure3$_closure4.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:6)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure1$_closure3.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:6)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-Settings file '/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle': line 14
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('url = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure2$_closure5$_closure7.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:14)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure2$_closure5.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:13)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-Your application has authenticated using end user credentials from Google Cloud SDK. We recommend that most server applications use service accounts instead. If your application continues to use end user credentials from Cloud SDK, you might receive a "quota exceeded" or "API not enabled" error. For more information about service accounts, see https://cloud.google.com/docs/authentication/.
-Settings file '/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle': line 37
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('url = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure1$_closure2$_closure3.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:37)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure1$_closure2.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:37)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-Settings file '/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle': line 39
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('url = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure1$_closure2$_closure4.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:39)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at settings_5rc2ar37oqil4us3m1vkrbkyw$_run_closure1$_closure2.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/settings.gradle:38)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-
-> Configure project :
-Build file '/Users/michael/Documents/project_android/jaak-android-kyc-example/build.gradle': line 8
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('url = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at build_9an146i4783lon12jt7xhr7kx$_run_closure1$_closure2$_closure4.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/build.gradle:8)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at build_9an146i4783lon12jt7xhr7kx$_run_closure1$_closure2.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/build.gradle:7)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-
-> Configure project :app
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('compileSdk = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at build_262dks10d12fk0tdysg583bmk$_run_closure1.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:13)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at build_262dks10d12fk0tdysg583bmk.run(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:11)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('targetSdk = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at build_262dks10d12fk0tdysg583bmk$_run_closure1$_closure4.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:18)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at build_262dks10d12fk0tdysg583bmk$_run_closure1.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:15)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('multiDexEnabled = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at build_262dks10d12fk0tdysg583bmk$_run_closure1$_closure4.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:22)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at build_262dks10d12fk0tdysg583bmk$_run_closure1.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:15)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-Space-assignment syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('namespace = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
-	at build_262dks10d12fk0tdysg583bmk$_run_closure1.doCall$original(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:49)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-	at build_262dks10d12fk0tdysg583bmk.run(/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build.gradle:11)
-	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
-The Configuration.fileCollection(Spec) method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration.getIncoming().artifactView(Action) with a componentFilter instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.12/userguide/upgrading_version_8.html#deprecate_filtered_configuration_file_and_filecollection_methods
-Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
-
+Reusing configuration cache.
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
-> Task :app:preReleaseUnitTestBuild UP-TO-DATE
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:preReleaseBuild UP-TO-DATE
 > Task :app:checkKotlinGradlePluginConfigurationErrors
-> Task :clean
-> Task :app:clean
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
-> Task :app:generateDebugResValues
-> Task :app:processDebugGoogleServices
-> Task :app:desugarDebugFileDependencies
-> Task :app:createDebugCompatibleScreenManifests
-> Task :app:generateDebugBuildConfig
-> Task :app:mergeDebugJniLibFolders
-> Task :app:mergeDebugShaders
-> Task :app:extractDeepLinksDebug
-> Task :app:validateSigningDebug
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:writeDebugAppMetadata
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
 > Task :app:generateDebugResources
-> Task :app:writeDebugSigningConfigVersions
-> Task :app:buildKotlinToolingMetadata
-> Task :app:javaPreCompileDebug
-> Task :app:generateReleaseResValues
-> Task :app:generateReleaseResources
-> Task :app:processReleaseGoogleServices
-> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
 > Task :app:mapDebugSourceSetPaths
-> Task :app:mergeLibDexDebug
-> Task :app:dataBindingMergeDependencyArtifactsDebug
-> Task :app:generateReleaseBuildConfig
-> Task :app:dataBindingMergeDependencyArtifactsRelease
-> Task :app:createReleaseCompatibleScreenManifests
-> Task :app:mapReleaseSourceSetPaths
-> Task :app:checkReleaseAarMetadata
-> Task :app:javaPreCompileRelease
-> Task :app:checkDebugAarMetadata
-> Task :app:mergeDebugAssets
-> Task :app:mergeReleaseJniLibFolders
-> Task :app:extractDeepLinksRelease
-> Task :app:extractProguardFiles
-> Task :app:desugarReleaseFileDependencies
-
-> Task :app:processReleaseMainManifest
-package="com.jaak.kyc" found in source AndroidManifest.xml: /Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml.
-Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
-Recommendation: remove package="com.jaak.kyc" from the source AndroidManifest.xml: /Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml.
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:18:5-19:40 Warning:
-	uses-sdk:minSdkVersion value (22) specified in the manifest file is ignored. It is overridden by the value declared in the DSL or the variant API, or 1 if not declared/present. Current value is (24).
-[org.tensorflow:tensorflow-lite:2.14.0] /Users/michael/.gradle/caches/8.12/transforms/b4c3e746b3cda836fafa9ec625be53d1/transformed/jetified-tensorflow-lite-2.14.0/AndroidManifest.xml Warning:
-	Namespace 'org.tensorflow.lite' is used in multiple modules and/or libraries: org.tensorflow:tensorflow-lite:2.14.0, org.tensorflow:tensorflow-lite-gpu:2.14.0, org.tensorflow:tensorflow-lite-api:2.14.0. Please ensure that all modules and libraries have a unique namespace. For more information, See https://developer.android.com/studio/build/configure-app-module#set-namespace
-[org.tensorflow:tensorflow-lite-support:0.4.4] /Users/michael/.gradle/caches/8.12/transforms/8b6aa1cc98f60250c2ffb9f5e0ccf565/transformed/jetified-tensorflow-lite-support-0.4.4/AndroidManifest.xml Warning:
-	Namespace 'org.tensorflow.lite.support' is used in multiple modules and/or libraries: org.tensorflow:tensorflow-lite-support:0.4.4, org.tensorflow:tensorflow-lite-support-api:0.4.4. Please ensure that all modules and libraries have a unique namespace. For more information, See https://developer.android.com/studio/build/configure-app-module#set-namespace
-[com.jaak.stampssdk:jaakstamps-sdk:1.2.0] /Users/michael/.gradle/caches/8.12/transforms/6a079abf8a0e42d750048f7db84428c4/transformed/jetified-jaakstamps-sdk-1.2.0/AndroidManifest.xml:30:5-33:40 Warning:
-	Element uses-permission#android.permission.WRITE_EXTERNAL_STORAGE at [com.jaak.stampssdk:jaakstamps-sdk:1.2.0] AndroidManifest.xml:30:5-33:40 duplicated with element declared at [com.jaak.stampssdk:jaakstamps-sdk:1.2.0] AndroidManifest.xml:18:5-21:49
-[com.jaak.visagesdk:jaakvisage-sdk:1.2.0-beta.3] /Users/michael/.gradle/caches/8.12/transforms/fbdba4d9e7c07a490226ead2c2e9b300/transformed/jetified-jaakvisage-sdk-1.2.0-beta.3/AndroidManifest.xml:30:5-33:40 Warning:
-	Element uses-permission#android.permission.WRITE_EXTERNAL_STORAGE at [com.jaak.visagesdk:jaakvisage-sdk:1.2.0-beta.3] AndroidManifest.xml:30:5-33:40 duplicated with element declared at [com.jaak.visagesdk:jaakvisage-sdk:1.2.0-beta.3] AndroidManifest.xml:18:5-21:49
-[com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0] /Users/michael/.gradle/caches/8.12/transforms/d85f94b0dd746f086ba3f8e7f72c19f3/transformed/jetified-jaakdocumentdetector-sdk-3.0.0/AndroidManifest.xml:30:5-33:40 Warning:
-	Element uses-permission#android.permission.WRITE_EXTERNAL_STORAGE at [com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0] AndroidManifest.xml:30:5-33:40 duplicated with element declared at [com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0] AndroidManifest.xml:18:5-21:49
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:12:5-14:31 Warning:
-	uses-permission#com.jaak.jaakrostrosandroid.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:12 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	uses-permission#com.jaak.jaakstampssdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	permission#com.jaak.stampssdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	uses-permission#com.jaak.visagesdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	permission#com.jaak.visagesdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	uses-permission#com.jaak.jaakdocumentdetectorsdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	permission#com.jaak.documentdetectorsdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:32:5-168:19 Warning:
-	application@android:dataExtractionRules was tagged at AndroidManifest.xml:32 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:32:5-168:19 Warning:
-	application@android:fullBackupContent was tagged at AndroidManifest.xml:32 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:146:9-148:34 Warning:
-	activity#com.jaak.visagesdk.ui.view.InitialFormActivity was tagged at AndroidManifest.xml:146 to remove other declarations but no other declaration present
-
-> Task :app:checkReleaseDuplicateClasses
-> Task :app:processReleaseManifest
-> Task :app:processReleaseManifestForPackage
-> Task :app:mergeDebugNativeLibs
-> Task :app:mergeReleaseNativeLibs
-> Task :app:compressDebugAssets
-> Task :app:extractReleaseVersionControlInfo
-> Task :app:collectReleaseDependencies
-> Task :app:sdkReleaseDependencyData
-> Task :app:writeReleaseAppMetadata
-> Task :app:writeReleaseSigningConfigVersions
-> Task :app:preDebugAndroidTestBuild SKIPPED
-> Task :app:generateDebugAndroidTestResValues
-> Task :app:mergeReleaseResources
-
-> Task :app:stripReleaseDebugSymbols
-Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libonnxruntime.so, libonnxruntime4j_jni.so, libsurface_util_jni.so, libtensorflowlite_gpu_jni.so, libtensorflowlite_jni.so.
-
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
 > Task :app:mergeDebugResources
-> Task :app:dataBindingGenBaseClassesRelease
-> Task :app:extractReleaseNativeSymbolTables
-> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
-> Task :app:javaPreCompileReleaseUnitTest
-> Task :app:mergeReleaseShaders
-> Task :app:compileReleaseShaders NO-SOURCE
-> Task :app:generateReleaseAssets UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
-
-> Task :app:processDebugMainManifest
-package="com.jaak.kyc" found in source AndroidManifest.xml: /Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml.
-Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
-Recommendation: remove package="com.jaak.kyc" from the source AndroidManifest.xml: /Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml.
-
-> Task :app:mergeReleaseArtProfile
-
-> Task :app:processDebugMainManifest
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:18:5-19:40 Warning:
-	uses-sdk:minSdkVersion value (22) specified in the manifest file is ignored. It is overridden by the value declared in the DSL or the variant API, or 1 if not declared/present. Current value is (24).
-[org.tensorflow:tensorflow-lite:2.14.0] /Users/michael/.gradle/caches/8.12/transforms/b4c3e746b3cda836fafa9ec625be53d1/transformed/jetified-tensorflow-lite-2.14.0/AndroidManifest.xml Warning:
-	Namespace 'org.tensorflow.lite' is used in multiple modules and/or libraries: org.tensorflow:tensorflow-lite:2.14.0, org.tensorflow:tensorflow-lite-gpu:2.14.0, org.tensorflow:tensorflow-lite-api:2.14.0. Please ensure that all modules and libraries have a unique namespace. For more information, See https://developer.android.com/studio/build/configure-app-module#set-namespace
-[org.tensorflow:tensorflow-lite-support:0.4.4] /Users/michael/.gradle/caches/8.12/transforms/8b6aa1cc98f60250c2ffb9f5e0ccf565/transformed/jetified-tensorflow-lite-support-0.4.4/AndroidManifest.xml Warning:
-	Namespace 'org.tensorflow.lite.support' is used in multiple modules and/or libraries: org.tensorflow:tensorflow-lite-support:0.4.4, org.tensorflow:tensorflow-lite-support-api:0.4.4. Please ensure that all modules and libraries have a unique namespace. For more information, See https://developer.android.com/studio/build/configure-app-module#set-namespace
-[com.jaak.stampssdk:jaakstamps-sdk:1.2.0] /Users/michael/.gradle/caches/8.12/transforms/6a079abf8a0e42d750048f7db84428c4/transformed/jetified-jaakstamps-sdk-1.2.0/AndroidManifest.xml:30:5-33:40 Warning:
-	Element uses-permission#android.permission.WRITE_EXTERNAL_STORAGE at [com.jaak.stampssdk:jaakstamps-sdk:1.2.0] AndroidManifest.xml:30:5-33:40 duplicated with element declared at [com.jaak.stampssdk:jaakstamps-sdk:1.2.0] AndroidManifest.xml:18:5-21:49
-[com.jaak.visagesdk:jaakvisage-sdk:1.2.0-beta.3] /Users/michael/.gradle/caches/8.12/transforms/fbdba4d9e7c07a490226ead2c2e9b300/transformed/jetified-jaakvisage-sdk-1.2.0-beta.3/AndroidManifest.xml:30:5-33:40 Warning:
-	Element uses-permission#android.permission.WRITE_EXTERNAL_STORAGE at [com.jaak.visagesdk:jaakvisage-sdk:1.2.0-beta.3] AndroidManifest.xml:30:5-33:40 duplicated with element declared at [com.jaak.visagesdk:jaakvisage-sdk:1.2.0-beta.3] AndroidManifest.xml:18:5-21:49
-[com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0] /Users/michael/.gradle/caches/8.12/transforms/d85f94b0dd746f086ba3f8e7f72c19f3/transformed/jetified-jaakdocumentdetector-sdk-3.0.0/AndroidManifest.xml:30:5-33:40 Warning:
-	Element uses-permission#android.permission.WRITE_EXTERNAL_STORAGE at [com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0] AndroidManifest.xml:30:5-33:40 duplicated with element declared at [com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0] AndroidManifest.xml:18:5-21:49
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:12:5-14:31 Warning:
-	uses-permission#com.jaak.jaakrostrosandroid.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:12 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	uses-permission#com.jaak.jaakstampssdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	permission#com.jaak.stampssdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	uses-permission#com.jaak.visagesdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	permission#com.jaak.visagesdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	uses-permission#com.jaak.jaakdocumentdetectorsdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml Warning:
-	permission#com.jaak.documentdetectorsdk.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:32:5-168:19 Warning:
-	application@android:dataExtractionRules was tagged at AndroidManifest.xml:32 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:32:5-168:19 Warning:
-	application@android:fullBackupContent was tagged at AndroidManifest.xml:32 to remove other declarations but no other declaration present
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/AndroidManifest.xml:146:9-148:34 Warning:
-	activity#com.jaak.visagesdk.ui.view.InitialFormActivity was tagged at AndroidManifest.xml:146 to remove other declarations but no other declaration present
-
-> Task :app:processDebugManifest
-> Task :app:mergeExtDexDebug
-> Task :app:processDebugManifestForPackage
-> Task :app:mergeReleaseAssets
 > Task :app:dataBindingGenBaseClassesDebug
-
-> Task :app:stripDebugDebugSymbols
-Unable to strip the following libraries, packaging them as they are: libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libonnxruntime.so, libonnxruntime4j_jni.so, libsurface_util_jni.so, libtensorflowlite_gpu_jni.so, libtensorflowlite_jni.so.
-
-> Task :app:compressReleaseAssets
 > Task :app:processDebugResources
-> Task :app:processReleaseResources
-> Task :app:optimizeReleaseResources
-> Task :app:mergeExtDexRelease
-> Task :app:kaptGenerateStubsReleaseKotlin
 > Task :app:kaptGenerateStubsDebugKotlin
 
-> Task :app:kaptReleaseKotlin
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/release/com/jaak/kyc/data/local/entity/KycSessionEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycSessionEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/release/com/jaak/kyc/data/local/entity/KycVerifyEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycVerifyEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/release/com/jaak/kyc/data/local/entity/KycOcrEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycOcrEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/release/com/jaak/kyc/data/local/entity/KycLivenessEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycLivenessEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/release/com/jaak/kyc/data/local/entity/KycOtoVerifyEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycOtoVerifyEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/release/com/jaak/kyc/data/local/entity/KycFinishEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycFinishEntity {
-             ^
-
 > Task :app:kaptDebugKotlin
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/debug/com/jaak/kyc/data/local/entity/KycSessionEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycSessionEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/debug/com/jaak/kyc/data/local/entity/KycVerifyEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycVerifyEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/debug/com/jaak/kyc/data/local/entity/KycOcrEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycOcrEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/debug/com/jaak/kyc/data/local/entity/KycLivenessEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycLivenessEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/debug/com/jaak/kyc/data/local/entity/KycOtoVerifyEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycOtoVerifyEntity {
-             ^
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/tmp/kapt3/stubs/debug/com/jaak/kyc/data/local/entity/KycFinishEntity.java:5: warning: processId column references a foreign key but it is not part of an index. This may trigger full table scans whenever parent table is modified so you are highly advised to create an index that covers this column.
-public final class KycFinishEntity {
-             ^
-
-> Task :app:compileReleaseKotlin
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/mapper/SessionListMapper.kt:98:63 Parameter 'state' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:302:65 'create(MediaType?, String): ResponseBody' is deprecated. Moved to extension function. Put the 'content' argument first to fix Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:447:92 Unnecessary safe call on a non-null receiver of type Document
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:683:67 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Content?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:683:73 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Data?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:684:67 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Content?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:684:73 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Data?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/SessionDetailRepository.kt:69:189 Unnecessary non-null assertion (!!) on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/KycSyncServiceSimple.kt:137:15 Variable 'index' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:90:26 'getter for isConnectedOrConnecting: Boolean' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:110:39 'getter for type: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:111:37 'TYPE_WIFI: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:112:37 'TYPE_MOBILE: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:113:37 'TYPE_ETHERNET: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NotificationScheduler.kt:146:17 Variable 'runningWork' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/ProcessErrorManager.kt:224:37 Parameter 'throwable' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/ErrorReminderReceiver.kt:37:44 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:78:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:103:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:141:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:189:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/BlacklistDetailActivity.kt:40:36 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DashboardFragment.kt:79:13 Variable 'companyInfo' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:98:35 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:160:79 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:162:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:165:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:85:34 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:154:76 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:172:17 Variable 'expiration' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:248:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:252:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentVerificationInstructionsActivity.kt:47:19 'setShowPreview(Boolean): Unit' is deprecated. Preview permanentemente desactivado. Este método será removido en v2.0.0
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/KycProcessesActivity.kt:143:45 Parameter 'isLoading' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/KycSyncActivity.kt:61:49 Parameter 'workInfo' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/KycSyncActivity.kt:70:51 Parameter 'historyItem' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/LivenessDetailActivity.kt:120:35 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/LoginActivity.kt:80:40 'getClient(Application, String, Long = ...): Result<RecaptchaClient>' is deprecated. Use fetchClient(Application, siteKey) instead.
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/LoginActivity.kt:172:45 Parameter 'password' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/OtoDetailActivity.kt:79:30 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/ProfilesListActivity.kt:62:33 Parameter 'profile' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionLivenessFragment.kt:98:54 Elvis operator (?:) always returns the left operand of non-nullable type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:323:13 Variable 'timeFormat' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:92:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:93:39 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:99:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:100:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:101:39 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:72:24 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:84:24 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:138:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:141:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:144:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:129:39 Unnecessary safe call on a non-null receiver of type KycProcessWithDetails?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:129:48 Unnecessary safe call on a non-null receiver of type KycProcessEntity?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:212:39 Unnecessary safe call on a non-null receiver of type KycProcessWithDetails?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:212:48 Unnecessary safe call on a non-null receiver of type KycProcessEntity?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:135:34 Parameter 'workId' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:192:69 Unnecessary non-null assertion (!!) on a non-null receiver of type Long
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:271:118 Unnecessary non-null assertion (!!) on a non-null receiver of type Long
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:272:48 Unnecessary non-null assertion (!!) on a non-null receiver of type Long
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/SessionDetailViewModel.kt:90:37 Parameter 'response' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/SessionDetailViewModel.kt:455:54 Elvis operator (?:) always returns the left operand of non-nullable type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/work/CleanupWorker.kt:78:13 Variable 'afterStats' is never used
+warning: The following options were not recognized by any processor: '[dagger.fastInit, kapt.kotlin.generated]'
 
 > Task :app:compileDebugKotlin
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/mapper/SessionListMapper.kt:98:63 Parameter 'state' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:302:65 'create(MediaType?, String): ResponseBody' is deprecated. Moved to extension function. Put the 'content' argument first to fix Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:447:92 Unnecessary safe call on a non-null receiver of type Document
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:683:67 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Content?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:683:73 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Data?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:684:67 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Content?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/KycOfflineRepository.kt:684:73 Unnecessary safe call on a non-null receiver of type DocumentExtractV4Data?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/data/repository/SessionDetailRepository.kt:69:189 Unnecessary non-null assertion (!!) on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/KycSyncServiceSimple.kt:137:15 Variable 'index' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:90:26 'getter for isConnectedOrConnecting: Boolean' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:110:39 'getter for type: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:111:37 'TYPE_WIFI: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:112:37 'TYPE_MOBILE: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NetworkConnectivityService.kt:113:37 'TYPE_ETHERNET: Int' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/NotificationScheduler.kt:146:17 Variable 'runningWork' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/domain/service/ProcessErrorManager.kt:224:37 Parameter 'throwable' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/ErrorReminderReceiver.kt:37:44 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:78:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:103:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:141:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/notification/NotificationHelper.kt:189:9 Parameter 'processId' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/BlacklistDetailActivity.kt:40:36 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DashboardFragment.kt:79:13 Variable 'companyInfo' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:98:35 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:160:79 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:162:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentDetailActivity.kt:165:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:85:34 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:154:76 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:172:17 Variable 'expiration' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:248:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentExtractActivity.kt:252:64 No cast needed
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/DocumentVerificationInstructionsActivity.kt:47:19 'setShowPreview(Boolean): Unit' is deprecated. Preview permanentemente desactivado. Este método será removido en v2.0.0
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/EditSessionProfileActivity.kt:179:17 Variable 'lastDraggedModuleId' is assigned but never accessed
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/KycProcessesActivity.kt:143:45 Parameter 'isLoading' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/KycSyncActivity.kt:61:49 Parameter 'workInfo' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/KycSyncActivity.kt:70:51 Parameter 'historyItem' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/LivenessDetailActivity.kt:120:35 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/LoginActivity.kt:80:40 'getClient(Application, String, Long = ...): Result<RecaptchaClient>' is deprecated. Use fetchClient(Application, siteKey) instead.
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/LoginActivity.kt:172:45 Parameter 'password' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/OtoDetailActivity.kt:79:30 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/ProfilesListActivity.kt:62:33 Parameter 'profile' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionLivenessFragment.kt:98:54 Elvis operator (?:) always returns the left operand of non-nullable type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:323:13 Variable 'timeFormat' is never used
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionLivenessFragment.kt:109:54 Elvis operator (?:) always returns the left operand of non-nullable type String
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:244:59 Parameter 'chip' is never used, could be renamed to _
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:255:62 Parameter 'chip' is never used, could be renamed to _
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:266:59 Parameter 'chip' is never used, could be renamed to _
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:277:60 Parameter 'chip' is never used, could be renamed to _
+w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SessionsFragmentNew.kt:480:13 Variable 'timeFormat' is never used
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:92:31 Unnecessary safe call on a non-null receiver of type String
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:93:39 Unnecessary safe call on a non-null receiver of type String
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/SuccessDocumentActivity.kt:99:31 Unnecessary safe call on a non-null receiver of type String
@@ -387,24 +61,11 @@ w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:138:31 Unnecessary safe call on a non-null receiver of type String
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:141:31 Unnecessary safe call on a non-null receiver of type String
 w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/view/VerifyOcrDocumentActivity.kt:144:31 Unnecessary safe call on a non-null receiver of type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:129:39 Unnecessary safe call on a non-null receiver of type KycProcessWithDetails?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:129:48 Unnecessary safe call on a non-null receiver of type KycProcessEntity?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:212:39 Unnecessary safe call on a non-null receiver of type KycProcessWithDetails?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycOfflineViewModel.kt:212:48 Unnecessary safe call on a non-null receiver of type KycProcessEntity?
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:135:34 Parameter 'workId' is never used, could be renamed to _
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:192:69 Unnecessary non-null assertion (!!) on a non-null receiver of type Long
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:271:118 Unnecessary non-null assertion (!!) on a non-null receiver of type Long
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/KycSyncViewModel.kt:272:48 Unnecessary non-null assertion (!!) on a non-null receiver of type Long
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/SessionDetailViewModel.kt:90:37 Parameter 'response' is never used
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/ui/viewmodel/SessionDetailViewModel.kt:455:54 Elvis operator (?:) always returns the left operand of non-nullable type String
-w: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/app/src/main/java/com/jaak/kyc/work/CleanupWorker.kt:78:13 Variable 'afterStats' is never used
 
 > Task :app:compileDebugJavaWithJavac
-> Task :app:compileReleaseJavaWithJavac
-> Task :app:hiltAggregateDepsRelease
-> Task :app:hiltAggregateDepsDebug
+> Task :app:hiltAggregateDepsDebug UP-TO-DATE
 
-> Task :app:hiltJavaCompileDebug FAILED
+> Task :app:hiltJavaCompileDebug
 warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/hilt_aggregated_deps/_com_jaak_fileuploadersdk_ui_view_FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
   It is recommended that the compiler be upgraded.
 warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
@@ -415,135 +76,20 @@ warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c9484
   It is recommended that the compiler be upgraded.
 warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/Hilt_FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
   It is recommended that the compiler be upgraded.
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/generated/hilt/component_sources/debug/com/jaak/kyc/KYCApp_HiltComponents.java:194: error: [Dagger/DuplicateBindings] okhttp3.OkHttpClient is bound multiple times:
-  public abstract static class SingletonC implements KYCApp_GeneratedInjector,
-                         ^
-      @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.stampssdk.di.NetworkModule.provideOkHttpClient(@dagger.hilt.android.qualifiers.ApplicationContext android.content.Context, com.jaak.stampssdk.utils.ProfileManager)
-      @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.visagesdk.di.NetworkModule.provideOkHttpClient()
-      okhttp3.OkHttpClient is injected at
-          com.jaak.stampssdk.di.NetworkModule.provideStampsApiService(okHttpClient, …)
-      com.jaak.stampssdk.data.network.StampsApiService is injected at
-          com.jaak.stampssdk.sdk.ScanStampsActivity.apiService
-      com.jaak.stampssdk.sdk.ScanStampsActivity is injected at
-          com.jaak.stampssdk.sdk.ScanStampsActivity_GeneratedInjector.injectScanStampsActivity(com.jaak.stampssdk.sdk.ScanStampsActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-  It is also requested at:
-      com.jaak.visagesdk.di.NetworkModule.provideVisageApiService(okHttpClient, …)
-  The following other entry points also depend on it:
-      dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ViewModelC]
-      com.jaak.stampssdk.ui.view.ValidationKycActivity_GeneratedInjector.injectValidationKycActivity(com.jaak.stampssdk.ui.view.ValidationKycActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-1 error
 5 warnings
 
-> Task :app:hiltJavaCompileRelease FAILED
-warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/hilt_aggregated_deps/_com_jaak_fileuploadersdk_ui_view_FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-  It is recommended that the compiler be upgraded.
-warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-  It is recommended that the compiler be upgraded.
-warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-  It is recommended that the compiler be upgraded.
-warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/interfaces/ImageVideoSelectionListener.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-  It is recommended that the compiler be upgraded.
-warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/Hilt_FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-  It is recommended that the compiler be upgraded.
-/Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/generated/hilt/component_sources/release/com/jaak/kyc/KYCApp_HiltComponents.java:194: error: [Dagger/DuplicateBindings] okhttp3.OkHttpClient is bound multiple times:
-  public abstract static class SingletonC implements KYCApp_GeneratedInjector,
-                         ^
-      @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.stampssdk.di.NetworkModule.provideOkHttpClient(@dagger.hilt.android.qualifiers.ApplicationContext android.content.Context, com.jaak.stampssdk.utils.ProfileManager)
-      @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.visagesdk.di.NetworkModule.provideOkHttpClient()
-      okhttp3.OkHttpClient is injected at
-          com.jaak.stampssdk.di.NetworkModule.provideStampsApiService(okHttpClient, …)
-      com.jaak.stampssdk.data.network.StampsApiService is injected at
-          com.jaak.stampssdk.sdk.ScanStampsActivity.apiService
-      com.jaak.stampssdk.sdk.ScanStampsActivity is injected at
-          com.jaak.stampssdk.sdk.ScanStampsActivity_GeneratedInjector.injectScanStampsActivity(com.jaak.stampssdk.sdk.ScanStampsActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-  It is also requested at:
-      com.jaak.visagesdk.di.NetworkModule.provideVisageApiService(okHttpClient, …)
-  The following other entry points also depend on it:
-      dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ViewModelC]
-      com.jaak.stampssdk.ui.view.ValidationKycActivity_GeneratedInjector.injectValidationKycActivity(com.jaak.stampssdk.ui.view.ValidationKycActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-1 error
-5 warnings
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:transformDebugClassesWithAsm
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:assembleDebug
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
 
 [Incubating] Problems report is available at: file:///Users/michael/Documents/project_android/jaak-android-kyc-example/build/reports/problems/problems-report.html
 
-FAILURE: Build completed with 2 failures.
-
-1: Task failed with an exception.
------------
-* What went wrong:
-Execution failed for task ':app:hiltJavaCompileDebug'.
-> Compilation failed; see the compiler output below.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/hilt_aggregated_deps/_com_jaak_fileuploadersdk_ui_view_FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/interfaces/ImageVideoSelectionListener.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/Hilt_FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded./Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/generated/hilt/component_sources/debug/com/jaak/kyc/KYCApp_HiltComponents.java:194: error: [Dagger/DuplicateBindings] okhttp3.OkHttpClient is bound multiple times:
-    public abstract static class SingletonC implements KYCApp_GeneratedInjector,
-                           ^
-        @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.stampssdk.di.NetworkModule.provideOkHttpClient(@dagger.hilt.android.qualifiers.ApplicationContext android.content.Context, com.jaak.stampssdk.utils.ProfileManager)
-        @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.visagesdk.di.NetworkModule.provideOkHttpClient()
-        okhttp3.OkHttpClient is injected at
-            com.jaak.stampssdk.di.NetworkModule.provideStampsApiService(okHttpClient, …)
-        com.jaak.stampssdk.data.network.StampsApiService is injected at
-            com.jaak.stampssdk.sdk.ScanStampsActivity.apiService
-        com.jaak.stampssdk.sdk.ScanStampsActivity is injected at
-            com.jaak.stampssdk.sdk.ScanStampsActivity_GeneratedInjector.injectScanStampsActivity(com.jaak.stampssdk.sdk.ScanStampsActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-    It is also requested at:
-        com.jaak.visagesdk.di.NetworkModule.provideVisageApiService(okHttpClient, …)
-    The following other entry points also depend on it:
-        dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ViewModelC]
-        com.jaak.stampssdk.ui.view.ValidationKycActivity_GeneratedInjector.injectValidationKycActivity(com.jaak.stampssdk.ui.view.ValidationKycActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-  1 error
-  5 warnings
-
-* Try:
-> Check your code and dependencies to fix the compilation error(s)
-> Run with --scan to get full insights.
-==============================================================================
-
-2: Task failed with an exception.
------------
-* What went wrong:
-Execution failed for task ':app:hiltJavaCompileRelease'.
-> Compilation failed; see the compiler output below.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/hilt_aggregated_deps/_com_jaak_fileuploadersdk_ui_view_FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity_GeneratedInjector.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/interfaces/ImageVideoSelectionListener.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded.
-  warning: /Users/michael/.gradle/caches/8.12/transforms/61ac613338932eb629b4c948488e7fb3/transformed/jetified-jaakfileuploader-sdk-1.1.1-runtime.jar(/com/jaak/fileuploadersdk/ui/view/Hilt_FileUploaderActivity.class): major version 62 is newer than 61, the highest major version supported by this compiler.
-    It is recommended that the compiler be upgraded./Users/michael/Documents/project_android/jaak-android-kyc-example/app/build/generated/hilt/component_sources/release/com/jaak/kyc/KYCApp_HiltComponents.java:194: error: [Dagger/DuplicateBindings] okhttp3.OkHttpClient is bound multiple times:
-    public abstract static class SingletonC implements KYCApp_GeneratedInjector,
-                           ^
-        @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.stampssdk.di.NetworkModule.provideOkHttpClient(@dagger.hilt.android.qualifiers.ApplicationContext android.content.Context, com.jaak.stampssdk.utils.ProfileManager)
-        @Provides @Singleton @org.jetbrains.annotations.NotNull okhttp3.OkHttpClient com.jaak.visagesdk.di.NetworkModule.provideOkHttpClient()
-        okhttp3.OkHttpClient is injected at
-            com.jaak.stampssdk.di.NetworkModule.provideStampsApiService(okHttpClient, …)
-        com.jaak.stampssdk.data.network.StampsApiService is injected at
-            com.jaak.stampssdk.sdk.ScanStampsActivity.apiService
-        com.jaak.stampssdk.sdk.ScanStampsActivity is injected at
-            com.jaak.stampssdk.sdk.ScanStampsActivity_GeneratedInjector.injectScanStampsActivity(com.jaak.stampssdk.sdk.ScanStampsActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-    It is also requested at:
-        com.jaak.visagesdk.di.NetworkModule.provideVisageApiService(okHttpClient, …)
-    The following other entry points also depend on it:
-        dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ViewModelC]
-        com.jaak.stampssdk.ui.view.ValidationKycActivity_GeneratedInjector.injectValidationKycActivity(com.jaak.stampssdk.ui.view.ValidationKycActivity) [com.jaak.kyc.KYCApp_HiltComponents.SingletonC → com.jaak.kyc.KYCApp_HiltComponents.ActivityRetainedC → com.jaak.kyc.KYCApp_HiltComponents.ActivityC]
-  1 error
-  5 warnings
-
-* Try:
-> Check your code and dependencies to fix the compilation error(s)
-> Run with --scan to get full insights.
-==============================================================================
-
-BUILD FAILED in 1m 9s
-82 actionable tasks: 82 executed
-Configuration cache entry stored.
+BUILD SUCCESSFUL in 11s
+44 actionable tasks: 15 executed, 29 up-to-date
+Configuration cache entry reused.

@@ -66,18 +66,6 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-            <!-- Barra de progreso simulada -->
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:indeterminate="false"
-                android:max="100"
-                android:progress="75"
-                android:progressTint="@color/yellow_instruction"
-                style="?android:attr/progressBarStyleHorizontal" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

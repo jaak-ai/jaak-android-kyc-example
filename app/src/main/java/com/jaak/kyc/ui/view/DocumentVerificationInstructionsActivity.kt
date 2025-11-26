@@ -37,7 +37,7 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
 
     private fun initComponents() {
         // Inicializar StampsSDK
-        StampsSDK.initialize("DF1W-WZS5-RRHR-LF0H",this)
+        StampsSDK.initialize("G6MR-V794-9QOH-0BS9",this)
         StampsSDK.setEnvironment(StampsSDK.Environment.DEV, this)
         stampsSDK = StampsSDK(this, this)
 

@@ -1,9 +1,12 @@
 package com.jaak.kyc.ui.view
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -62,6 +65,11 @@ class SessionInfoFragment : Fragment() {
 
         binding.cvScoreOto.setOnClickListener {
             showScoreDetail("oto")
+        }
+
+        // Click en foto de perfil para ver en pantalla completa
+        binding.ivUserPhoto.setOnClickListener {
+            showImagePreview(binding.ivUserPhoto)
         }
     }
 
@@ -290,7 +298,7 @@ class SessionInfoFragment : Fragment() {
      */
     private fun translateState(state: String): String {
         return when (state.lowercase()) {
-            "completed" -> "Finalizado"
+            "completed", "finished" -> "Finalizado"
             "pending" -> "Pendiente"
             "in_progress" -> "En Progreso"
             "failed" -> "Fallido"
@@ -309,6 +317,26 @@ class SessionInfoFragment : Fragment() {
             "review" -> "En Revisión"
             else -> stage
         }
+    }
+
+    /**
+     * Muestra preview de imagen en pantalla completa
+     */
+    private fun showImagePreview(imageView: ImageView) {
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_image_preview)
+
+        val previewImage = dialog.findViewById<ImageView>(R.id.ivPreview)
+        val closeButton = dialog.findViewById<ImageView>(R.id.ivClose)
+
+        previewImage.setImageDrawable(imageView.drawable)
+
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {

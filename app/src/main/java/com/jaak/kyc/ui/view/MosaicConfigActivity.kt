@@ -83,7 +83,37 @@ class MosaicConfigActivity : AppCompatActivity() {
                     return false
                 }
                 
-                adapter.moveModule(fromPos, toPos)
+                val moduleToMove = modules[fromPos]
+                
+                // Validar movimiento y mostrar AlertDialog si no es válido
+                if (moduleToMove.isEnabled) {
+                    // Validación: Listas oficiales no puede ir antes de Extracción de documento
+                    if (moduleToMove.id == "BLACKLIST") {
+                        val modulesBeforeTarget = modules.subList(0, toPos)
+                        val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
+                        if (!hasDocExtractBefore) {
+                            showValidationDialog(getString(R.string.mosaic_blacklist_requires_doc))
+                            return false
+                        }
+                    }
+                    
+                    // Validación: 1:1 no puede ir antes de Extracción de documento NI de Verificación de identidad
+                    if (moduleToMove.id == "IVERIFICATION") {
+                        val modulesBeforeTarget = modules.subList(0, toPos)
+                        val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
+                        val hasOtoBefore = modulesBeforeTarget.any { it.id == "OTO" && it.isEnabled }
+                        if (!hasDocExtractBefore || !hasOtoBefore) {
+                            showValidationDialog(getString(R.string.mosaic_1to1_requires_doc_and_oto))
+                            return false
+                        }
+                    }
+                }
+                
+                val moved = adapter.moveModule(fromPos, toPos)
+                if (!moved) {
+                    // El adapter rechazó el movimiento (por validaciones)
+                    return false
+                }
                 return true
             }
 
@@ -139,6 +169,14 @@ class MosaicConfigActivity : AppCompatActivity() {
     private fun isConfigurationValid(): Boolean {
         val config = MosaicConfig(modules.toList(), shortKey)
         return config.isValid()
+    }
+
+    private fun showValidationDialog(message: String) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.mosaic_validation_title)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok, null)
+            .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

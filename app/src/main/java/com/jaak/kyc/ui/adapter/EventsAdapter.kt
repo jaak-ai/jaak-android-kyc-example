@@ -66,17 +66,17 @@ class EventsAdapter(
             // Mapeo según los actions reales de la API:
             // - verify-blacklist → Listas Oficiales
             // - v2-verify-oto → Comparación 1:1
-            // - best-frame-verify-liveness → Verificación de vida
+            // - best-frame-verify-liveness → Prueba de vida
             // - front-verify-document → Verificación de documento
             // - complet-extract-document → Extracción de documento
             return when (action) {
-                "best-frame-verify-liveness" -> "Verificación de vida"
+                "best-frame-verify-liveness" -> "Prueba de vida"
                 "v2-verify-oto" -> "Comparación 1:1"
                 "verify-blacklist" -> "Listas Oficiales"
                 "front-verify-document" -> "Verificación de documento"
                 "complet-extract-document" -> "Extracción de documento"
                 // Otros actions comunes
-                "liveness-process", "liveness" -> "Verificación de vida"
+                "liveness-process", "liveness" -> "Prueba de vida"
                 "oto-process", "one-to-one-process" -> "Comparación 1:1"
                 "blacklist-check", "blacklist" -> "Listas Oficiales"
                 "document-process" -> "Verificación de documento"

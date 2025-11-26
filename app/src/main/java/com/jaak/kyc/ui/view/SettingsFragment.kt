@@ -113,8 +113,8 @@ class SettingsFragment : Fragment() {
         // Limpiar todos los datos usando ProfileManager
         profileManager.logout()
 
-        // Navegar a LoginActivity
-        val intent = Intent(requireContext(), LoginActivity::class.java)
+        // Navegar a MenuMainActivity
+        val intent = Intent(requireContext(), MenuMainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         requireActivity().finish()
