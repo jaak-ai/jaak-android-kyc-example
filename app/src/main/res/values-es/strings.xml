@@ -432,5 +432,7 @@
     <string name="mosaic_error_cannot_move">No se puede mover este módulo a esa posición</string>
     <string name="mosaic_error_1to1_first">Comparación 1:1 requiere: Extracción de documento, Verificación de identidad</string>
     <string name="mosaic_error_blacklist_first">Listas oficiales requiere: Extracción de documento</string>
+    
+    <string name="start_kyc_session">Guardar</string>
 
 </resources>

@@ -97,10 +97,18 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
     private fun setupManualModeUI() {
         if (isManualMode) {
-            // Cambiar texto del botón a "Iniciar Sesión KYC"
+            // Cambiar texto del botón a "Guardar"
             binding.btnUpdateProfile.text = getString(R.string.start_kyc_session)
             // Ocultar switch de "Perfil por defecto" porque no se guardará
             binding.switchDefault.visibility = View.GONE
+        } else {
+            // Modo rápido: Activar switch si es el primer perfil
+            if (profileId == null) {
+                val existingProfiles = profileManager.getKycProfiles()
+                if (existingProfiles.isEmpty()) {
+                    binding.switchDefault.isChecked = true
+                }
+            }
         }
     }
 
@@ -123,6 +131,12 @@ class EditSessionProfileActivity : AppCompatActivity() {
         val flowTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, availableFlowTypes)
         flowTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerFlowType.adapter = flowTypeAdapter
+        
+        // Bloquear el spinner en modo rápido
+        if (!isManualMode) {
+            binding.spinnerFlowType.isEnabled = false
+            binding.spinnerFlowType.alpha = 0.5f
+        }
 
         // Métodos de validación (mostrar nombres amigables al usuario)
         val validationMethods = validationMap.keys.toTypedArray()
@@ -263,7 +277,6 @@ class EditSessionProfileActivity : AppCompatActivity() {
             // Cargar perfil existente
             val profile = profileManager.getKycProfileById(id)
             profile?.let {
-                binding.etProfileName.setText(it.profileName)
                 binding.etContactName.setText(it.contactName)
                 binding.etFlowName.setText(it.flowName)
                 binding.etRedirectUrl.setText(it.redirectUrl ?: "")
@@ -305,13 +318,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
                     }
                 }
 
-                // Cargar campos de verificación según el tipo
-                when (it.verificationType) {
-                    "EMAIL" -> binding.etVerificationValue.setText(it.email ?: "")
-                    "SMS" -> binding.etVerificationValue.setText(it.sms ?: "")
-                    "WHATSAPP" -> binding.etVerificationValue.setText(it.whatsapp ?: "")
-                    else -> binding.etVerificationValue.setText("")
-                }
+
             }
         }
     }
@@ -327,7 +334,6 @@ class EditSessionProfileActivity : AppCompatActivity() {
         }
 
         // Agregar TextWatcher a los campos requeridos
-        binding.etProfileName.addTextChangedListener(textWatcher)
         binding.etContactName.addTextChangedListener(textWatcher)
         binding.etFlowName.addTextChangedListener(textWatcher)
 
@@ -344,14 +350,12 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
     private fun validateForm() {
         // Obtener valores de los campos requeridos
-        val profileName = binding.etProfileName.text.toString().trim()
         val contactName = binding.etContactName.text.toString().trim()
         val flowName = binding.etFlowName.text.toString().trim()
         // El país siempre tendrá un valor seleccionado por defecto, no necesitamos validarlo
 
         // Habilitar botón solo si todos los campos requeridos están llenos
-        val allFieldsFilled = profileName.isNotEmpty() &&
-                             contactName.isNotEmpty() &&
+        val allFieldsFilled = contactName.isNotEmpty() &&
                              flowName.isNotEmpty()
 
         binding.btnUpdateProfile.isEnabled = allFieldsFilled
@@ -359,7 +363,6 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
     private fun saveProfile() {
         // Validar campos requeridos
-        val profileName = binding.etProfileName.text.toString().trim()
         val contactName = binding.etContactName.text.toString().trim()
         val flowName = binding.etFlowName.text.toString().trim()
         val redirectUrl = binding.etRedirectUrl.text.toString().trim()
@@ -372,13 +375,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
         val selectedValidationName = binding.spinnerValidationMethod.selectedItem.toString()
         val verificationType = validationMap[selectedValidationName] ?: ""
 
-        val verificationValue = binding.etVerificationValue.text.toString().trim()
         val isDefault = binding.switchDefault.isChecked
-
-        if (profileName.isEmpty()) {
-            binding.etProfileName.error = getString(R.string.error_field_required)
-            return
-        }
 
         if (contactName.isEmpty()) {
             binding.etContactName.error = getString(R.string.error_field_required)
@@ -388,17 +385,6 @@ class EditSessionProfileActivity : AppCompatActivity() {
         if (flowName.isEmpty()) {
             binding.etFlowName.error = getString(R.string.error_field_required)
             return
-        }
-
-        // Asignar valor de verificación según el tipo seleccionado
-        var email: String? = null
-        var sms: String? = null
-        var whatsapp: String? = null
-
-        when (verificationType) {
-            "EMAIL" -> email = verificationValue.ifEmpty { null }
-            "SMS" -> sms = verificationValue.ifEmpty { null }
-            "WHATSAPP" -> whatsapp = verificationValue.ifEmpty { null }
         }
 
         // Obtener tipo de flujo seleccionado del spinner
@@ -423,7 +409,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
         // Crear o actualizar perfil
         val profile = KycProfile(
             id = profileId ?: java.util.UUID.randomUUID().toString(),
-            profileName = profileName,
+            profileName = contactName,
             contactName = contactName,
             flowName = flowName,
             redirectUrl = redirectUrl.ifEmpty { null },
@@ -432,9 +418,9 @@ class EditSessionProfileActivity : AppCompatActivity() {
             selectedFlowType = selectedFlowType,
             mosaicModulesJson = mosaicModulesJson,
             verificationType = verificationType,
-            email = email,
-            sms = sms,
-            whatsapp = whatsapp,
+            email = null,
+            sms = null,
+            whatsapp = null,
             isDefault = isDefault
         )
 
@@ -471,8 +457,6 @@ class EditSessionProfileActivity : AppCompatActivity() {
         val selectedValidationName = binding.spinnerValidationMethod.selectedItem.toString()
         val verificationType = validationMap[selectedValidationName] ?: ""
 
-        val verificationValue = binding.etVerificationValue.text.toString().trim()
-
         if (contactName.isEmpty()) {
             binding.etContactName.error = getString(R.string.error_field_required)
             return
@@ -498,9 +482,9 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
                 // Construir objeto de verificación
                 val verification = VerificationData(
-                    email = if (verificationType == "EMAIL") verificationValue else "",
-                    sms = if (verificationType == "SMS") verificationValue else "",
-                    whatsapp = if (verificationType == "WHATSAPP") verificationValue else ""
+                    email = "",
+                    sms = "",
+                    whatsapp = ""
                 )
 
                 val createFlowRequest = CreateFlowRequest(
