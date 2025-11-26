@@ -132,6 +132,7 @@
     <color name="greenJAAKsdk">#8BC34A</color>
 
     <!-- Login Screen Colors -->
+    <color name="jaak_login_header_bg">#71C3E7</color> <!-- Light blue header background -->
     <color name="jaak_login_button">#90CAF9</color> <!-- Light blue button -->
     <color name="jaak_login_button_pressed">#64B5F6</color>
     <color name="jaak_login_link">#42A5F5</color> <!-- Blue links -->

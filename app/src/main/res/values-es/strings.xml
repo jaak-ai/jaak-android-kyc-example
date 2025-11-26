@@ -200,6 +200,7 @@
     <string name="cd_error_icon">Ícono de error</string>
 
     <!-- Login Screen Strings -->
+    <string name="login_header_title">Verificación de Identidad</string>
     <string name="login_title">Inicia sesión en tu cuenta</string>
     <string name="login_ssl_secure">Conexión SSL Segura</string>
     <string name="login_email_label">CORREO ELECTRÓNICO</string>

@@ -167,6 +167,7 @@
     <string name="cd_error_icon">Error icon</string>
 
     <!-- Login Screen Strings -->
+    <string name="login_header_title">Identity Verification</string>
     <string name="login_title">Log in to your account</string>
     <string name="login_ssl_secure">Secure SSL Connection</string>
     <string name="login_email_label">EMAIL</string>
