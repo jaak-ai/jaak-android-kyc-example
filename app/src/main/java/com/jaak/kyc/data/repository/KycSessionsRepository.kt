@@ -18,6 +18,7 @@ class KycSessionsRepository @Inject constructor(
         page: Int = 1,
         limit: Int = 20,
         searchQuery: String? = null,
+        searchType: String? = null,
         flowName: String? = null,
         minCreatedAt: String? = null,
         maxCreatedAt: String? = null
@@ -40,7 +41,8 @@ class KycSessionsRepository @Inject constructor(
             Log.d("KycSessionsRepository", "Query Parameters: {")
             Log.d("KycSessionsRepository", "  page: $page")
             Log.d("KycSessionsRepository", "  limit: $limit")
-            Log.d("KycSessionsRepository", "  searchQuery (unified): $searchQuery")
+            Log.d("KycSessionsRepository", "  searchQuery: $searchQuery")
+            Log.d("KycSessionsRepository", "  searchType: $searchType")
             Log.d("KycSessionsRepository", "  flowName: $flowName")
             Log.d("KycSessionsRepository", "  minCreatedAt: $minCreatedAt")
             Log.d("KycSessionsRepository", "  maxCreatedAt: $maxCreatedAt")
@@ -103,16 +105,25 @@ class KycSessionsRepository @Inject constructor(
                         SessionListMapper.mapToKycSessionItem(item)
                     }
 
-                    // Filtrado local unificado: buscar en shortKey, contactName, flowName, sessionID
+                    // Filtrado local según el tipo seleccionado
                     val filteredSessions = if (shouldFilterLocally && searchQuery != null) {
                         val query = searchQuery.lowercase()
-                        Log.d("KycSessionsRepository", "Aplicando filtro local con query: '$query'")
+                        Log.d("KycSessionsRepository", "Aplicando filtro local tipo='$searchType' query='$query'")
 
                         val filtered = sessions.filter { session ->
-                            session.shortkey.lowercase().contains(query) ||
-                            session.userName.lowercase().contains(query) ||
-                            session.flowName.lowercase().contains(query) ||
-                            session.sessionID.lowercase().contains(query)
+                            when (searchType) {
+                                "SHORT_KEY" -> session.shortkey.lowercase().contains(query)
+                                "CONTACT_NAME" -> session.userName.lowercase().contains(query)
+                                "FLOW_NAME" -> session.flowName.lowercase().contains(query)
+                                "SESSION_ID" -> session.sessionID.lowercase().contains(query)
+                                else -> {
+                                    // Fallback: buscar en todos si no hay tipo especificado
+                                    session.shortkey.lowercase().contains(query) ||
+                                    session.userName.lowercase().contains(query) ||
+                                    session.flowName.lowercase().contains(query) ||
+                                    session.sessionID.lowercase().contains(query)
+                                }
+                            }
                         }
 
                         Log.d("KycSessionsRepository", "Resultados después de filtro: ${filtered.size} de ${sessions.size}")

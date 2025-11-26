@@ -27,11 +27,10 @@ class MosaicModuleAdapter(
                 checkboxModule.setOnCheckedChangeListener(null)
                 checkboxModule.isChecked = module.isEnabled
                 
-                // Mostrar número solo si está habilitado (orden de activación)
+                // Mostrar número solo si está habilitado (basado en posición en lista)
                 if (module.isEnabled) {
-                    // Calcular el orden basado en cuántos módulos habilitados hay antes de este
-                    val enabledModules = modules.filter { it.isEnabled }
-                    val orderNumber = enabledModules.indexOf(module) + 1
+                    // Contar solo los módulos habilitados que están ANTES de este en la lista
+                    val orderNumber = modules.take(position + 1).count { it.isEnabled }
                     tvOrder.text = orderNumber.toString()
                     tvOrder.visibility = View.VISIBLE
                 } else {
@@ -72,19 +71,8 @@ class MosaicModuleAdapter(
                     
                     module.isEnabled = isChecked
                     
-                    if (isChecked) {
-                        // Cuando se activa, asignar el siguiente número en secuencia
-                        val maxOrder = modules.filter { it.isEnabled }.maxOfOrNull { it.order } ?: -1
-                        module.order = maxOrder + 1
-                    } else {
-                        // Cuando se desactiva, reorganizar los órdenes de los demás
-                        val currentOrder = module.order
-                        module.order = Int.MAX_VALUE // Moverlo al final
-                        
-                        // Reorganizar los módulos habilitados
-                        modules.filter { it.isEnabled && it.order > currentOrder }
-                            .forEach { it.order = it.order - 1 }
-                    }
+                    // La numeración se basa en la posición del listado, no en el orden de activación
+                    // Solo actualizar el estado
                     
                     // Usar post para diferir la actualización y evitar el crash
                     binding.root.post {

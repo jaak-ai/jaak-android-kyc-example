@@ -512,14 +512,13 @@ class SessionsFragmentNew : Fragment() {
             return true
         }
 
-        // Validar que ambas fechas estén seleccionadas si hay al menos una
-        if ((startDateMillis == null && endDateMillis != null) ||
-            (startDateMillis != null && endDateMillis == null)) {
-            Toast.makeText(requireContext(), "Debe seleccionar ambas fechas", Toast.LENGTH_SHORT).show()
+        // La fecha de inicio es obligatoria, pero la fecha final es opcional
+        if (startDateMillis == null && endDateMillis != null) {
+            Toast.makeText(requireContext(), "Debe seleccionar la fecha de inicio", Toast.LENGTH_SHORT).show()
             return false
         }
 
-        // Validar que la fecha final no sea anterior a la inicial
+        // Validar que la fecha final no sea anterior a la inicial (solo si ambas existen)
         if (startDateMillis != null && endDateMillis != null && endDateMillis!! < startDateMillis!!) {
             Toast.makeText(requireContext(), getString(R.string.error_end_date_before_start), Toast.LENGTH_SHORT).show()
             return false
@@ -597,7 +596,9 @@ class SessionsFragmentNew : Fragment() {
         }
 
         // Convertir fecha y hora a formato ISO 8601
-        // Solo aplicar filtro si hay fecha seleccionada (la hora es opcional, usa 00:00 por defecto)
+        // Fecha inicial es obligatoria si se filtra por fecha, fecha final es opcional
+        // Si solo hay fecha inicial: busca desde esa fecha en adelante
+        // Si hay ambas fechas: busca en el rango especificado
         val minCreatedAt = if (startDateMillis != null) {
             formatToISO8601(startDateMillis!!, startHour ?: 0, startMinute ?: 0)
         } else null
@@ -606,13 +607,14 @@ class SessionsFragmentNew : Fragment() {
             formatToISO8601(endDateMillis!!, endHour ?: 23, endMinute ?: 59)
         } else null
 
-        Log.d("SessionsFragment", "Filtros aplicados: minCreatedAt=$minCreatedAt, maxCreatedAt=$maxCreatedAt")
+        Log.d("SessionsFragment", "Filtros de fecha - Inicio: $minCreatedAt, Fin: $maxCreatedAt (opcional)")
 
         loadSessionsJob = lifecycleScope.launch {
             val result = sessionsRepository.getSessions(
                 page = page,
                 limit = 20,
                 searchQuery = searchQuery,
+                searchType = currentSearchType.name,
                 flowName = selectedFlowName,
                 minCreatedAt = minCreatedAt,
                 maxCreatedAt = maxCreatedAt

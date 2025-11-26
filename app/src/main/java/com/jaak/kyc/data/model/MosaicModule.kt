@@ -91,13 +91,13 @@ data class MosaicConfig(
     
     /**
      * Construye la URL de Mosaic con los módulos seleccionados
-     * IMPORTANTE: Respeta el ORDEN en que el cliente activó los módulos
+     * IMPORTANTE: Respeta el ORDEN DE LA LISTA (posición física), no el orden de activación
      */
     fun buildMosaicUrl(): String {
-        // Filtrar módulos habilitados y ordenar por su 'order' (que refleja el orden de activación)
+        // Filtrar módulos habilitados manteniendo el orden de la lista (order es el índice)
         val enabledModulesInOrder = modules
             .filter { it.isEnabled }
-            .sortedBy { it.order }
+            .sortedBy { it.order }  // 'order' representa la posición en el listado
             .map { it.urlParam }
         
         // Siempre agregar WELCOME al inicio y FINISH al final
