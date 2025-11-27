@@ -264,12 +264,26 @@ class DashboardFragment : Fragment() {
 
                 Log.d("DashboardFragment", "Response Body: {")
                 Log.d("DashboardFragment", "  sessionUrl: ${flowData.sessionUrl}")
+                Log.d("DashboardFragment", "  transparent: ${flowData.transparent}")
                 Log.d("DashboardFragment", "}")
+                
+                // Extraer licencia del header traceparent
+                val traceparent = flowResponse.headers()["traceparent"]
+                Log.d("DashboardFragment", "Header traceparent: $traceparent")
                 Log.d("DashboardFragment", "=========================================")
 
                 // Extraer shortKey de la sessionUrl
                 val shortKey = flowData.extractShortKey()
                 Log.d("DashboardFragment", "ShortKey extraído: $shortKey")
+                
+                // Extraer y guardar licencia del header traceparent
+                val flowLicense = com.jaak.kyc.data.model.flow.CreateFlowResponse.extractLicenseFromHeader(traceparent)
+                if (flowLicense != null) {
+                    com.jaak.kyc.utils.FlowLicenseManager.saveLicense(requireContext(), flowLicense)
+                    Log.d("DashboardFragment", "✓ Licencia extraída del header traceparent y guardada: $flowLicense")
+                } else {
+                    Log.w("DashboardFragment", "⚠ No se pudo extraer licencia del header traceparent")
+                }
 
                 // ✅ CREAR PROCESO EN BD con shortKey
                 val processId = kycOfflineRepository.createKycProcess(shortKey)

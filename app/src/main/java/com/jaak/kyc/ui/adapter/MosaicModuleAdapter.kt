@@ -110,25 +110,24 @@ class MosaicModuleAdapter(
     fun moveModule(fromPosition: Int, toPosition: Int): Boolean {
         val moduleToMove = modules[fromPosition]
         
-        // Solo validar si el módulo que se mueve está habilitado
-        if (moduleToMove.isEnabled) {
-            // Validación: Listas oficiales no puede estar antes de extracción de documento
-            if (moduleToMove.id == "BLACKLIST") {
-                val modulesBeforeTarget = modules.subList(0, toPosition)
-                val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
-                if (!hasDocExtractBefore) {
-                    return false
-                }
+        // Validación: Listas oficiales no puede estar antes de extracción de documento
+        // (independientemente si está habilitado o no)
+        if (moduleToMove.id == "BLACKLIST") {
+            val modulesBeforeTarget = modules.subList(0, toPosition)
+            val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" }
+            if (!hasDocExtractBefore) {
+                return false
             }
-            
-            // Validación: 1:1 no puede estar antes de extracción de documento NI de verificación de identidad
-            if (moduleToMove.id == "IVERIFICATION") {
-                val modulesBeforeTarget = modules.subList(0, toPosition)
-                val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" && it.isEnabled }
-                val hasOtoBefore = modulesBeforeTarget.any { it.id == "OTO" && it.isEnabled }
-                if (!hasDocExtractBefore || !hasOtoBefore) {
-                    return false
-                }
+        }
+        
+        // Validación: 1:1 no puede estar antes de extracción de documento NI de verificación de identidad
+        // (independientemente si está habilitado o no)
+        if (moduleToMove.id == "IVERIFICATION") {
+            val modulesBeforeTarget = modules.subList(0, toPosition)
+            val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" }
+            val hasOtoBefore = modulesBeforeTarget.any { it.id == "OTO" }
+            if (!hasDocExtractBefore || !hasOtoBefore) {
+                return false
             }
         }
         

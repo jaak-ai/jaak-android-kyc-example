@@ -439,5 +439,23 @@
     <string name="mosaic_1to1_requires_doc_and_oto">La \"Comparación 1:1\" debe ir después de \"Extracción de documento\" y \"Verificación de identidad\"</string>
     
     <string name="start_kyc_session">Guardar</string>
+    
+    <!-- Country Names -->
+    <string name="country_mexico">México</string>
+    <string name="country_argentina">Argentina</string>
+    <string name="country_peru">Perú</string>
+    <string name="country_colombia">Colombia</string>
+    <string name="country_usa">Estados Unidos</string>
+    <string name="country_spain">España</string>
+    <string name="country_unknown">Desconocido</string>
+    
+    <!-- Nationalities -->
+    <string name="nationality_mexican">Mexicana</string>
+    <string name="nationality_argentinian">Argentina</string>
+    <string name="nationality_peruvian">Peruana</string>
+    <string name="nationality_colombian">Colombiana</string>
+    <string name="nationality_american">Estadounidense</string>
+    <string name="nationality_spanish">Española</string>
+    <string name="nationality_unknown">Desconocida</string>
 
 </resources>

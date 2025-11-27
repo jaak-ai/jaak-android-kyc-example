@@ -3,6 +3,7 @@ package com.jaak.kyc.ui.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,9 +37,12 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
     }
 
     private fun initComponents() {
-        // Inicializar StampsSDK
-        StampsSDK.initialize("G6MR-V794-9QOH-0BS9",this)
-        StampsSDK.setEnvironment(StampsSDK.Environment.DEV, this)
+        // Inicializar StampsSDK con licencia dinámica o por defecto
+        val flowLicense = com.jaak.kyc.utils.FlowLicenseManager.getLicense(this)
+        val stampsLicense = flowLicense ?: "K9MN-95LJ-EXCI-LWM4"
+        Log.d("DocumentVerification", "→ Inicializando StampsSDK con licencia: $stampsLicense")
+        StampsSDK.initialize(stampsLicense, this)
+        StampsSDK.setEnvironment(StampsSDK.Environment.QA, this)
         stampsSDK = StampsSDK(this, this)
 
         // Configuración extrema para máxima velocidad

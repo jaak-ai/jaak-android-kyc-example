@@ -54,13 +54,22 @@ class SessionDocumentFragment : Fragment() {
                     appendLine("⏱️ Tiempo de proceso: $processingTimeStr")
 
                     val evaluation = resource.meta?.extra?.evaluation
+                    
+                    // Extraer nacionalidad del objeto country dentro del document
+                    val nationality = extractNationality(evaluation)
 
                     appendLine()
                     appendLine("📋 Evaluation:")
+                    
+                    if (nationality != null) {
+                        appendLine("  • Nacionalidad: $nationality")
+                    }
 
                     evaluation?.forEach { (key, value) ->
                         when (key) {
-                            "nationality" -> appendLine("  • Nacionalidad: $value")
+                            "document" -> {
+                                // Procesar información del documento sin repetir nacionalidad
+                            }
                             else -> appendLine("  • $key: $value")
                         }
                     }
@@ -74,6 +83,26 @@ class SessionDocumentFragment : Fragment() {
             } else {
                 binding.tvDocumentContent.text = getString(R.string.document_no_data_available)
             }
+        }
+    }
+    
+    private fun extractNationality(evaluation: Map<String, Any>?): String? {
+        try {
+            val document = evaluation?.get("document") as? Map<*, *> ?: return null
+            val country = document["country"] as? Map<*, *> ?: return null
+            val isoCode = country["isoAlpha2Code"] as? String ?: return null
+            
+            return when (isoCode.uppercase()) {
+                "MX" -> getString(R.string.nationality_mexican)
+                "AR" -> getString(R.string.nationality_argentinian)
+                "PE" -> getString(R.string.nationality_peruvian)
+                "CO" -> getString(R.string.nationality_colombian)
+                "US" -> getString(R.string.nationality_american)
+                "ES" -> getString(R.string.nationality_spanish)
+                else -> getString(R.string.nationality_unknown)
+            }
+        } catch (e: Exception) {
+            return null
         }
     }
 

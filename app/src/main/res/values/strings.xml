@@ -461,4 +461,22 @@
     <string name="mosaic_validation_title">Module validation</string>
     <string name="mosaic_blacklist_requires_doc">\"Official lists\" must be placed after \"Document extraction\"</string>
     <string name="mosaic_1to1_requires_doc_and_oto">\"1:1 Comparison\" must be placed after \"Document extraction\" and \"Identity verification\"</string>
+    
+    <!-- Country Names -->
+    <string name="country_mexico">Mexico</string>
+    <string name="country_argentina">Argentina</string>
+    <string name="country_peru">Peru</string>
+    <string name="country_colombia">Colombia</string>
+    <string name="country_usa">United States</string>
+    <string name="country_spain">Spain</string>
+    <string name="country_unknown">Unknown</string>
+    
+    <!-- Nationalities -->
+    <string name="nationality_mexican">Mexican</string>
+    <string name="nationality_argentinian">Argentinian</string>
+    <string name="nationality_peruvian">Peruvian</string>
+    <string name="nationality_colombian">Colombian</string>
+    <string name="nationality_american">American</string>
+    <string name="nationality_spanish">Spanish</string>
+    <string name="nationality_unknown">Unknown</string>
 </resources>

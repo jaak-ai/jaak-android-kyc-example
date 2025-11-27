@@ -184,7 +184,7 @@ class LoginActivity : AppCompatActivity() {
 
                 // API Key temporal proporcionada por el equipo de backend
                 // Actualizado: 2025-11-20
-                val temporaryApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiNjkxMGM2YjZjNjdjYTQ0Mjc4N2VmZTJiIiwiY29tcGFueV9pZCI6IjY5MTBjNmI2YzY3Y2E0NDI3ODdlZmUyYiIsImV4cCI6MTc2NDg1OTA3MiwiaWF0IjoxNzYzNjQ5NDcyLCJyb2wiOiIiLCJzZXNzaW9uX2lkIjoiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3ViIjoiNjkxZjI3YzBmMTQzYjcwOWY4MGQxN2ExIiwidHlwZSI6ImFwaS1rZXkiLCJ1dWlkIjoiZWEwNGMwZTMtMmI5My00MGQ0LTkwYjItNmJjMDA0MmE2YTBmIn0.8kd3q96qlMRHc16x4RYzwa2gkoAcGIRiA7qCWKyi9u4"
+                val temporaryApiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55IjoiNjczNjQwNmE4ZTY3MDFkYWZlZDg0NDFhIiwiY29tcGFueV9pZCI6IjY3MzY0MDZhOGU2NzAxZGFmZWQ4NDQxYSIsImV4cCI6MTc2Njc5MTc5NiwiaWF0IjoxNzY0MTk5Nzk3LCJyb2wiOiIiLCJzZXNzaW9uX2lkIjoiMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwic3ViIjoiNjkyNzhkNzQwZmNjZjJmNzBhYzNjN2M0IiwidHlwZSI6ImFwaS1rZXkiLCJ1dWlkIjoiNmEzNjA3MTQtYzgwNi00NDYwLTg3MjQtZWMwM2ZhYjM0ZWE0In0.eD-vEyjbSefZ8FJT53Yg-xoN4RpVFCrsRi51voSZDSY"
 
                 // Guardar API Key de larga duración
                 profileManager.saveApiKey(temporaryApiKey)

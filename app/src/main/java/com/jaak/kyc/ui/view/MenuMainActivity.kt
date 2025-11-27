@@ -138,30 +138,8 @@ class MenuMainActivity : AppCompatActivity() {
             }
         }
 
-        kycOfflineViewModel.successMessage.observe(this) { message ->
-            message?.let {
-                when {
-                    it.contains("Session executed successfully") -> {
-                        // ✅ Session online exitosa con token - navegar a InitProcessLivenessActivity
-                        Toast.makeText(this, "Sesión KYC creada exitosamente", Toast.LENGTH_SHORT).show()
-                        navigateToNextStep()
-                    }
-                    it.contains("Session executed offline successfully") -> {
-                        // 📱 Session offline exitosa - navegar a InitProcessLivenessActivity pero indicar modo offline
-                        Toast.makeText(this, "Sesión KYC guardada offline", Toast.LENGTH_SHORT).show()
-                        navigateToNextStep()
-                    }
-                    it.contains("created") -> {
-                        // ✅ Proceso creado - mensaje silencioso, NO navegar aún
-                        // Toast.makeText(this, "Proceso creado, ejecutando sesión...", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                    }
-                }
-                kycOfflineViewModel.clearMessages()
-            }
-        }
+        // Ya no se necesita observar successMessage porque vamos directo al WebView
+        // kycOfflineViewModel.successMessage.observe(this) { ... }
 
         // Observar estado de red usando StateFlow
         kycOfflineViewModel.updateNetworkStatus()
@@ -185,15 +163,23 @@ class MenuMainActivity : AppCompatActivity() {
             return
         }
 
-        // Crear proceso y ejecutar sesión de forma secuencial (sin race condition)
-        kycOfflineViewModel.createProcessAndExecuteSession(shortKey)
+        // Abrir directamente el WebView de Mosaic con todos los módulos habilitados
+        openMosaicWebView(shortKey)
     }
 
-    private fun navigateToNextStep() {
-        // Navegar a la pantalla de bienvenida después de crear la sesión
-        val resultIntent = Intent(this, InitProcessLivenessActivity::class.java)
-        startActivity(resultIntent)
+    private fun openMosaicWebView(shortKey: String) {
+        // URL de Mosaic con todos los módulos habilitados por default
+        val allSteps = "WELCOME,DOCUMENT_EXTRACT,DOCUMENT_VERIFY,BLACKLIST,IVERIFICATION,LOCATION_PERMISSIONS,OTO,FINISH"
+        val mosaicUrl = "https://mosaic.qa.jaak.ai/link?shortKey=$shortKey&steps=$allSteps"
+        
+        val intent = Intent(this, KycWebViewActivity::class.java).apply {
+            putExtra("WEB_URL", mosaicUrl)
+            putExtra("FLOW_TYPE", "MOSAIC")
+        }
+        startActivity(intent)
     }
+
+
 
     private fun updateNetworkIndicator(isOnline: Boolean) {
         // TODO: Agregar indicador visual de conectividad en la UI

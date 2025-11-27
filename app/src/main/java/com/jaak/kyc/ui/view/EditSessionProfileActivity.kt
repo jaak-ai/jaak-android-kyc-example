@@ -99,8 +99,8 @@ class EditSessionProfileActivity : AppCompatActivity() {
         if (isManualMode) {
             // Cambiar texto del botón a "Guardar"
             binding.btnUpdateProfile.text = getString(R.string.start_kyc_session)
-            // Ocultar switch de "Perfil por defecto" porque no se guardará
-            binding.switchDefault.visibility = View.GONE
+            // Ocultar toda la sección de "Perfil por defecto" en modo manual
+            binding.layoutDefaultSection.visibility = View.GONE
         } else {
             // Modo rápido: Activar switch si es el primer perfil
             if (profileId == null) {
@@ -119,21 +119,27 @@ class EditSessionProfileActivity : AppCompatActivity() {
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerCountry.adapter = countryAdapter
 
+        // Obtener profileId para determinar si es edición o creación
+        profileId = intent.getStringExtra("profileId")
+        
+        // Determinar si debe bloquearse el spinner
+        val shouldLockSpinner = !isManualMode && profileId == null
+        
         // Tipos de flujo - Filtrar según el modo
-        val availableFlowTypes = if (isManualMode) {
-            // Modo manual: Mostrar todas las opciones (KYC Tradicional, Rigel, Mosaic)
-            flowTypeMap.keys.toTypedArray()
-        } else {
-            // Modo rápido (dashboard): Solo KYC Tradicional
+        val availableFlowTypes = if (shouldLockSpinner) {
+            // Modo rápido (dashboard) y creación nueva: Solo KYC Tradicional
             arrayOf("KYC Tradicional")
+        } else {
+            // Modo manual o edición de perfil existente: Mostrar todas las opciones
+            flowTypeMap.keys.toTypedArray()
         }
         
         val flowTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, availableFlowTypes)
         flowTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerFlowType.adapter = flowTypeAdapter
         
-        // Bloquear el spinner en modo rápido
-        if (!isManualMode) {
+        // Bloquear el spinner solo en modo rápido para nuevo perfil
+        if (shouldLockSpinner) {
             binding.spinnerFlowType.isEnabled = false
             binding.spinnerFlowType.alpha = 0.5f
         }
@@ -270,9 +276,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
     }
 
     private fun loadProfileData() {
-        // Obtener ID del perfil si es edición
-        profileId = intent.getStringExtra("profileId")
-
+        // El profileId ya se carga en setupSpinners()
         profileId?.let { id ->
             // Cargar perfil existente
             val profile = profileManager.getKycProfileById(id)
@@ -524,7 +528,21 @@ class EditSessionProfileActivity : AppCompatActivity() {
                 // Extraer shortKey de la sessionUrl
                 val shortKey = createFlowResponse.extractShortKey()
                 Log.d("EditSessionProfile", "✓ Flow creado. Session URL: ${createFlowResponse.sessionUrl}")
+                Log.d("EditSessionProfile", "✓ Transparent: ${createFlowResponse.transparent}")
                 Log.d("EditSessionProfile", "✓ Short Key extraído: $shortKey")
+                
+                // Extraer licencia del header traceparent
+                val traceparent = flowResponse.headers()["traceparent"]
+                Log.d("EditSessionProfile", "✓ Header traceparent: $traceparent")
+                
+                // Extraer y guardar licencia del header traceparent
+                val flowLicense = com.jaak.kyc.data.model.flow.CreateFlowResponse.extractLicenseFromHeader(traceparent)
+                if (flowLicense != null) {
+                    com.jaak.kyc.utils.FlowLicenseManager.saveLicense(this@EditSessionProfileActivity, flowLicense)
+                    Log.d("EditSessionProfile", "✓ Licencia extraída del header traceparent y guardada: $flowLicense")
+                } else {
+                    Log.w("EditSessionProfile", "⚠ No se pudo extraer licencia del header traceparent")
+                }
 
                 // ✅ CREAR PROCESO EN BD con shortKey
                 val processId = kycOfflineRepository.createKycProcess(shortKey)

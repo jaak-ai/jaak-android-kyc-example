@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jaak.kyc.databinding.ActivityFacialVerificationInstructionsBinding
 import com.jaak.kyc.utils.Constants
 import com.jaak.kyc.utils.FileStorageUtils
+import com.jaak.stampssdk.sdk.StampsSDK
 import com.jaak.visagesdk.ui.adapter.VisageListener
 import com.jaak.visagesdk.ui.view.VisageSDK
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,12 @@ class FacialVerificationInstructionsActivity : AppCompatActivity(), VisageListen
     }
 
     private fun initFaceDetector() {
-        VisageSDK.initialize("6KIY-7OIX-71WZ-IFU8")
+        // Inicializar VisageSDK con licencia dinámica o por defecto
+        val flowLicense = com.jaak.kyc.utils.FlowLicenseManager.getLicense(this)
+        val visageLicense = flowLicense ?: "6KIY-7OIX-71WZ-IFU8"
+        android.util.Log.d("FacialVerification", "→ Inicializando VisageSDK con licencia: $visageLicense")
+        VisageSDK.initialize(visageLicense)
+        VisageSDK.setEnvironment(VisageSDK.Environment.QA, this)
         visageSDK = VisageSDK(this, this)
         visageSDK.setShowTutorial(true)
         // Configurar SDK para no mostrar preview y retornar directamente
