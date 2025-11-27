@@ -355,6 +355,14 @@ class SessionsFragmentNew : Fragment() {
         val dialog = BottomSheetDialog(requireContext())
         val filterBinding = BottomSheetSessionFiltersBinding.inflate(layoutInflater)
 
+        // Inicializar con fecha y hora actual si no hay valores previos
+        if (startDateMillis == null) {
+            val calendar = java.util.Calendar.getInstance()
+            startDateMillis = calendar.timeInMillis
+            startHour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+            startMinute = calendar.get(java.util.Calendar.MINUTE)
+        }
+
         // Mostrar valores actuales
         updateDateTimeDisplays(filterBinding)
 
@@ -364,7 +372,16 @@ class SessionsFragmentNew : Fragment() {
 
         filterBinding.switchIncludeEndDate.setOnCheckedChangeListener { _, isChecked ->
             filterBinding.layoutEndDate.visibility = if (isChecked) View.VISIBLE else View.GONE
-            if (!isChecked) {
+            if (isChecked) {
+                // Inicializar con fecha y hora actual si se activa el switch
+                if (endDateMillis == null) {
+                    val calendar = java.util.Calendar.getInstance()
+                    endDateMillis = calendar.timeInMillis
+                    endHour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+                    endMinute = calendar.get(java.util.Calendar.MINUTE)
+                }
+                updateDateTimeDisplays(filterBinding)
+            } else {
                 // Limpiar fecha final si se desactiva el switch
                 endDateMillis = null
                 endHour = null
