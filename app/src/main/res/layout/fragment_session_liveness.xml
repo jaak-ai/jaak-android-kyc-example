@@ -249,43 +249,7 @@
                     android:layout_marginTop="4dp"
                     tools:text="15/10/2025 16:15" />
 
-                <!-- Tiempo total del flujo -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/total_flow_time"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/jaak_text_primary"
-                    android:layout_marginTop="12dp" />
 
-                <TextView
-                    android:id="@+id/tvTotalTimeDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/jaak_text_primary"
-                    android:layout_marginTop="4dp"
-                    tools:text="0m 1s" />
-
-                <!-- Tiempo de proceso de Liveness -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/liveness_processing_time"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/jaak_text_primary"
-                    android:layout_marginTop="12dp" />
-
-                <TextView
-                    android:id="@+id/tvLivenessProcessingTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/jaak_text_primary"
-                    android:layout_marginTop="4dp"
-                    tools:text="N/A" />
 
                 <!-- Origen -->
                 <TextView

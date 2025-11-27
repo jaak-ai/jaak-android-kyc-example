@@ -50,8 +50,9 @@
 
     <!-- Sessions KYC Strings -->
     <string name="sessions_title">Sesiones KYC</string>
-    <string name="sessions_search_hint">Buscar por shortkey, nombre, flujo o ID...</string>
+    <string name="sessions_search_hint">Buscar...</string>
     <string name="sessions_filters">Filtros</string>
+    <string name="filter_button_text">Filtrar</string>
     <string name="sessions_empty_title">Selecciona una sesión</string>
     <string name="sessions_empty_subtitle">Toca una sesión de la lista para ver sus detalles</string>
     <string name="session_status_icon">Ícono de Estado de Sesión</string>

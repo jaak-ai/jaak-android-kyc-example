@@ -50,7 +50,7 @@ class DocumentVerificationInstructionsActivity : AppCompatActivity(), StampsList
         stampsSDK.setCaptureDelay(0)                  // Sin countdown
         stampsSDK.setAlignmentTolerance(50)           // Muy permisivo
         stampsSDK.setMaskSize(80)
-        stampsSDK.setCropMargin(150)
+        stampsSDK.setCropMargin(170)
         stampsSDK.setShowPreview(false)               // Sin preview
 
         setupButtons()

@@ -289,8 +289,9 @@
 
     <!-- Sessions KYC Strings -->
     <string name="sessions_title">KYC Sessions</string>
-    <string name="sessions_search_hint">Search by shortkey, name, flow or ID...</string>
+    <string name="sessions_search_hint">Buscar...</string>
     <string name="sessions_filters">Filters</string>
+    <string name="filter_button_text">Filtrar</string>
     <string name="sessions_empty_title">Select a session</string>
     <string name="sessions_empty_subtitle">Tap a session from the list to see its details</string>
     <string name="session_status_icon">Session Status Icon</string>

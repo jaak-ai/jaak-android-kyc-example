@@ -199,8 +199,10 @@ class SessionsFragmentNew : Fragment() {
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s.toString()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val query = s?.toString() ?: ""
                 
                 if (query.isEmpty()) {
                     // Sin texto: ocultar filtros y restaurar lista
@@ -209,20 +211,14 @@ class SessionsFragmentNew : Fragment() {
                     searchQuery = null
                     loadSessions(page = 1, clearList = true)
                     Log.d("SessionsFragment", "🔄 Texto borrado - Lista restaurada")
-                } else if (query.length == 1) {
-                    // Con 1 carácter: mostrar filtros y buscar con el primero
+                } else if (query.length >= 1) {
+                    // Con 1 o más caracteres: mostrar filtros y buscar
                     binding.chipGroupSearchType.visibility = View.VISIBLE
                     currentSearchQuery = query
                     performAutomaticSearch()
-                    Log.d("SessionsFragment", "🔍 1er carácter - Mostrando filtros y buscando")
-                } else {
-                    // Con más caracteres: actualizar query y buscar con filtro actual
-                    currentSearchQuery = query
-                    performAutomaticSearch()
+                    Log.d("SessionsFragment", "🔍 Texto ingresado (${query.length} car.) - Mostrando filtros y buscando")
                 }
             }
-
-            override fun afterTextChanged(s: Editable?) {}
         })
 
         // Configurar chips como checkable (toggle on/off)

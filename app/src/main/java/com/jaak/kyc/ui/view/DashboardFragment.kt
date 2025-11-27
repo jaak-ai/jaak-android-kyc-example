@@ -154,8 +154,8 @@ class DashboardFragment : Fragment() {
     }
 
     private fun performLogout() {
-        // Limpiar todos los datos del usuario
-        profileManager.clearAll()
+        // Limpiar datos de autenticación pero mantener los perfiles KYC del usuario
+        profileManager.logout()
 
         // Regresar a MenuMainActivity
         val intent = Intent(requireContext(), MenuMainActivity::class.java)

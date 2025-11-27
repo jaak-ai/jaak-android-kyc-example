@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/viewContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/jaak_background"
+    android:background="@color/jaak_background">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="24dp"
     tools:context="com.jaak.kyc.ui.view.MenuMainActivity">
 
     <!-- Logo con fondo azul y icono de llave -->
     <FrameLayout
         android:id="@+id/logoContainer"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@drawable/bg_logo_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/jaak_logo_purple"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTitle"
         app:layout_constraintVertical_chainStyle="packed">
-
-        <ImageView
-            android:id="@+id/ivJaak"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_key_white" />
 
     </FrameLayout>
 
@@ -35,29 +38,26 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/onboarding_digital"
         android:textColor="@color/jaak_text_primary"
         android:textSize="32sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoContainer"
-        app:layout_constraintBottom_toTopOf="@+id/textViewSubtitle" />
+        app:layout_constraintTop_toBottomOf="@+id/logoContainer" />
 
     <!-- Subtítulo Verificación de Identidad -->
     <TextView
         android:id="@+id/textViewSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/descrip_init"
         android:textColor="@color/jaak_text_secondary"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/labelCodigoAcceso"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        app:layout_constraintBottom_toTopOf="@+id/labelCodigoAcceso" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
     <!-- Label CÓDIGO DE ACCESO -->
     <TextView
@@ -132,6 +132,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="@android:color/transparent"
         android:paddingHorizontal="24dp"
         android:paddingVertical="12dp"
@@ -147,18 +148,21 @@
         app:strokeColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHaveAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/tvHaveAccount"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- Overlay de progreso (loading) -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
+    <!-- Overlay de progreso (loading) fuera del scroll -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clProgress"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/loading"
@@ -188,6 +192,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -49,6 +49,37 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <!-- Nombre del perfil (solo visible en modo rápido) -->
+            <LinearLayout
+                android:id="@+id/layoutProfileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_name_label"
+                    android:textColor="@color/jaak_text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etProfileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="@string/profile_name_hint"
+                    android:inputType="text"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/jaak_text_primary"
+                    android:textColorHint="@color/jaak_text_tertiary"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
             <!-- Nombre del contacto -->
             <TextView
                 android:layout_width="wrap_content"

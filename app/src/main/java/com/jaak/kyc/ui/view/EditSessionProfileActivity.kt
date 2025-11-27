@@ -101,7 +101,11 @@ class EditSessionProfileActivity : AppCompatActivity() {
             binding.btnUpdateProfile.text = getString(R.string.start_kyc_session)
             // Ocultar toda la sección de "Perfil por defecto" en modo manual
             binding.layoutDefaultSection.visibility = View.GONE
+            // Ocultar el campo "Nombre de perfil" en modo manual
+            binding.layoutProfileName.visibility = View.GONE
         } else {
+            // Modo rápido: Mostrar campo "Nombre de perfil"
+            binding.layoutProfileName.visibility = View.VISIBLE
             // Modo rápido: Activar switch si es el primer perfil
             if (profileId == null) {
                 val existingProfiles = profileManager.getKycProfiles()
@@ -281,6 +285,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
             // Cargar perfil existente
             val profile = profileManager.getKycProfileById(id)
             profile?.let {
+                binding.etProfileName.setText(it.profileName)
                 binding.etContactName.setText(it.contactName)
                 binding.etFlowName.setText(it.flowName)
                 binding.etRedirectUrl.setText(it.redirectUrl ?: "")
@@ -338,6 +343,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
         }
 
         // Agregar TextWatcher a los campos requeridos
+        binding.etProfileName.addTextChangedListener(textWatcher)
         binding.etContactName.addTextChangedListener(textWatcher)
         binding.etFlowName.addTextChangedListener(textWatcher)
 
@@ -354,19 +360,26 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
     private fun validateForm() {
         // Obtener valores de los campos requeridos
+        val profileName = binding.etProfileName.text.toString().trim()
         val contactName = binding.etContactName.text.toString().trim()
         val flowName = binding.etFlowName.text.toString().trim()
         // El país siempre tendrá un valor seleccionado por defecto, no necesitamos validarlo
 
         // Habilitar botón solo si todos los campos requeridos están llenos
-        val allFieldsFilled = contactName.isNotEmpty() &&
-                             flowName.isNotEmpty()
+        val allFieldsFilled = if (!isManualMode && binding.layoutProfileName.visibility == View.VISIBLE) {
+            // Modo rápido: validar nombre de perfil, nombre de contacto y nombre de flujo
+            profileName.isNotEmpty() && contactName.isNotEmpty() && flowName.isNotEmpty()
+        } else {
+            // Modo manual: solo validar nombre de contacto y nombre de flujo
+            contactName.isNotEmpty() && flowName.isNotEmpty()
+        }
 
         binding.btnUpdateProfile.isEnabled = allFieldsFilled
     }
 
     private fun saveProfile() {
         // Validar campos requeridos
+        val profileName = binding.etProfileName.text.toString().trim()
         val contactName = binding.etContactName.text.toString().trim()
         val flowName = binding.etFlowName.text.toString().trim()
         val redirectUrl = binding.etRedirectUrl.text.toString().trim()
@@ -380,6 +393,12 @@ class EditSessionProfileActivity : AppCompatActivity() {
         val verificationType = validationMap[selectedValidationName] ?: ""
 
         val isDefault = binding.switchDefault.isChecked
+
+        // Validar nombre de perfil en modo rápido
+        if (!isManualMode && profileName.isEmpty()) {
+            binding.etProfileName.error = getString(R.string.error_field_required)
+            return
+        }
 
         if (contactName.isEmpty()) {
             binding.etContactName.error = getString(R.string.error_field_required)
@@ -413,7 +432,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
         // Crear o actualizar perfil
         val profile = KycProfile(
             id = profileId ?: java.util.UUID.randomUUID().toString(),
-            profileName = contactName,
+            profileName = if (!isManualMode) profileName else contactName,
             contactName = contactName,
             flowName = flowName,
             redirectUrl = redirectUrl.ifEmpty { null },
