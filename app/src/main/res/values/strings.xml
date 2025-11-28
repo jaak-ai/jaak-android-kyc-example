@@ -462,6 +462,10 @@
     <string name="mosaic_validation_title">Module validation</string>
     <string name="mosaic_blacklist_requires_doc">\"Official lists\" must be placed after \"Document extraction\"</string>
     <string name="mosaic_1to1_requires_doc_and_oto">\"1:1 Comparison\" must be placed after \"Document extraction\" and \"Identity verification\"</string>
+    <string name="mosaic_error_blacklist_requires_document">\"Official lists\" requires \"Document extraction\" to be placed before it</string>
+    <string name="mosaic_error_1to1_requires_both">\"1:1 Comparison\" requires both \"Document extraction\" and \"Identity verification\" to be placed before it</string>
+    <string name="mosaic_error_1to1_requires_document">\"1:1 Comparison\" requires \"Document extraction\" to be placed before it</string>
+    <string name="mosaic_error_1to1_requires_oto">\"1:1 Comparison\" requires \"Identity verification\" to be placed before it</string>
     
     <!-- Country Names -->
     <string name="country_mexico">Mexico</string>

@@ -110,28 +110,42 @@ class MosaicModuleAdapter(
     fun moveModule(fromPosition: Int, toPosition: Int): Boolean {
         val moduleToMove = modules[fromPosition]
         
-        // Validación: Listas oficiales no puede estar antes de extracción de documento
-        // (independientemente si está habilitado o no)
-        if (moduleToMove.id == "BLACKLIST") {
-            val modulesBeforeTarget = modules.subList(0, toPosition)
-            val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" }
-            if (!hasDocExtractBefore) {
-                return false
+        // Crear una copia temporal de la lista para simular el movimiento
+        val tempModules = modules.toMutableList()
+        
+        // Simular el movimiento
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(tempModules, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(tempModules, i, i - 1)
             }
         }
         
-        // Validación: 1:1 no puede estar antes de extracción de documento NI de verificación de identidad
-        // (independientemente si está habilitado o no)
-        if (moduleToMove.id == "IVERIFICATION") {
-            val modulesBeforeTarget = modules.subList(0, toPosition)
-            val hasDocExtractBefore = modulesBeforeTarget.any { it.id == "DOCUMENT_EXTRACT" }
-            val hasOtoBefore = modulesBeforeTarget.any { it.id == "OTO" }
-            if (!hasDocExtractBefore || !hasOtoBefore) {
-                return false
+        // Validar que después del movimiento, todas las dependencias se respeten
+        tempModules.forEachIndexed { index, module ->
+            when (module.id) {
+                "BLACKLIST" -> {
+                    // BLACKLIST requiere DOCUMENT_EXTRACT antes
+                    val modulesBeforeThis = tempModules.subList(0, index)
+                    if (!modulesBeforeThis.any { it.id == "DOCUMENT_EXTRACT" }) {
+                        return false
+                    }
+                }
+                "IVERIFICATION" -> {
+                    // IVERIFICATION requiere DOCUMENT_EXTRACT y OTO antes
+                    val modulesBeforeThis = tempModules.subList(0, index)
+                    if (!modulesBeforeThis.any { it.id == "DOCUMENT_EXTRACT" } ||
+                        !modulesBeforeThis.any { it.id == "OTO" }) {
+                        return false
+                    }
+                }
             }
         }
         
-        // Realizar el movimiento
+        // Si pasamos todas las validaciones, realizar el movimiento real
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 Collections.swap(modules, i, i + 1)

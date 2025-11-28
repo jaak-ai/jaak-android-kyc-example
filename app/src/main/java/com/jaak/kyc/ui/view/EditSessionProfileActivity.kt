@@ -208,7 +208,6 @@ class EditSessionProfileActivity : AppCompatActivity() {
                 ): Boolean {
                     val fromPos = viewHolder.adapterPosition
                     val toPos = target.adapterPosition
-                    val moduleToMove = mosaicModules[fromPos]
                     
                     val moved = mosaicAdapter?.moveModule(fromPos, toPos) ?: false
                     
@@ -216,11 +215,8 @@ class EditSessionProfileActivity : AppCompatActivity() {
                     if (!moved && !dragErrorShown) {
                         dragErrorShown = true
                         
-                        val message = when (moduleToMove.id) {
-                            "IVERIFICATION" -> getString(R.string.mosaic_error_1to1_first)
-                            "BLACKLIST" -> getString(R.string.mosaic_error_blacklist_first)
-                            else -> getString(R.string.mosaic_error_cannot_move)
-                        }
+                        // Determinar el mensaje de error basado en las dependencias rotas
+                        val message = getMovementErrorMessage(fromPos, toPos)
                         
                         androidx.appcompat.app.AlertDialog.Builder(this@EditSessionProfileActivity)
                             .setTitle(getString(R.string.mosaic_error_title))
@@ -571,7 +567,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
                 when (selectedFlowType) {
                     "RIGEL" -> {
                         // Flujo Rigel: Abrir WebView con URL de Rigel
-                        val rigelUrl = "https://rigel.dev.jaak.ai/session/$shortKey"
+                        val rigelUrl = "https://rigel.qa.jaak.ai/session/$shortKey"
                         Log.d("EditSessionProfile", "✓ Abriendo Rigel WebView: $rigelUrl")
                         
                         hideLoadingDialog()
@@ -663,5 +659,52 @@ class EditSessionProfileActivity : AppCompatActivity() {
     private fun hideLoadingDialog() {
         loadingDialog?.dismiss()
         loadingDialog = null
+    }
+    
+    /**
+     * Determina el mensaje de error apropiado cuando un movimiento no es válido
+     */
+    private fun getMovementErrorMessage(fromPos: Int, toPos: Int): String {
+        val moduleToMove = mosaicModules[fromPos]
+        
+        // Crear lista temporal para simular el movimiento
+        val tempModules = mosaicModules.toMutableList()
+        if (fromPos < toPos) {
+            for (i in fromPos until toPos) {
+                java.util.Collections.swap(tempModules, i, i + 1)
+            }
+        } else {
+            for (i in fromPos downTo toPos + 1) {
+                java.util.Collections.swap(tempModules, i, i - 1)
+            }
+        }
+        
+        // Verificar qué dependencia se rompe
+        tempModules.forEachIndexed { index, module ->
+            when (module.id) {
+                "BLACKLIST" -> {
+                    val modulesBeforeThis = tempModules.subList(0, index)
+                    if (!modulesBeforeThis.any { it.id == "DOCUMENT_EXTRACT" }) {
+                        return getString(R.string.mosaic_error_blacklist_requires_document)
+                    }
+                }
+                "IVERIFICATION" -> {
+                    val modulesBeforeThis = tempModules.subList(0, index)
+                    val hasDocExtract = modulesBeforeThis.any { it.id == "DOCUMENT_EXTRACT" }
+                    val hasOto = modulesBeforeThis.any { it.id == "OTO" }
+                    
+                    if (!hasDocExtract && !hasOto) {
+                        return getString(R.string.mosaic_error_1to1_requires_both)
+                    } else if (!hasDocExtract) {
+                        return getString(R.string.mosaic_error_1to1_requires_document)
+                    } else if (!hasOto) {
+                        return getString(R.string.mosaic_error_1to1_requires_oto)
+                    }
+                }
+            }
+        }
+        
+        // Mensaje genérico si no se detectó el problema específico
+        return getString(R.string.mosaic_error_cannot_move)
     }
 }

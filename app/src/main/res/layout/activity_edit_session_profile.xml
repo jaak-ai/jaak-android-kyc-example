@@ -158,14 +158,31 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnerCountry"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_field"
-                android:paddingHorizontal="16dp" />
+                android:layout_marginBottom="16dp">
+
+                <Spinner
+                    android:id="@+id/spinnerCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="40dp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:clickable="false"
+                    android:focusable="false"
+                    app:tint="@color/jaak_text_tertiary" />
+            </RelativeLayout>
 
             <!-- Tipo de flujo -->
             <TextView
@@ -176,14 +193,31 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnerFlowType"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_field"
-                android:paddingHorizontal="16dp" />
+                android:layout_marginBottom="16dp">
+
+                <Spinner
+                    android:id="@+id/spinnerFlowType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="40dp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:clickable="false"
+                    android:focusable="false"
+                    app:tint="@color/jaak_text_tertiary" />
+            </RelativeLayout>
 
             <!-- Configuración de módulos Mosaic (visible solo cuando se selecciona Mosaic) -->
             <LinearLayout
@@ -262,14 +296,31 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnerValidationMethod"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_field"
-                android:paddingHorizontal="16dp" />
+                android:layout_marginBottom="16dp">
+
+                <Spinner
+                    android:id="@+id/spinnerValidationMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="40dp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:clickable="false"
+                    android:focusable="false"
+                    app:tint="@color/jaak_text_tertiary" />
+            </RelativeLayout>
 
             <!-- Marcar como predeterminado -->
             <LinearLayout

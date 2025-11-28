@@ -293,7 +293,7 @@ class DashboardFragment : Fragment() {
                 when (profile.selectedFlowType) {
                     "RIGEL" -> {
                         // Flujo Rigel: Abrir WebView con URL de Rigel
-                        val rigelUrl = "https://rigel.dev.jaak.ai/session/$shortKey"
+                        val rigelUrl = "https://rigel.qa.jaak.ai/session/$shortKey"
                         Log.d("DashboardFragment", "✓ Abriendo Rigel WebView: $rigelUrl")
                         
                         hideLoadingDialog()

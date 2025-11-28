@@ -173,8 +173,8 @@ class MenuMainActivity : AppCompatActivity() {
         val mosaicUrl = "https://mosaic.qa.jaak.ai/link?shortKey=$shortKey&steps=$allSteps"
         
         val intent = Intent(this, KycWebViewActivity::class.java).apply {
-            putExtra("WEB_URL", mosaicUrl)
-            putExtra("FLOW_TYPE", "MOSAIC")
+            putExtra(KycWebViewActivity.EXTRA_URL, mosaicUrl)
+            putExtra(KycWebViewActivity.EXTRA_FLOW_TYPE, "MOSAIC")
         }
         startActivity(intent)
     }

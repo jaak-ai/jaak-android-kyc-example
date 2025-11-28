@@ -107,7 +107,7 @@ data class MosaicConfig(
         
         val stepsParam = finalModules.joinToString("%2C")
         
-        return "https://mosaic.dev.jaak.ai/link?shortKey=$shortKey&steps=$stepsParam"
+        return "https://mosaic.qa.jaak.ai/link?shortKey=$shortKey&steps=$stepsParam"
     }
     
     /**

@@ -438,6 +438,10 @@
     <string name="mosaic_min_modules_error">Debe seleccionar al menos un módulo</string>
     <string name="mosaic_blacklist_requires_doc">Las \"Listas oficiales\" deben ir después de \"Extracción de documento\"</string>
     <string name="mosaic_1to1_requires_doc_and_oto">La \"Comparación 1:1\" debe ir después de \"Extracción de documento\" y \"Verificación de identidad\"</string>
+    <string name="mosaic_error_blacklist_requires_document">\"Listas oficiales\" requiere que \"Extracción de documento\" esté colocada antes</string>
+    <string name="mosaic_error_1to1_requires_both">\"Comparación 1:1\" requiere que tanto \"Extracción de documento\" como \"Verificación de identidad\" estén colocadas antes</string>
+    <string name="mosaic_error_1to1_requires_document">\"Comparación 1:1\" requiere que \"Extracción de documento\" esté colocada antes</string>
+    <string name="mosaic_error_1to1_requires_oto">\"Comparación 1:1\" requiere que \"Verificación de identidad\" esté colocada antes</string>
     
     <string name="start_kyc_session">Guardar</string>
     
