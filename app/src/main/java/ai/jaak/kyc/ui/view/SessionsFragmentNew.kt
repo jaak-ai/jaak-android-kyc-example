@@ -613,8 +613,10 @@ class SessionsFragmentNew : Fragment() {
 
         isLoading = true
 
-        // Mostrar loading indicator para paginación
-        if (!clearList) {
+        // Mostrar loading indicator
+        if (clearList) {
+            binding.swipeRefresh.isRefreshing = true
+        } else {
             binding.progressBarPagination.visibility = View.VISIBLE
             Log.d("SessionsFragment", "📥 Cargando página $page...")
         }

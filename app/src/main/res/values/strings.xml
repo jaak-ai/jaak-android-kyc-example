@@ -484,4 +484,8 @@
     <string name="nationality_american">American</string>
     <string name="nationality_spanish">Spanish</string>
     <string name="nationality_unknown">Unknown</string>
+
+    <!-- Offline banner -->
+    <string name="banner_offline_title">Sin conexión a internet</string>
+    <string name="banner_offline_subtitle">Verifica tu conexión e intenta nuevamente</string>
 </resources>
