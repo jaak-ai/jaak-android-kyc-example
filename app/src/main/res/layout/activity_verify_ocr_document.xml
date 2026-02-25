@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.jaak.kyc.ui.view.VerifyOcrDocumentActivity">
+    tools:context="ai.jaak.kyc.ui.view.VerifyOcrDocumentActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clError"

@@ -16,7 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="24dp"
-    tools:context="com.jaak.kyc.ui.view.MenuMainActivity">
+    tools:context="ai.jaak.kyc.ui.view.MenuMainActivity">
 
     <!-- Logo con fondo azul y icono de llave -->
     <FrameLayout

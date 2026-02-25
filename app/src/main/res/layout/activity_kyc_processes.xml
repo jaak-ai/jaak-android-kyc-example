@@ -8,7 +8,7 @@
     tools:context=".ui.view.KycProcessesActivity">
 
     <!-- Enhanced Network Status -->
-    <com.jaak.kyc.ui.widget.ConnectivityStatusView
+    <ai.jaak.kyc.ui.widget.ConnectivityStatusView
         android:id="@+id/connectivityStatusView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

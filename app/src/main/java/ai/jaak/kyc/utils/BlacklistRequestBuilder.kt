@@ -1,0 +1,198 @@
+package ai.jaak.kyc.utils
+
+import ai.jaak.kyc.data.model.blacklist.*
+import ai.jaak.kyc.data.model.ocr.v4.DocumentExtractV4Response
+
+object BlacklistRequestBuilder {
+
+    /**
+     * Crea un payload de blacklist a partir del response de Document Extract V4
+     */
+    fun createPayloadFromDocumentExtract(ocrResponse: DocumentExtractV4Response): BlacklistPayload {
+        val personal = ocrResponse.content?.data?.personal
+        val address = ocrResponse.content?.data?.address
+        val document = ocrResponse.content?.data?.document
+
+        return BlacklistPayload(
+            person = BlacklistPerson(
+                name = personal?.firstName ?: "",
+                lastName = personal?.surname ?: "",
+                secondName = personal?.secondName ?: "",
+                secondLastName = personal?.motherSurname ?: "",
+                birthDate = personal?.dateOfBirth ?: "",
+                nationality = personal?.nationality ?: ""
+            ),
+            address = BlacklistAddress(
+                address = address?.extra?.street ?: address?.fullAddress ?: "",
+                number = address?.extra?.externalNumber?.toIntOrNull() ?: 0,
+                neighborhood = address?.extra?.neighborhood ?: "",
+                municipality = "", // No disponible en Document Extract V4
+                city = address?.extra?.city ?: "",
+                state = address?.extra?.state ?: "",
+                postalCode = address?.postalCode ?: ""
+            ),
+            identifications = BlacklistIdentifications(
+                curp = document?.personalIdNumber ?: "",
+                rfc = personal?.extra?.rfc ?: "",
+                socialSecurityNumber = "",
+                electorKey = if (document?.type?.contains("VOTER_ID", ignoreCase = true) == true) document.number ?: "" else "",
+                ine = if (document?.type?.contains("VOTER_ID", ignoreCase = true) == true &&
+                         (personal?.extra?.ocr != null || document.additionalNumber != null)) {
+                    BlacklistIne(
+                        cic = document.additionalNumber ?: "",
+                        ocr = personal?.extra?.ocr ?: ""
+                    )
+                } else null
+            ),
+            extras = BlacklistExtras(
+                commonId = "",
+                wantedIn = ""
+            )
+        )
+    }
+    
+    /**
+     * Crea un request para investigación INE
+     * Solo requiere: identifications.ine (cic, ocr)
+     */
+    fun createIneRequest(payload: BlacklistPayload): BlacklistRequest {
+        return BlacklistRequest(
+            services = BlacklistServices(ine = true),
+            payload = BlacklistPayload(
+                identifications = BlacklistIdentifications(
+                    ine = payload.identifications?.ine // Solo el objeto INE con cic y ocr
+                )
+            )
+        )
+    }
+    
+    /**
+     * Crea un request para investigación INTERPOL
+     * Solo requiere: person (name, lastName) y extras.wantedIn
+     */
+    fun createInterpolRequest(payload: BlacklistPayload): BlacklistRequest {
+        return BlacklistRequest(
+            services = BlacklistServices(interpol = true),
+            payload = BlacklistPayload(
+                person = payload.person,
+                extras = BlacklistExtras(wantedIn = "MX") // Código ISO 3166 Alpha-2 (2 letras)
+            )
+        )
+    }
+    
+    /**
+     * Crea un request para investigación OFAC
+     * Solo requiere: person (name, lastName) y extras.wantedIn
+     */
+    fun createOfacRequest(payload: BlacklistPayload): BlacklistRequest {
+        return BlacklistRequest(
+            services = BlacklistServices(ofac = true),
+            payload = BlacklistPayload(
+                person = payload.person,
+                extras = BlacklistExtras(wantedIn = "MX") // Código ISO 3166 Alpha-2 (2 letras)
+            )
+        )
+    }
+    
+    /**
+     * Crea un request para investigación RENAPO
+     * Solo requiere: identifications.curp
+     */
+    fun createRenapoRequest(payload: BlacklistPayload): BlacklistRequest {
+        return BlacklistRequest(
+            services = BlacklistServices(
+                renapo = BlacklistRenapoService(curp = true)
+            ),
+            payload = BlacklistPayload(
+                identifications = BlacklistIdentifications(
+                    curp = payload.identifications?.curp  // Solo CURP, otros campos null
+                )
+            )
+        )
+    }
+    
+    /**
+     * Crea un request para investigación SAT69B
+     * Solo requiere: person (name, lastName) e identifications.rfc
+     */
+    fun createSatRequest(payload: BlacklistPayload): BlacklistRequest {
+        return BlacklistRequest(
+            services = BlacklistServices(
+                sat = BlacklistSatService(sat69b = true)
+            ),
+            payload = BlacklistPayload(
+                person = payload.person,
+                identifications = BlacklistIdentifications(
+                    rfc = payload.identifications?.rfc  // Solo RFC, otros campos null
+                )
+            )
+        )
+    }
+    
+    /**
+     * Crea un payload base a partir de datos del OCR y otros servicios
+     */
+    fun createBasePayload(
+        // Datos de persona
+        name: String = "",
+        lastName: String = "",
+        secondName: String = "",
+        secondLastName: String = "",
+        birthDate: String = "",
+        nationality: String = "",
+        
+        // Datos de dirección (del geocoding)
+        address: String = "",
+        number: Int = 0,
+        neighborhood: String = "",
+        municipality: String = "",
+        city: String = "",
+        state: String = "",
+        postalCode: String = "",
+        
+        // Identificaciones (del OCR)
+        curp: String = "",
+        rfc: String = "",
+        socialSecurityNumber: String = "",
+        electorKey: String = "",
+        ineCic: String = "",
+        ineOcr: String = "",
+        
+        // Extras
+        commonId: String = "",
+        wantedIn: String = ""
+    ): BlacklistPayload {
+        return BlacklistPayload(
+            person = BlacklistPerson(
+                name = name,
+                lastName = lastName,
+                secondName = secondName,
+                secondLastName = secondLastName,
+                birthDate = birthDate,
+                nationality = nationality
+            ),
+            address = BlacklistAddress(
+                address = address,
+                number = number,
+                neighborhood = neighborhood,
+                municipality = municipality,
+                city = city,
+                state = state,
+                postalCode = postalCode
+            ),
+            identifications = BlacklistIdentifications(
+                curp = curp,
+                rfc = rfc,
+                socialSecurityNumber = socialSecurityNumber,
+                electorKey = electorKey,
+                ine = if (ineCic.isNotEmpty() || ineOcr.isNotEmpty()) {
+                    BlacklistIne(cic = ineCic, ocr = ineOcr)
+                } else null
+            ),
+            extras = BlacklistExtras(
+                commonId = commonId,
+                wantedIn = wantedIn
+            )
+        )
+    }
+}

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        tools:context="com.jaak.kyc.ui.view.SecurityPermissionsActivity">
+        tools:context="ai.jaak.kyc.ui.view.SecurityPermissionsActivity">
 
         <!-- Logo de seguridad -->
         <FrameLayout

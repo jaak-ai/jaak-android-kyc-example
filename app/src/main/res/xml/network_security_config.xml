@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- TEMPORAL: Configuración para debugging con Proxyman -->
+    <!-- IMPORTANTE: Remover antes de producción -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <!-- Trust system CAs -->
+            <certificates src="system" />
+            <!-- Trust user added CAs (Proxyman certificate) -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Dominios específicos de JAAK -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">jaak.ai</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
