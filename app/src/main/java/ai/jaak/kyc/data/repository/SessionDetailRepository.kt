@@ -21,25 +21,21 @@ class SessionDetailRepository @Inject constructor(
      */
     suspend fun getSessionDetail(sessionId: String): Result<SessionDetailResponse> {
         return try {
-            // Obtener API Key (con fallback a accessToken para usuarios ya logueados)
-            val apiKey = profileManager.getApiKey() ?: profileManager.getAccessToken()
-            if (apiKey.isNullOrEmpty()) {
-                Log.e("SessionDetailRepository", "API Key no disponible")
-                return Result.failure(Exception("API Key no disponible"))
+            val accessToken = profileManager.getAccessToken()
+            if (accessToken.isNullOrEmpty()) {
+                Log.e("SessionDetailRepository", "Access token no disponible")
+                return Result.failure(Exception("Access token no disponible"))
             }
 
             Log.d("SessionDetailRepository", "========== GET SESSION DETAIL REQUEST ==========")
             Log.d("SessionDetailRepository", "Session ID (MongoDB ObjectID): $sessionId")
             Log.d("SessionDetailRepository", "Endpoint: GET /api/v1/kyc/session/$sessionId")
-            Log.d("SessionDetailRepository", "Headers: {")
-            Log.d("SessionDetailRepository", "  Authorization: Bearer $apiKey")
-            Log.d("SessionDetailRepository", "}")
             Log.d("SessionDetailRepository", "================================================")
 
             // Llamar a la API
             val response = apiClient.getSessionDetailApi(
                 sessionId = sessionId,
-                auth = "Bearer $apiKey"
+                auth = "Bearer $accessToken"
             )
 
             Log.d("SessionDetailRepository", "========== GET SESSION DETAIL RESPONSE ==========")

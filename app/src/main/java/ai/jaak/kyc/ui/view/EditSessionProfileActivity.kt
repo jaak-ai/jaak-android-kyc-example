@@ -491,11 +491,10 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // Obtener API Key
-                val apiKey = profileManager.getApiKey() ?: profileManager.getAccessToken()
-                if (apiKey.isNullOrEmpty()) {
+                val accessToken = profileManager.getAccessToken()
+                if (accessToken.isNullOrEmpty()) {
                     hideLoadingDialog()
-                    Toast.makeText(this@EditSessionProfileActivity, getString(R.string.error_api_key_unavailable), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EditSessionProfileActivity, getString(R.string.error_token_unavailable), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 
@@ -521,7 +520,7 @@ class EditSessionProfileActivity : AppCompatActivity() {
 
                 // Paso 1: Crear flujo y obtener sessionUrl
                 val flowResponse = jaakDBApiClient.createFlowApi(
-                    auth = "Bearer $apiKey",
+                    auth = "Bearer $accessToken",
                     request = createFlowRequest
                 )
 
@@ -625,8 +624,8 @@ class EditSessionProfileActivity : AppCompatActivity() {
                         Constants.API_TOKEN = sessionData.accessToken
                         Constants.TOKEN = Constants.BEARER + sessionData.accessToken
 
-                        // Guardar accessToken de la sesión
-                        profileManager.saveAccessToken(sessionData.accessToken)
+                        // Guardar token de sesión KYC (separado del access token del usuario)
+                        profileManager.saveKycSessionToken(sessionData.accessToken)
 
                         Log.d("EditSessionProfile", "✓ Flujo creado exitosamente. Navegando a InitProcessLivenessActivity...")
 

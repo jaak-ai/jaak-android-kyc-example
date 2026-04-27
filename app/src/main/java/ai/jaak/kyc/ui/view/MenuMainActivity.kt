@@ -224,8 +224,8 @@ class MenuMainActivity : AppCompatActivity() {
                 kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
                 Log.d("MenuMainActivity", "✓ Token guardado en proceso BD")
 
-                // Guardar accessToken de la sesión
-                profileManager.saveAccessToken(sessionData.accessToken)
+                // Guardar token de sesión KYC (separado del access token del usuario)
+                profileManager.saveKycSessionToken(sessionData.accessToken)
 
                 Log.d("MenuMainActivity", "✓ Sesión creada exitosamente. Navegando a InitProcessLivenessActivity...")
 

@@ -2,6 +2,9 @@ package ai.jaak.kyc.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jaak.stampssdk.sdk.StampsSDK
@@ -17,16 +20,24 @@ import javax.inject.Singleton
 class ProfileManager @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    // SharedPreferences normal para datos no sensibles (perfil, perfiles KYC, etc.)
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    // EncryptedSharedPreferences para tokens sensibles (respaldado por Android Keystore)
+    private val securePrefs: SharedPreferences = createEncryptedPrefs(context)
+
     private val gson = Gson()
 
     companion object {
         private const val PREFS_NAME = "KYC_APP"
+        private const val SECURE_PREFS_NAME = "KYC_SECURE"
         private const val KEY_PROFILE = "kyc_profile"
 
-        // Auth keys
-        private const val KEY_ACCESS_TOKEN = "access_token"
-        private const val KEY_API_KEY = "api_key"
+        // Auth keys (en securePrefs)
+        private const val KEY_ACCESS_TOKEN = "access_token"         // Token del usuario autenticado (login)
+        private const val KEY_KYC_SESSION_TOKEN = "kyc_session_token" // Token de sesión KYC (captura)
+
+        // Auth keys no sensibles (en prefs normal)
         private const val KEY_IS_LOGGED_IN = "IS_LOGGED_IN"
         private const val KEY_USER_INFO = "user_info"
         private const val KEY_COMPANY_INFO = "company_info"
@@ -61,6 +72,25 @@ class ProfileManager @Inject constructor(
 
         // Perfil por defecto
         private const val DEFAULT_PROFILE = PROFILE_DEV
+
+        private fun createEncryptedPrefs(context: Context): SharedPreferences {
+            return try {
+                val masterKey = MasterKey.Builder(context)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build()
+                EncryptedSharedPreferences.create(
+                    context,
+                    SECURE_PREFS_NAME,
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                )
+            } catch (e: Exception) {
+                // Fallback a SharedPreferences normal si el Keystore no está disponible
+                Log.e("ProfileManager", "EncryptedSharedPreferences no disponible, usando fallback: ${e.message}")
+                context.getSharedPreferences("${SECURE_PREFS_NAME}_fallback", Context.MODE_PRIVATE)
+            }
+        }
     }
 
     /**
@@ -173,17 +203,17 @@ class ProfileManager @Inject constructor(
     // ==================== AUTHENTICATION METHODS ====================
 
     /**
-     * Guarda el access token
+     * Guarda el access token de forma segura (Android Keystore)
      */
     fun saveAccessToken(token: String) {
-        prefs.edit().putString(KEY_ACCESS_TOKEN, token).apply()
+        securePrefs.edit().putString(KEY_ACCESS_TOKEN, token).apply()
     }
 
     /**
      * Obtiene el access token guardado
      */
     fun getAccessToken(): String? {
-        return prefs.getString(KEY_ACCESS_TOKEN, null)
+        return securePrefs.getString(KEY_ACCESS_TOKEN, null)
     }
 
     /**
@@ -191,21 +221,24 @@ class ProfileManager @Inject constructor(
      */
     fun getBearerToken(): String? {
         val token = getAccessToken()
-        return if (token != null) "Bearer $token" else null
+        return if (!token.isNullOrEmpty()) "Bearer $token" else null
+    }
+
+    // ==================== KYC SESSION TOKEN ====================
+
+    /**
+     * Guarda el token de sesión KYC (distinto del access token de usuario).
+     * Se usa solo durante el flujo de captura (liveness, OCR, etc.)
+     */
+    fun saveKycSessionToken(token: String) {
+        securePrefs.edit().putString(KEY_KYC_SESSION_TOKEN, token).apply()
     }
 
     /**
-     * Guarda el API Key de larga duración
+     * Obtiene el token de sesión KYC activo
      */
-    fun saveApiKey(apiKey: String) {
-        prefs.edit().putString(KEY_API_KEY, apiKey).apply()
-    }
-
-    /**
-     * Obtiene el API Key de larga duración
-     */
-    fun getApiKey(): String? {
-        return prefs.getString(KEY_API_KEY, null)
+    fun getKycSessionToken(): String? {
+        return securePrefs.getString(KEY_KYC_SESSION_TOKEN, null)
     }
 
     /**
@@ -263,16 +296,17 @@ class ProfileManager @Inject constructor(
     }
 
     /**
-     * Cierra sesión y limpia todos los datos de autenticación
-     * NOTA: Los perfiles KYC del usuario se mantienen para cuando vuelva a iniciar sesión
+     * Cierra sesión y limpia todos los datos de autenticación.
+     * Los perfiles KYC del usuario se mantienen para cuando vuelva a iniciar sesión.
      */
     fun logout() {
-        prefs.edit()
+        securePrefs.edit()
             .remove(KEY_ACCESS_TOKEN)
+            .apply()
+        prefs.edit()
             .remove(KEY_IS_LOGGED_IN)
             .remove(KEY_USER_INFO)
             .remove(KEY_COMPANY_INFO)
-            .remove(KEY_API_KEY)
             .apply()
     }
 
@@ -289,6 +323,7 @@ class ProfileManager @Inject constructor(
      * Limpia todos los datos de la aplicación
      */
     fun clearAll() {
+        securePrefs.edit().clear().apply()
         prefs.edit().clear().apply()
     }
 

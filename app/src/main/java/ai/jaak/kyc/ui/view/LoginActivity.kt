@@ -138,6 +138,8 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "✅ Login exitoso - User: ${loginResponse.user.fullName}")
 
                     profileManager.saveAccessToken(loginResponse.accessToken)
+                    // El refreshToken llega como cookie HTTP-only y es persistido
+                    // automáticamente por PersistentCookieJar — no requiere manejo manual
                     profileManager.saveUserInfo(loginResponse.user)
                     profileManager.saveCompanyInfo(loginResponse.company)
                     profileManager.setLoggedIn(true)

@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import ai.jaak.kyc.data.network.AuthInterceptor
+import ai.jaak.kyc.data.network.PersistentCookieJar
 import ai.jaak.kyc.databinding.ActivityMainBinding
 import ai.jaak.kyc.domain.service.NetworkConnectivityService
 import ai.jaak.kyc.ui.view.DashboardFragment
@@ -33,8 +35,18 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var networkConnectivityService: NetworkConnectivityService
 
+    @Inject
+    lateinit var authInterceptor: AuthInterceptor
+
+    @Inject
+    lateinit var cookieJar: PersistentCookieJar
+
     private val offlineBannerHandler = Handler(Looper.getMainLooper())
     private var hideBannerRunnable: Runnable? = null
+
+    private val sessionExpiredListener: () -> Unit = {
+        runOnUiThread { performLogout() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         networkConnectivityService.startMonitoring()
         setupOfflineBanner()
+        authInterceptor.addSessionExpiredListener(sessionExpiredListener)
 
         // Setup bottom navigation
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -110,6 +123,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         hideBannerRunnable?.let { offlineBannerHandler.removeCallbacks(it) }
         networkConnectivityService.stopMonitoring()
+        authInterceptor.removeSessionExpiredListener(sessionExpiredListener)
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -147,8 +161,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun performLogout() {
-        // Limpiar todos los datos del usuario
+        // Limpiar todos los datos del usuario (tokens, perfil, etc.)
         profileManager.clearAll()
+        // Limpiar cookies HTTP-only (refreshToken)
+        cookieJar.clearAll()
 
         // Regresar a MenuMainActivity
         val intent = Intent(this, ai.jaak.kyc.ui.view.MenuMainActivity::class.java)

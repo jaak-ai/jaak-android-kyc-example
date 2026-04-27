@@ -20,6 +20,7 @@ import ai.jaak.kyc.data.model.api.SessionListResponse
 import ai.jaak.kyc.data.model.api.SessionDetailResponse
 import ai.jaak.kyc.data.model.api.LoginRequest
 import ai.jaak.kyc.data.model.api.LoginResponse
+import ai.jaak.kyc.data.model.api.RefreshTokenResponse
 import ai.jaak.kyc.data.model.flow.CreateFlowRequest
 import ai.jaak.kyc.data.model.flow.CreateFlowResponse
 import retrofit2.Response
@@ -90,6 +91,16 @@ interface JaakDBApiClient {
     // POST /api/v1/auth/sign-in - LOGIN de usuario
     @POST("api/v1/auth/sign-in")
     suspend fun loginApi(@Body request: LoginRequest): Response<LoginResponse>
+
+    // POST /api/v1/auth/refresh-token - RENOVAR access token
+    // El refreshToken viaja automáticamente como cookie HTTP-only (no se necesita body)
+    @POST("api/v1/auth/refresh-token")
+    suspend fun refreshTokenApi(): Response<RefreshTokenResponse>
+
+    // POST /api/v1/auth/logout - CERRAR sesión en servidor
+    // El refreshToken viaja automáticamente como cookie HTTP-only
+    @POST("api/v1/auth/logout")
+    suspend fun logoutApi(): Response<Unit>
 
     // POST /api/v1/kyc/flow - CREAR flujo KYC y obtener sessionUrl
     @POST("api/v1/kyc/flow")

@@ -17,17 +17,35 @@ data class LoginRequest(
 )
 
 /**
- * Response del login
+ * Response del login.
+ * El refreshToken llega como cookie HTTP-only (Set-Cookie: refreshToken=...),
+ * no en el body JSON — es manejado automáticamente por PersistentCookieJar.
  */
 data class LoginResponse(
     @SerializedName("accessToken")
     val accessToken: String,
+
+    @SerializedName("expiresIn")
+    val expiresIn: Int? = null,
 
     @SerializedName("user")
     val user: UserInfo,
 
     @SerializedName("company")
     val company: CompanyInfo
+)
+
+/**
+ * Response del refresh de token.
+ * El nuevo refreshToken llega como cookie HTTP-only (Set-Cookie: refreshToken=...),
+ * manejado automáticamente por PersistentCookieJar.
+ */
+data class RefreshTokenResponse(
+    @SerializedName("accessToken")
+    val accessToken: String,
+
+    @SerializedName("expiresIn")
+    val expiresIn: Int? = null
 )
 
 data class UserInfo(

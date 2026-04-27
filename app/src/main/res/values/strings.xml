@@ -387,7 +387,7 @@
 
     <!-- Error Messages -->
     <string name="error_no_default_profile">No default profile configured</string>
-    <string name="error_api_key_unavailable">Error: API Key not available</string>
+    <string name="error_token_unavailable">Error: Session expired. Please log in again.</string>
     <string name="error_create_flow_failed">Error creating KYC flow: %s</string>
     <string name="error_empty_server_response">Error: Empty server response</string>
     <string name="error_create_session_failed">Error creating session: %s</string>

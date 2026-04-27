@@ -385,10 +385,9 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateVerifyStatus(processId, ServiceStatus.RETRYING, null, 0)
 
-            // 🔑 Prioridad: 1) Token del proceso (sessionApi), 2) API Key fallback, 3) Constants.API_TOKEN
+            // Token del proceso (sessionApi), fallback a Constants.API_TOKEN
             val process = kycProcessDao.getProcessById(processId)
-            val apiKey = profileManager.getApiKey() // API Key de larga duración (fallback)
-            val rawToken = process?.accessToken ?: apiKey ?: Constants.API_TOKEN
+            val rawToken = process?.accessToken ?: Constants.API_TOKEN
             val accessToken = if (rawToken.startsWith("Bearer ")) rawToken else "Bearer $rawToken"
 
             android.util.Log.d("VerifyAPI", "========== VERIFY API REQUEST ==========")
@@ -396,18 +395,7 @@ class KycOfflineRepository @Inject constructor(
             android.util.Log.d("VerifyAPI", "Process ID: $processId")
             android.util.Log.d("VerifyAPI", "Document Type: ${verifyRequest.documentType}")
             android.util.Log.d("VerifyAPI", "Has Back Image: ${verifyRequest.document2 != null}")
-            android.util.Log.d("VerifyAPI", "Headers: {")
-            android.util.Log.d("VerifyAPI", "  Authorization: ${accessToken.take(40)}...")
-            android.util.Log.d("VerifyAPI", "}")
-            android.util.Log.d("VerifyAPI", "Token Details: {")
-            android.util.Log.d("VerifyAPI", "  Process AccessToken (sessionApi): ${process?.accessToken?.take(30)}...")
-            android.util.Log.d("VerifyAPI", "  API Key (ProfileManager fallback): ${apiKey?.take(30)}...")
-            android.util.Log.d("VerifyAPI", "  Constants.API_TOKEN: ${Constants.API_TOKEN.take(30)}...")
-            android.util.Log.d("VerifyAPI", "  Selected Token Source: ${when {
-                process?.accessToken != null -> "Process AccessToken (sessionApi token)"
-                apiKey != null -> "API Key (ProfileManager fallback)"
-                else -> "Constants.API_TOKEN (Fallback)"
-            }}")
+            android.util.Log.d("VerifyAPI", "Token Source: ${if (process?.accessToken != null) "Process AccessToken" else "Constants.API_TOKEN fallback"}")
             android.util.Log.d("VerifyAPI", "}")
 
             // 🔧 Convertir paths a base64 para HTTP request
@@ -548,27 +536,15 @@ class KycOfflineRepository @Inject constructor(
         return try {
             kycProcessDao.updateOcrStatus(processId, ServiceStatus.RETRYING, null, 0)
 
-            // 🔑 Prioridad: 1) Token del proceso (sessionApi), 2) API Key fallback, 3) Constants.API_TOKEN
+            // Token del proceso (sessionApi), fallback a Constants.API_TOKEN
             val process = kycProcessDao.getProcessById(processId)
-            val apiKey = profileManager.getApiKey() // API Key de larga duración (fallback)
-            val rawToken = process?.accessToken ?: apiKey ?: Constants.API_TOKEN
+            val rawToken = process?.accessToken ?: Constants.API_TOKEN
             val accessToken = if (rawToken.startsWith("Bearer ")) rawToken else "Bearer $rawToken"
 
             android.util.Log.d("DocumentExtractAPI", "========== DOCUMENT EXTRACT REQUEST ==========")
             android.util.Log.d("DocumentExtractAPI", "URL: POST /api/v4/document/extract")
             android.util.Log.d("DocumentExtractAPI", "Process ID: $processId")
-            android.util.Log.d("DocumentExtractAPI", "Headers: {")
-            android.util.Log.d("DocumentExtractAPI", "  Authorization: ${accessToken.take(40)}...")
-            android.util.Log.d("DocumentExtractAPI", "}")
-            android.util.Log.d("DocumentExtractAPI", "Token Details: {")
-            android.util.Log.d("DocumentExtractAPI", "  Process AccessToken (sessionApi): ${process?.accessToken?.take(30)}...")
-            android.util.Log.d("DocumentExtractAPI", "  API Key (ProfileManager fallback): ${apiKey?.take(30)}...")
-            android.util.Log.d("DocumentExtractAPI", "  Constants.API_TOKEN: ${Constants.API_TOKEN.take(30)}...")
-            android.util.Log.d("DocumentExtractAPI", "  Selected Token Source: ${when {
-                process?.accessToken != null -> "Process AccessToken (sessionApi token)"
-                apiKey != null -> "API Key (ProfileManager fallback)"
-                else -> "Constants.API_TOKEN (Fallback)"
-            }}")
+            android.util.Log.d("DocumentExtractAPI", "Token Source: ${if (process?.accessToken != null) "Process AccessToken" else "Constants.API_TOKEN fallback"}")
             android.util.Log.d("DocumentExtractAPI", "}")
             android.util.Log.d("DocumentExtractAPI", "Request Body: {")
             android.util.Log.d("DocumentExtractAPI", "  imageFront: ${if (ocrRequest.imageFront.isNotEmpty()) "File path: ${ocrRequest.imageFront}" else "Empty"}")

@@ -24,20 +24,14 @@ class KycSessionsRepository @Inject constructor(
         maxCreatedAt: String? = null
     ): Result<SessionsPage> {
         return try {
-            // Usar API Key de larga duración en lugar del accessToken de sesión
-            // Fallback: Si no existe apiKey, usar accessToken (para usuarios ya logueados)
-            val apiKey = profileManager.getApiKey() ?: profileManager.getAccessToken()
-            if (apiKey.isNullOrEmpty()) {
-                Log.e("KycSessionsRepository", "API Key no disponible")
-                return Result.failure(Exception("API Key no disponible"))
+            val accessToken = profileManager.getAccessToken()
+            if (accessToken.isNullOrEmpty()) {
+                Log.e("KycSessionsRepository", "Access token no disponible")
+                return Result.failure(Exception("Access token no disponible"))
             }
 
             Log.d("KycSessionsRepository", "========== GET SESSIONS REQUEST ==========")
             Log.d("KycSessionsRepository", "URL: GET /api/v1/kyc/session")
-            Log.d("KycSessionsRepository", "Headers: {")
-            Log.d("KycSessionsRepository", "  Authorization: Bearer $apiKey")
-            Log.d("KycSessionsRepository", "  Accept-Language: es")
-            Log.d("KycSessionsRepository", "}")
             Log.d("KycSessionsRepository", "Query Parameters: {")
             Log.d("KycSessionsRepository", "  page: $page")
             Log.d("KycSessionsRepository", "  limit: $limit")
@@ -55,7 +49,7 @@ class KycSessionsRepository @Inject constructor(
             val fetchLimit = if (shouldFilterLocally) limit * 2 else limit
 
             val response = apiClient.getSessionListApi(
-                auth = "Bearer $apiKey",
+                auth = "Bearer $accessToken",
                 language = "es",
                 id = null, // No filtrar por ID específico en el servidor
                 shortKey = null, // Filtraremos localmente

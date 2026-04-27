@@ -18,6 +18,7 @@ import ai.jaak.kyc.data.model.KycProfile
 import ai.jaak.kyc.data.model.flow.CreateFlowRequest
 import ai.jaak.kyc.data.model.flow.VerificationData
 import ai.jaak.kyc.data.network.JaakDBApiClient
+import ai.jaak.kyc.data.network.PersistentCookieJar
 import ai.jaak.kyc.databinding.FragmentDashboardBinding
 import ai.jaak.kyc.ui.adapter.DashboardProfilesAdapter
 import ai.jaak.kyc.utils.ProfileManager
@@ -35,6 +36,9 @@ class DashboardFragment : Fragment() {
 
     @Inject
     lateinit var profileManager: ProfileManager
+
+    @Inject
+    lateinit var cookieJar: PersistentCookieJar
 
     @Inject
     lateinit var jaakDBApiClient: JaakDBApiClient
@@ -156,6 +160,8 @@ class DashboardFragment : Fragment() {
     private fun performLogout() {
         // Limpiar datos de autenticación pero mantener los perfiles KYC del usuario
         profileManager.logout()
+        // Limpiar cookies HTTP-only (refreshToken)
+        cookieJar.clearAll()
 
         // Regresar a MenuMainActivity
         val intent = Intent(requireContext(), MenuMainActivity::class.java)
@@ -191,12 +197,13 @@ class DashboardFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                // Paso 1: Crear flujo KYC y obtener sessionUrl usando API Key
-                // Fallback: Si no existe apiKey, usar accessToken (para usuarios ya logueados)
-                val apiKey = profileManager.getApiKey() ?: profileManager.getAccessToken()
-                if (apiKey.isNullOrEmpty()) {
+                // Paso 1: Crear flujo KYC con el access token del usuario autenticado
+                // El AuthInterceptor adjunta automáticamente el token, pero createFlowApi
+                // también acepta el header explícito para compatibilidad
+                val accessToken = profileManager.getAccessToken()
+                if (accessToken.isNullOrEmpty()) {
                     hideLoadingDialog()
-                    Toast.makeText(requireContext(), getString(R.string.error_api_key_unavailable), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_token_unavailable), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 
@@ -219,7 +226,7 @@ class DashboardFragment : Fragment() {
 
                 Log.d("DashboardFragment", "========== CREATE FLOW REQUEST ==========")
                 Log.d("DashboardFragment", "URL: POST /api/v1/kyc/flow")
-                Log.d("DashboardFragment", "Headers: Authorization: Bearer $apiKey")
+                Log.d("DashboardFragment", "Headers: Authorization: Bearer ${accessToken.take(30)}...")
                 Log.d("DashboardFragment", "Body: {")
                 Log.d("DashboardFragment", "  name: ${createFlowRequest.name}")
                 Log.d("DashboardFragment", "  flow: ${createFlowRequest.flow}")
@@ -236,7 +243,7 @@ class DashboardFragment : Fragment() {
                 Log.d("DashboardFragment", "=========================================")
 
                 val flowResponse = jaakDBApiClient.createFlowApi(
-                    auth = "Bearer $apiKey",
+                    auth = "Bearer $accessToken",
                     request = createFlowRequest
                 )
 
@@ -368,8 +375,8 @@ class DashboardFragment : Fragment() {
                         kycOfflineRepository.storeTokenByShortKey(shortKey, sessionData.accessToken, null)
                         Log.d("DashboardFragment", "✓ Token guardado en proceso BD")
 
-                        // Guardar accessToken de la sesión
-                        profileManager.saveAccessToken(sessionData.accessToken)
+                        // Guardar token de sesión KYC (separado del access token del usuario)
+                        profileManager.saveKycSessionToken(sessionData.accessToken)
 
                         Log.d("DashboardFragment", "✓ Flujo creado exitosamente. Navegando a InitProcessLivenessActivity...")
 
